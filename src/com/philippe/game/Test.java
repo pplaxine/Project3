@@ -1,22 +1,19 @@
 package com.philippe.game;
 
 import com.philippe75.PlusMoins.ChallengerPlusMoins;
+import com.philippe75.PlusMoins.DefenseurPlusMoins;
 import com.philippe75.PlusMoins.PlusMoins;
 
 public class Test {
 
-//	public static void main(String[] args) {
+	public static void main(String[] args) {
 		
-//		Game plusMoins = new PlusMoins();
-//		plusMoins.startMenu();
-//		plusMoins.startGame(GameMode.CHALLENGER);
-//		
 		
-		// ChallengerPlusMoins cPM = new ChallengerPlusMoins(new SecretNumGenerator(4),3); 
 		
-//		Game mastermind = new Mastermind(); 
-//		
-//		plusMoins.startGame(GameMode.CHALLENGER);
+									// release the correct lines in order to see the differents elements working 
+		
+		Game plusMoins = new PlusMoins();  	
+		plusMoins.startGame(GameMode.CHALLENGER);
 //		System.out.println("************************************************");
 //		
 //		plusMoins.startGame(GameMode.DEFENSEUR);
@@ -27,9 +24,9 @@ public class Test {
 //		
 //		plusMoins.startMenu();
 //		System.out.println("\n**********************************************");
-//		
-//		//-------------------------------------------------------------------------------
-//		
+		
+		//-------------------------------------------------------------------------------
+		
 //		mastermind.startGame(GameMode.CHALLENGER);
 //		System.out.println("************************************************");
 //		
@@ -42,11 +39,12 @@ public class Test {
 //		mastermind.startMenu();
 //		System.out.println("\n**********************************************");
 		
+		//--------------------------------------------------------------------------------
 		
 //		Menu menu = new Menu(); 
-//		menu.start();
+//		menu.runMenu();
 		
 
-//	}
+	}
 
 }

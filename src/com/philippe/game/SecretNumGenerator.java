@@ -10,6 +10,7 @@ public class SecretNumGenerator {
 	private ArrayList<Integer> tabNumber = new ArrayList<Integer>(); 
 	private String randomNumber = "";
 	
+	// generate a random number of a length passed in parameter 
 	public SecretNumGenerator(int numberSize) {
 		this.numberSize = numberSize; 
 		generate();
@@ -17,6 +18,7 @@ public class SecretNumGenerator {
 	
 	public String generate() {
 		
+	
 		for (int i = 0; i < this.numberSize; i++) {
 			Random random = new Random();
 			tabNumber.add(random.nextInt(10));	
@@ -24,7 +26,10 @@ public class SecretNumGenerator {
 		} 
 		return randomNumber; 
 	}
-
+	
+	
+	// Getters  
+	
 	public ArrayList<Integer> getTabNumber() {
 		return tabNumber;
 	}
