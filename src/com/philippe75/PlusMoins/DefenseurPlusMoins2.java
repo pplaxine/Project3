@@ -1,5 +1,6 @@
 package com.philippe75.PlusMoins;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -8,7 +9,7 @@ import java.util.function.UnaryOperator;
 
 import javax.management.StringValueExp;
 
-public class DefenseurPlusMoins {
+public class DefenseurPlusMoins2 {
 	
 	private SecretNumGenerator sNG;
 	private ArrayList<Integer> tabComputerAnswer = new ArrayList<Integer>();
@@ -16,13 +17,13 @@ public class DefenseurPlusMoins {
 	private ArrayList<Integer> tabUserCode = new ArrayList<Integer>();
 	private String userCode = "";
 	private String computerAnswer, hint;
-	private int errorAllowed; 
+	private int errorAllowed, minValue, maxValue, newValue; 
 	private int score = 0; 
 	boolean stop = false;
 	
 	
 	
-	public DefenseurPlusMoins(int errorAllowed) {	
+	public DefenseurPlusMoins2 (int errorAllowed) {	
 	
 		this.errorAllowed = errorAllowed; 
 		
@@ -78,14 +79,32 @@ public class DefenseurPlusMoins {
 			hint = userAnswerComparator(tabUserCode, tabComputerAnswer);
 			System.out.printf("Computer tries %s ---> %s \n", computerAnswer, hint );
 			
+			
 			// for each number contained in the answer generate a new number taking in account the hint 
 			int i =0; 
+			
+			minValue = 0;
+			maxValue = 9;
 			for (Integer b1 : tabComputerAnswer) {
 				int test = tabUserCode.get(i).compareTo(b1);
-				if(test < 0) {
-					tabComputerAnswer2.add((int)(Math.random() * b1));
+				
+				if(test < 0) {			  
+				// if (i) digit of the userCode is smaller than (i) digit of the computeranswer. 	
+					maxValue = b1;
+					newValue = ((maxValue+2-1)/2);
+					tabComputerAnswer2.add(newValue);
+				
+				
+				
+				// if (i) digit of the userCode is greater than (i) digit of the computeranswer. 		
 				}else if(test > 0) {
-					tabComputerAnswer2.add(b1 + (int)(Math.random() * ((9 - b1) + 1)));
+					minValue = b1; 
+					newValue = minValue + (((maxValue - minValue) + 2 - 1)/2) ;
+					
+					tabComputerAnswer2.add(newValue);
+					
+					
+				// if (i) digit of the userCode is equal (i) digit of the computeranswer. 	
 				}else {
 					tabComputerAnswer2.add(b1);
 				}

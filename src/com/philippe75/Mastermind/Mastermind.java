@@ -1,8 +1,8 @@
 package com.philippe75.Mastermind;
 
-import com.philippe.game.Game;
-import com.philippe.game.GameMode;
-import com.philippe.game.Mode;
+import com.philippe75.game.Game;
+import com.philippe75.game.GameMode;
+import com.philippe75.game.Mode;
 
 public class Mastermind implements Game, Mode{
 	

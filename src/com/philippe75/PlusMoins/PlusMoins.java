@@ -1,9 +1,8 @@
 package com.philippe75.PlusMoins;
 
-import com.philippe.game.Game;
-import com.philippe.game.GameMode;
-import com.philippe.game.Mode;
-import com.philippe.game.SecretNumGenerator;
+import com.philippe75.game.Game;
+import com.philippe75.game.GameMode;
+import com.philippe75.game.Mode;
 
 public class PlusMoins implements Game, Mode {
 	 
@@ -11,14 +10,14 @@ public class PlusMoins implements Game, Mode {
 	
 	@Override
 	public void startChallengerMode() {
-		ChallengerPlusMoins cPM = new ChallengerPlusMoins(new SecretNumGenerator(4),4);
+		ChallengerPlusMoins cPM = new ChallengerPlusMoins(new SecretNumGenerator(5),3);
 		
 	}
 	
 	// Starts a DefenseurMode of PlusMoins with number of mistakes allowed in parameter 
 	@Override
 	public void startDefenseurMode() {
-		DefenseurPlusMoins dPM = new DefenseurPlusMoins(4);
+		DefenseurPlusMoins dPM = new DefenseurPlusMoins(7);
 		
 	}
 	
