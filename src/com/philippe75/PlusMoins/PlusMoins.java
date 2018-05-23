@@ -17,7 +17,7 @@ public class PlusMoins implements Game, Mode {
 	// Starts a DefenseurMode of PlusMoins with number of mistakes allowed in parameter 
 	@Override
 	public void startDefenseurMode() {
-		DefenseurPlusMoins dPM = new DefenseurPlusMoins(7);
+		DefenderPlusMinus dPM = new DefenderPlusMinus(5);
 		
 	}
 	

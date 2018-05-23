@@ -1,9 +1,8 @@
 package com.philippe75.game;
 
-import com.philippe75.Mastermind.DefenderMastermind;
-import com.philippe75.Mastermind.HowManyColors;
+import com.philippe75.PlusMoins.DefenderPlusMinus;
 
-public class Test {
+public class Main {
 
 	public static void main(String[] args) {
 		
@@ -14,11 +13,13 @@ public class Test {
 		
 	//	ChallengerMastermind cm = new ChallengerMastermind(new SecretColorCombinationGenerator(ColorCombinationLength.TEN, HowManyColors.TEN), 3);
 		
-		DefenderMastermind cm = new DefenderMastermind(HowManyColors.FOUR, 3);
+	//	DefenderMastermind cm = new DefenderMastermind(HowManyColors.FOUR, 3);
 		
-//		DefenseurPlusMoins2 def = new DefenseurPlusMoins2(5);
 		
-//		ChallengerPlusMoins2 pm = new ChallengerPlusMoins2(new SecretNumGenerator(4), 4);
+	//	ChallengerPlusMoins pm = new ChallengerPlusMoins(new SecretNumGenerator(4), 4);
+		
+		DefenderPlusMinus def = new DefenderPlusMinus(5);
+		
 		
 //		Game plusMoins = new PlusMoins();  	
 //		plusMoins.startGame(GameMode.DEFENSEUR);

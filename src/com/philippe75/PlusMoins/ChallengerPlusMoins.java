@@ -6,42 +6,44 @@ import java.util.Scanner;
 
 public class ChallengerPlusMoins {
 		
-		private static final String String = null;
 		private SecretNumGenerator sNG;
-		private String randomNumber, hint;
+		private int errorAllowed; 
+		private String hint;
 		private String userAnswer = "";
 		private ArrayList<Integer> tabUserAnswer = new ArrayList<Integer>(); 	
-		private ArrayList<Integer> tabRandomNum = new ArrayList<Integer>();
 		private int score = 0; 
-		private int errorAllowed; 
 		
 	public ChallengerPlusMoins(SecretNumGenerator sNG, int errorAllowed) {		
 		this.sNG = sNG;
 		this.errorAllowed = errorAllowed; 
+		startTheGame();
+	}
 		
-		
-		
-		randomNumber = this.sNG.getRandomNumber();
-		tabRandomNum = this.sNG.getTabNumber();
-		Scanner clavier = new Scanner(System.in);
-		//-----------------------------------------------------------------
-		
+	private void startTheGame() {
 		printWelcome();	
-		System.out.println("\n*** Secret Num : " + sNG.getRandomNumber() + " *** ");
-		
-		
-	
-		
-		
-		
-		
-		
-		// Generate first Question  
+		displaySecretNum();
 		System.out.println("Please enter a number of " + sNG.getNumberSize() + (sNG.getNumberSize() > 1 ? " digits." : " digit."));
+		initGame();
+	}
+	
+	private void printWelcome() {
+		String 	str  = "******************************************\n";
+				str += "*******        WELCOME TO          *******\n";
+				str += "*******        + or - GAME         *******\n";
+				str += "*******      CHALLENGER MODE       *******\n";	
+				str += "******************************************";
+		System.out.println(str); 
+	}
+	
+	private void displaySecretNum() {
+		System.out.println("\n*** Secret Num : " + sNG.getRandomNumber() + " *** ");
+	}
+	
+	private void initGame() {
+		Scanner clavier = new Scanner(System.in);
 		
 		// Repeat the question while user has enough tries left and hasn't found the answer
 		do {
-			
 			// add a try after each question 
 			score++;
 			tabUserAnswer.clear();
@@ -66,38 +68,29 @@ public class ChallengerPlusMoins {
 			}
 			
 			// Generate the user next move hint 
-			this.hint = userAnswerComparator(this.tabRandomNum, this.tabUserAnswer); 
+			this.hint = generateHint(sNG.getTabNumber(), this.tabUserAnswer); 
 			
 			// Print hint if the answer isn't found or the game finished 
-			if(!tabRandomNum.toString().equals(tabUserAnswer.toString()) && score < errorAllowed) {
+			if(!sNG.getTabNumber().toString().equals(tabUserAnswer.toString()) && score < errorAllowed) {
 				System.out.println("Your Answer " + userAnswer + " isn't so far, here is the hint ----- > " + hint);				
 			}
 			userAnswer = ""; 
-		} while (!tabRandomNum.toString().equals(tabUserAnswer.toString()) && score < errorAllowed);
+		} while (!sNG.getTabNumber().toString().equals(tabUserAnswer.toString()) && score < errorAllowed);
 		
 		// Print Result once the game is over. 
-		if (tabRandomNum.toString().equals(tabUserAnswer.toString())){
+		if (sNG.getTabNumber().toString().equals(tabUserAnswer.toString())){
 			System.out.printf("Congratulation !!! you found the answer after %d trials!!!", score);			
 		}else {
-			System.out.printf("GAME OVER !!!! the secret number was %s ", randomNumber );
+			System.out.printf("GAME OVER !!!! the secret number was %s ", sNG.getRandomNumber());
 		}
 		
 		// close the resource 
 		clavier.close();
 	}
 	
-	private void printWelcome() {
-		String 	str  = "******************************************\n";
-				str += "*******        WELCOME TO          *******\n";
-				str += "*******        + or - GAME         *******\n";
-				str += "*******      CHALLENGER MODE       *******\n";	
-				str += "******************************************";
-		System.out.println(str); 
-	}
-	
 	
 	// return the hint after comparing each character of two ArrayList.
-	public String userAnswerComparator(ArrayList<Integer> tab1, ArrayList<Integer> tab2){
+	private String generateHint(ArrayList<Integer> tab1, ArrayList<Integer> tab2){
 		 String answer =""; 	
 		for (int i = 0; i < tab1.size(); i++) {
 			String str;
@@ -112,5 +105,4 @@ public class ChallengerPlusMoins {
 		}
 		return answer; 
 	}
-	
 }
