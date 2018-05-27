@@ -1,13 +1,9 @@
 package com.philippe75.PlusMoins;
 
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.function.UnaryOperator;
 
-import javax.management.StringValueExp;
+import com.philippe75.generators.SecretNumGenerator;
 
 public class DefenderPlusMinus {
 	

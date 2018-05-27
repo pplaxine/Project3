@@ -1,34 +1,67 @@
 package com.philippe75.Mastermind;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
-public class ChallengerMastermind {
+import com.philippe75.game.Main;
+import com.philippe75.generators.SecretColorCombinationGenerator;
 
-	private SecretColorCombinationGenerator sCG; 
-	private int errorAllowed, score;
+public class ChallengerMastermind {
 	
-	private ArrayList<String> tabUserAnswer = new ArrayList<String>();
-	private HashMap colorHashMap = new HashMap(); 
+	private SecretColorCombinationGenerator sCG;
+	private HowManyColors howManyColors = HowManyColors.FOUR;  
+	private int errorAllowed, score, combiLength, correctPosition;
+	private HashMap<Integer, String> colorHashMap = new HashMap<>(); 
+	private HashMap<Integer, String> tabColCombi = new HashMap<>(); 
+	private HashMap<Integer, String> tabUserAnswer = new HashMap<>();
+	private HashMap<Integer, String> tabToCompare = new HashMap<>(); 
 	private String userAnswer=""; 
+	private boolean dev = Main.isDev(); 
 	
-	
-	public ChallengerMastermind(SecretColorCombinationGenerator sCG,int errorAllowed) {
-		this.sCG = sCG; 
-		this.errorAllowed = errorAllowed;
+	public ChallengerMastermind() {
+
+		setProperties();
 		startTheGame();
-		
-		
 	}
 	
 	private void startTheGame() {
 		
+		sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
+		System.out.println(dev);
+
 		printWelcome();
 		displaySecretColorCombi();
 		printQuestion();
 		initGame();
 	}
+	
+	private void setProperties() {
+		Properties p = new Properties();
+		
+	try {
+		InputStream is = new FileInputStream("ConfigFile/dataConfig.properties");
+		p.load(is);
+		
+	} catch (FileNotFoundException e) {
+		System.out.println("The file specified does not exit.");
+	} catch (IOException e) {
+		System.out.println("Error with the propertiesFiles.");
+	}
+	
+	combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
+	errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
+	if(p.getProperty("devMode").equals("activated"))
+		this.dev = true; 
+	}
+	
+	
 	
 	private void printWelcome() {
 		String 	str  = "******************************************\n";
@@ -40,23 +73,28 @@ public class ChallengerMastermind {
 	}
 	
 	private void displaySecretColorCombi() {
-		System.out.printf("*** Secret Color Combination : %s ***\n\n",sCG.toString());
+		
+		
+		if(dev)
+			System.out.printf("*** Secret Color Combination : %s ***\n\n",sCG.toString());
 	}
 	
 	private void printQuestion() {	
 		String str ="";
 		
-		for (int i = 0; i < sCG.getColorRange().size(); i++) {
+		for (int i = 0; i < sCG.getColorPool().size(); i++) {
 			
-			str += " ["+ (i) +"]" + sCG.getColorRange().get(i);
-			colorHashMap.put(i, sCG.getColorRange().get(i)); 
+			str += " ["+ (i) +"]" + sCG.getColorPool().get(i);
+			
+			colorHashMap.put(i, sCG.getColorPool().get(i)); 
 			
 		}
 		
-		System.out.printf("Please enter a combination of %d choices amongst those colors :%s.\n", sCG.getColorCombinationLength() , str);
+		System.out.printf("Please enter a combination of %d choices amongst those colors :%s.\n", combiLength , str);
 	}
 		
 	private void initGame() {
+		tabColCombi = sCG.getTabColorCombination(); 
 		Scanner clavier = new Scanner(System.in);
 			
 		do {		
@@ -70,10 +108,10 @@ public class ChallengerMastermind {
 					if(userAnswer !="") {
 						if(!userAnswer.matches("^[./[0-9]]+$")) { 
 							System.out.println("Please enter a number instead of a characters.");
-						}else if (!userAnswer.matches("^[./[0-"+ ((sCG.getColorCombinationLength() > 9)? sCG.getColorCombinationLength()-1 :sCG.getColorCombinationLength()) + "]]+$")) { 
-							System.out.printf("You have to enter a number bewteen [0] and [%d]\n", sCG.getColorCombinationLength()-1);
+						}else if (!userAnswer.matches("^[./[0-"+ ((combiLength > 9)? combiLength -1 : combiLength) + "]]+$")) { 
+							System.out.printf("You have to enter a number bewteen [0] and [%d]\n", combiLength -1);
 						}else {	
-							System.out.println((sCG.getColorCombinationLength() < userAnswer.length())? "The number of digits is superior to the number of digits required" 
+							System.out.println((combiLength < userAnswer.length())? "The number of digits is superior to the number of digits required" 
 									: "The number of digits is inferior to the number of digits required");
 						}
 					}
@@ -81,51 +119,60 @@ public class ChallengerMastermind {
 				this.userAnswer = clavier.nextLine();
 			
 						
-				} while (!userAnswer.matches("^[./[0-9]]+$") || sCG.getColorCombinationLength() != userAnswer.length() 
-						|| !userAnswer.matches("^[./[0-"+((sCG.getColorCombinationLength() > 9)? sCG.getColorCombinationLength()-1 :sCG.getColorCombinationLength()) +"]]+$") );		
+				} while (!userAnswer.matches("^[./[0-9]]+$") || combiLength != userAnswer.length() 
+						|| !userAnswer.matches("^[./[0-"+((combiLength> 9)? combiLength -1 : combiLength) +"]]+$") );		
 			
 				answerComparator();
 				userAnswer = ""; 
 				
-			} while (!sCG.getTabColorCombination().toString().equals(tabUserAnswer.toString()) && score < this.errorAllowed);
-		if(sCG.getTabColorCombination().toString().equals(tabUserAnswer.toString())) {
-			System.out.println("Congratulations !!! You have found the correct secret color combination.");
+			} while (correctPosition != this.combiLength && score < this.errorAllowed);
+		if(correctPosition == this.combiLength) {
+			System.out.printf("\nCongratulations !!! You have found the correct secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n", score);
 		}else {
-			System.out.println("\n                    ***** GAME OVER ! You were almost there. *****\n The solution is "+ sCG.toString() +"I am sure you will be more succeful nex time!");
+			System.out.println("\n\n\n\t\t ***** GAME OVER ! You were almost there. *****\nThe solution is "+ sCG.toString() +"I am sure you will be more succeful next time!\n");
 		}
-		clavier.close();
+		
 	}
 	
-	
 	private void answerComparator() {
+			String str=""; 
 			int index = 0;
-			int correctPosition = 0; 
+			correctPosition = 0; 
 			int exist = 0;
+		
+		// create user answer in HashMap and String  	
 		for (int i = 0; i < userAnswer.length(); i++) {
 			index = Character.getNumericValue((userAnswer.charAt(i)));
-			tabUserAnswer.add((String)colorHashMap.get(index));			
+			tabUserAnswer.put(i,(String)colorHashMap.get(index));
+			str += "|" + tabUserAnswer.get(i) + "|"; 
+			
+			tabToCompare.put(i, tabColCombi.get(i)); 		
+			
+			
+			
+		}
+		
+		
+		// check if any color is at the right position 
+		for (int i = 0; i < tabUserAnswer.size(); i++) {
+			if(tabUserAnswer.get(i).equals(tabToCompare.get(i))){
+				correctPosition++;
+				tabToCompare.replace(i, "Found");
+				tabUserAnswer.replace(i, "Found2"); 
+			}
 		}
 		
 		for (int i = 0; i < tabUserAnswer.size(); i++) {
-			if(tabUserAnswer.get(i).equals(sCG.getTabColorCombination().get(i))){
-				correctPosition++;
-			}else if (sCG.getTabColorCombination().contains(tabUserAnswer.get(i))) {
-				exist++;
-			}
+			for (int j = 0; j < tabUserAnswer.size(); j++) {
+				if(tabUserAnswer.get(i).equals(tabToCompare.get(j))) {
+					tabToCompare.replace(j, "Found3");
+					tabUserAnswer.replace(i, "Found4");
+					exist++;
+				}
+			}	
 		}
-		String stringAnswer = arraylistToString(tabUserAnswer);
-		System.out.printf("Your anwser is %s ---> %d well placed, %d exist but not well placed.\n",stringAnswer, correctPosition, exist);
+		
+		System.out.printf("Your anwser is %s ---> %d well placed, %d exist but not well placed.\n",str, correctPosition, exist);
+		
 	}
-	
-	private String arraylistToString(ArrayList<String> arrayList) {
-		String str ="";
-		for (String b1 : arrayList) {
-			str += "|" +b1 +"|";  
-		}
-		return str;
-	}
-	
-	
-	
 }
-

@@ -1,29 +1,61 @@
 package com.philippe75.PlusMoins;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
+import com.philippe75.game.Main;
+import com.philippe75.generators.SecretNumGenerator;
 
-public class ChallengerPlusMoins {
+
+public class ChallengerPlusMinus {
 		
 		private SecretNumGenerator sNG;
-		private int errorAllowed; 
+		private int errorAllowed, combiLength; 
 		private String hint;
 		private String userAnswer = "";
 		private ArrayList<Integer> tabUserAnswer = new ArrayList<Integer>(); 	
 		private int score = 0; 
+		boolean dev = Main.isDev();
+	
 		
-	public ChallengerPlusMoins(SecretNumGenerator sNG, int errorAllowed) {		
-		this.sNG = sNG;
-		this.errorAllowed = errorAllowed; 
+	public ChallengerPlusMinus() {	
+		setProperties();
 		startTheGame();
 	}
-		
+			
 	private void startTheGame() {
+		sNG = new SecretNumGenerator(combiLength);
 		printWelcome();	
-		displaySecretNum();
+		if(dev)
+			displaySecretNum();
 		System.out.println("Please enter a number of " + sNG.getNumberSize() + (sNG.getNumberSize() > 1 ? " digits." : " digit."));
 		initGame();
+	}
+
+	private void setProperties() {
+		Properties p = new Properties();
+		
+	try(InputStream is = new FileInputStream("ConfigFile/dataConfig.properties")) {	
+
+		p.load(is);
+		
+	} catch (FileNotFoundException e) {
+		System.out.println("The file specified does not exit.");
+	} catch (IOException e) {
+		System.out.println("Error with the propertiesFiles.");
+	}
+	
+	combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
+	
+	//colorPool = p.getProperty("ColorPool");
+	errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
+	if(p.getProperty("devMode").equals("activated"))
+		this.dev = true; 
 	}
 	
 	private void printWelcome() {
@@ -58,6 +90,7 @@ public class ChallengerPlusMoins {
 						System.out.println((sNG.getNumberSize() < userAnswer.length())? "The number of digits is superior to the number of digits required" : "The number of digits is inferior to the number of digits required");
 					}
 				}
+				
 			this.userAnswer = clavier.nextLine();
 					
 			} while (!userAnswer.matches("^[./[0-9]]+$") || sNG.getNumberSize() != userAnswer.length());		
@@ -79,13 +112,13 @@ public class ChallengerPlusMoins {
 		
 		// Print Result once the game is over. 
 		if (sNG.getTabNumber().toString().equals(tabUserAnswer.toString())){
-			System.out.printf("Congratulation !!! you found the answer after %d trials!!!", score);			
+			System.out.printf("Congratulation !!! you found the answer after %d trials!!!\n", score);			
 		}else {
-			System.out.printf("GAME OVER !!!! the secret number was %s ", sNG.getRandomNumber());
+			System.out.printf("GAME OVER !!!! the secret number was %s \n", sNG.getRandomNumber());
 		}
 		
-		// close the resource 
-		clavier.close();
+	
+	
 	}
 	
 	

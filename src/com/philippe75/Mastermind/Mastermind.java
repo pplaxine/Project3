@@ -2,48 +2,19 @@ package com.philippe75.Mastermind;
 
 import com.philippe75.game.Game;
 import com.philippe75.game.GameMode;
-import com.philippe75.game.Mode;
 
-public class Mastermind implements Game, Mode{
+public class Mastermind extends Game{
+
 	
-	
-
-	@Override
-	public void startChallengerMode() {
-		System.out.println("je suis Mastermind et je lance le mode Challenger");
-		
-	}
-
-	@Override
-	public void startDefenseurMode() {
-		System.out.println("je suis Mastermind et je lance le mode Defenseur");
-		
-	}
-
-	@Override
-	public void startDuelMode() {
-		System.out.println("je suis Mastermind et je lance le mode Duel");
-		
-	}
-
-	@Override
-	public void startMenu() {
-		System.out.println("je suis PM et je lance le menu");
-		
-	}
-
-	@Override
-	public void startGame(GameMode mode) {
-		if (mode.equals(GameMode.CHALLENGER)) {
-			startChallengerMode();
-		}else if (mode.equals(GameMode.DEFENSEUR)) {
-			startDefenseurMode();
+	public void startGame(GameMode gameMode) {
+		super.startGame(gameMode);
+		if(gameMode == GameMode.CHALLENGER) {
+			ChallengerMastermind cM = new ChallengerMastermind();		
+		}else if (gameMode == GameMode.DEFENDER) {
+			System.out.println("Mastermind mode Defender");	
 		}else {
-			startDuelMode();
+			System.out.println("Mastermind mode Duel");
 		}	
+
 	}
-
-
-
-
 }

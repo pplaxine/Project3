@@ -10,6 +10,7 @@ public enum HowManyColors {
 	NINE(9),
 	TEN(10);
 	
+	
 	private int number; 
 	HowManyColors(int number) {
 		this.number = number;
@@ -19,4 +20,5 @@ public enum HowManyColors {
 		return number;
 	}
 	
+
 }

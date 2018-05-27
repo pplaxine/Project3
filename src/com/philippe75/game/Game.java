@@ -1,17 +1,14 @@
 package com.philippe75.game;
 
-import com.philippe75.Mastermind.Mastermind;
-import com.philippe75.PlusMoins.PlusMoins;
-
-public interface Game {
+public abstract class Game {
 	
-	// private Mode mode = new Mastermind(); // indiqué par Cesare (cette interface doit être transformée en class également 
+	GameMode gameMode;
 	
-	
-	
-	public void startMenu();
+	public void startGame(GameMode gameMode) {
+		this.gameMode = gameMode;
+	}
 	
 	
-	public void startGame(GameMode gameMode);
+	
 	
 }
