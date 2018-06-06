@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"com.philippe75.Mastermind","l":"ChallengerMastermind"},{"p":"com.philippe75.Mastermind","l":"Mastermind"}]

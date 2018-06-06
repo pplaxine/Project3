@@ -8,7 +8,7 @@ public abstract class Game {
 		this.gameMode = gameMode;
 	}
 	
-	
+
 	
 	
 }

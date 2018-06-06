@@ -1,12 +1,13 @@
 package com.philippe75.generators;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SecretNumGenerator {
 	
 	private int numberSize; 
-	private ArrayList<Integer> tabNumber = new ArrayList<Integer>(); 
+	private List<Integer> tabNumber = new ArrayList<Integer>(); 
 	private String randomNumber = "";
 	
 	// generate a random number of a length passed in parameter 
@@ -29,7 +30,7 @@ public class SecretNumGenerator {
 	
 	// Getters  
 	
-	public ArrayList<Integer> getTabNumber() {
+	public List<Integer> getTabNumber() {
 		return tabNumber;
 	}
 	

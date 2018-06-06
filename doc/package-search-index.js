@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"com.philippe75.Mastermind"}]

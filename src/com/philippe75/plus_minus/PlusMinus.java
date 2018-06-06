@@ -1,24 +1,26 @@
-package com.philippe75.mastermind;
+package com.philippe75.plus_minus;
 
 import com.philippe75.game.Game;
 import com.philippe75.game.GameMode;
 import com.philippe75.game.Mode;
 
-public class Mastermind extends Game{
+public class PlusMinus extends Game {
 	
 	Mode mode; 
-
+	
 	public void startGame(GameMode gameMode) {
+
 		super.startGame(gameMode);
 		if(gameMode == GameMode.CHALLENGER) {
-			mode = new ChallengerMastermind(); 
+			mode = new ChallengerPlusMinus();
 			mode.startTheGame();
 			
 		}else if (gameMode == GameMode.DEFENDER) {
-			mode = new DefenderMastermind();
+			mode = new DefenderPlusMinus();
 			mode.startTheGame();
+			
 		}else {
-			mode = new DuelMastermind();
+			mode = new DuelPlusMinus();
 			mode.startTheGame();
 		}	
 	}

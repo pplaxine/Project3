@@ -3,8 +3,10 @@ package com.philippe75.game;
 
 import java.util.Scanner;
 
-import com.philippe75.Mastermind.Mastermind;
-import com.philippe75.PlusMoins.PlusMinus;
+import com.philippe75.mastermind.Mastermind;
+import com.philippe75.plus_minus.PlusMinus;
+
+
 
 public class Main {
 	
@@ -16,7 +18,6 @@ public class Main {
 		
 		dev = (args.length < 0 && args[0] == "-dev" ) ? true : false; 
 		runMenu();
-		
 	}
 	
 	
@@ -67,7 +68,7 @@ public class Main {
 						break;
 						case 3: if (userGameChoice == 1){
 							do {
-								cMM.startGame(GameMode.DUEL);
+								cPM.startGame(GameMode.DUEL);
 								afterGameChoice();
 							}while(playagain);
 						}else {
@@ -139,17 +140,17 @@ public class Main {
 	}
 	
 	private static void afterGameChoice() {
+		playagain = false; 
 		
-		String 	menu =  "\t_________________________________________\n";
-				menu += "\t  _____________________________________  \n";
-				menu += "\t    _________________________________    \n";
-				menu += "\t      _____________________________      \n";
+		String 	menu =  "\t_____________________________________________________________________\n";
+				menu += "\t_____________________________________________________________________\n";
+				menu += "\t_____________________________________________________________________\n";
+				menu += "\t_____________________________________________________________________\n\n";
 				menu +=  "\nWhat would you like to do now ? : \n"; 
 				menu +=	"\tPlay again ? : ..................enter [1]\n";
 				menu += "\tReturn to the main menu ? : .....enter [2]\n";
 				menu += "\tQuit the game : .................enter [3]\n";	
 		System.out.println(menu);	
-		
 		int userDecision = getUserAnswer(3);
 		
 		if(userDecision == 1) {

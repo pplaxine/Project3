@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import com.philippe75.Mastermind.HowManyColors;
+import com.philippe75.game.HowManyColors;
 
 public class SecretColorCombinationGenerator {
 
