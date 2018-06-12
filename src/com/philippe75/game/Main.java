@@ -6,8 +6,6 @@ import java.util.Scanner;
 import com.philippe75.mastermind.Mastermind;
 import com.philippe75.plus_minus.PlusMinus;
 
-
-
 public class Main {
 	
 	private static boolean playagain = false; 
@@ -16,7 +14,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		dev = (args.length < 0 && args[0] == "-dev" ) ? true : false; 
+		dev = (args.length > 0 && args[0].equals("-dev"))? true : false; 
 		runMenu();
 	}
 	
@@ -25,7 +23,7 @@ public class Main {
 		int userGameChoice = -1;
 		Game cPM = new PlusMinus();
 		Game cMM = new Mastermind();
-		
+	
 		boolean arret = false; 
 		printHeader();
 		
@@ -94,46 +92,50 @@ public class Main {
 
    	
  	private static void printHeader() {
- 		String 	str = "************************************************\n";  
+ 		String 	str = "\n\n************************************************\n";  
  				str += "***************	    Welcome  to   **************\n";
  				str += "***************	    the GAME !!!  **************\n";
  				str += "***************	     	     	  **************\n";
  				str += "************************************************";
-		System.out.println(str);
+		System.out.println(TextEnhencer.ANSI_GREEN + str + TextEnhencer.ANSI_RESET);
  	}
 	
  	
 	private static void printMainMenu() {
-		String 	menu =  "\nSelect your game : \n"; 
-			menu +=	"\tPlusMoins : ......enter [1]\n";
-			menu += "\tMastermind : .....enter [2]\n";
-			menu += "\tQuit the game : ..enter [3]\n";
+		String 	menu = TextEnhencer.ANSI_PURPLE; 
+				menu += "\nSelect your game : \n"; 
+				menu +=	"\tPlusMoins : ......enter [1]\n";
+				menu += "\tMastermind : .....enter [2]\n";
+				menu += "\tQuit the game : ..enter [3]\n";
+				menu += TextEnhencer.ANSI_RESET;
 			
 		System.out.println(menu);	
 	}
 	
 	
 	private static void printModeMenu(){
-	   	String 	mode =  "Select your mode : \n"; 
-			mode +=	"\tChallenger : .................enter [1]\n";
-			mode +=	"\tDefenseur : ..................enter [2]\n";
-			mode +=	"\tDuel : .......................enter [3]\n";
-			mode +=	"\tBack to previous screen : ....enter [4]\n";
+	   	String 	mode =TextEnhencer.ANSI_PURPLE;  
+	   			mode += "Select your mode : \n"; 
+	   			mode +=	"\tChallenger : .................enter [1]\n";
+	   			mode +=	"\tDefenseur : ..................enter [2]\n";
+	   			mode +=	"\tDuel : .......................enter [3]\n";
+	   			mode +=	"\tBack to previous screen : ....enter [4]\n";
+	   			mode += TextEnhencer.ANSI_RESET;
 		System.out.println(mode);
 	}
 	
 	
 	private static int getUserAnswer(int numberofQuestion) {
-		
 		int userAnswer = -1; 
 		Scanner clavier = new Scanner(System.in); 
-		
 		while (userAnswer > numberofQuestion || userAnswer < 0 ) {
 			try {
-				System.out.print("Enter your choice here below : \n");
+				System.out.print(TextEnhencer.ANSI_PURPLE + "Enter your choice here below : \n" + TextEnhencer.ANSI_RESET);
+				System.out.print(TextEnhencer.ANSI_YELLOW);
 				userAnswer = Integer.parseInt(clavier.nextLine()); 
+				System.out.print(TextEnhencer.ANSI_RESET);
 			} catch (NumberFormatException e) {
-				System.out.print("Incorrect value. ");
+				System.out.print(TextEnhencer.ANSI_RED + "Incorrect value. " + TextEnhencer.ANSI_RESET);
 			}
 		}
 		return userAnswer;
@@ -142,14 +144,16 @@ public class Main {
 	private static void afterGameChoice() {
 		playagain = false; 
 		
-		String 	menu =  "\t_____________________________________________________________________\n";
-				menu += "\t_____________________________________________________________________\n";
-				menu += "\t_____________________________________________________________________\n";
-				menu += "\t_____________________________________________________________________\n\n";
+		String 	menu = TextEnhencer.ANSI_GREEN; 
+				menu += "\n_____________________________________________________________________\n";
+				menu += "_____________________________________________________________________\n";
+				menu += "_____________________________________________________________________\n";
+				menu += "_____________________________________________________________________\n\n";
 				menu +=  "\nWhat would you like to do now ? : \n"; 
 				menu +=	"\tPlay again ? : ..................enter [1]\n";
 				menu += "\tReturn to the main menu ? : .....enter [2]\n";
-				menu += "\tQuit the game : .................enter [3]\n";	
+				menu += "\tQuit the game : .................enter [3]\n";
+				menu += TextEnhencer.ANSI_RESET;
 		System.out.println(menu);	
 		int userDecision = getUserAnswer(3);
 		
@@ -166,26 +170,4 @@ public class Main {
 	public static boolean isDev() {
 		return dev;
 	}
-	
-//	public static void createConfigFile() {
-//	
-//	Properties p = new Properties();
-//	
-//		try {
-//			OutputStream os = new FileOutputStream("ConfigFile/dataConfig.properties");
-//			p.setProperty("CombinationLenght", "4");
-//			p.setProperty("ColorPool", "HowManyColors.FOUR");
-//			p.setProperty("errorAllowed", "4");
-//			p.store(os, null);
-//		} catch (FileNotFoundException e) {
-//			System.out.println("The file specified does not exit.");
-//		} catch (IOException e) {
-//			System.out.println("Error with the configFiles.");
-//		}
-//	
-//}
-//
-	
-	
-	
 }	

@@ -1,7 +1,5 @@
 package com.philippe75.mastermind;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,7 +12,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.philippe75.game.HowManyColors;
+import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.TextEnhencer;
 
 public class DefenderMastermind implements Mode{
 
@@ -29,49 +29,61 @@ public class DefenderMastermind implements Mode{
 	private List<String> tabColorPool;
 	private List<String> tabColor;
 	Scanner clavier = new Scanner(System.in);
+	//Boolean from Main 
+	private boolean dev = Main.isDev();
 	
 	public DefenderMastermind() {
 		setProperties();	
 	}
 	
+	
 	public void startTheGame() {
-		
-		printWelcome();
-		initiateColorChoice();
-		generateQuestion();
-		requestUserSecretCombi();
-		initGame();
+		if(setProperties()) {
+			printWelcome();
+			initiateColorChoice();
+			generateQuestion();
+			requestUserSecretCombi();
+			initGame();
+		}
 	}
 	
-	private void setProperties() {
+	// charge the dataConfig.properties file 
+	public boolean setProperties() {
 		Properties p = new Properties();
 		
-		try {
-			InputStream is = new FileInputStream("Ressources/dataConfig.properties");
+		try(InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {
 			p.load(is);
-			
 			errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
 			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
 			howManyColors = HowManyColors.valueOf((p.getProperty("ColorPool")));
 			
-		} catch (FileNotFoundException e) {
-			System.out.println("The file specified does not exit.");
+			if(new String("true").equals(p.getProperty("devMode"))) {
+				this.dev = true; 	
+			}	
+			
+		} catch (NullPointerException e) {
+			System.err.println("The file dataConfig.properties could not be found.");
+			return false;
 		} catch (IOException e) {
-			System.out.println("Error with the propertiesFiles.");
+			System.err.println("Error with the propertiesFiles.");
+			return false;
 		}
+		return true;
 	}
 
 	
 	private void printWelcome() {
-		String 	str  = "******************************************\n";
+		String 	str = TextEnhencer.ANSI_YELLOW; 
+				str += "\n\n******************************************\n";
 				str += "*******         WELCOME TO         *******\n";
 				str += "*******      MASTERMIND GAME       *******\n";
 				str += "*******       DEFENDER MODE        *******\n";	
 				str += "******************************************";
+				str += TextEnhencer.ANSI_RESET;
 		System.out.println(str); 
 	}
 	
-	
+	// create a random pool of color 
 	private void initiateColorChoice() {
 		tabColorPool = new ArrayList<String>();
 		tabColor = new ArrayList<String>();
@@ -89,52 +101,61 @@ public class DefenderMastermind implements Mode{
 		
 		Collections.shuffle(tabColor);
 		
+		//add a defined quantity of colours to the pool 
 		tabColorPool.addAll(tabColor.subList(0, howManyColors.getIntValue()));
 	
 	}
 	
+	// creates the question to summit to the user 
 	private void generateQuestion() {
 		int i = 0;
 		String str =""; 
+		// add to a String of the colors of the ColorPool 
 		for (String couleur : tabColorPool) {
 			str += "["+ i +"]" + couleur +" ";
 			i++;
 		}
 		
-		System.out.println("\n" + str);
-		System.out.println("\nPlease compose your secret color combination by choosing " + combiLength + " colors amongst the colors listed.");
+		System.out.println(TextEnhencer.ANSI_YELLOW + "\n" + str);
+		System.out.println("\nPlease compose your secret color combination by choosing " + combiLength + " colors amongst the colors listed." + TextEnhencer.ANSI_RESET);
 	}
+	
 	
 	private void requestUserSecretCombi() {
 		
+		//creates new HashMap to store user combination choice 
 		userSelection = new HashMap<>(); 
 		String str = ""; 
 		do {
 			//Using Regex to make sure user enter the right value type (Integer), as well as,  the correct length of this value type, and not higher range of selection offers.   
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
-					System.out.println("Please enter a number instead of a characters.");					
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);					
 				}else if (userAnswer.length() > combiLength || userAnswer.length() < combiLength){	
-					System.out.println((userAnswer.length() > combiLength )? "The number of digits is superior to the number of digits required" 
-							: "The number of digits is inferior to the number of digits required");
+					System.out.println((userAnswer.length() > combiLength )? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET
+							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
 				}else if (!userAnswer.matches("^[./[0-"+(tabColorPool.size() -1) +"]]+$")) { 
-					System.out.printf("Your selection has to be composed of number bewteen [0] and [%d]\n", (tabColorPool.size()-1));
+					System.out.printf(TextEnhencer.ANSI_RED + "Your selection has to be composed of number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, (tabColorPool.size()-1));
 				}
 			}
+			System.out.print(TextEnhencer.ANSI_YELLOW);
+			// store the user answer in a string
 			this.userAnswer = clavier.nextLine();
+			System.out.print(TextEnhencer.ANSI_RESET);
 		} while ( userAnswer.length() > combiLength || userAnswer.length() < combiLength|| !userAnswer.matches("^[./[0-"+ (tabColorPool.size()-1)+"]]+$") || !userAnswer.matches("^[./[0-9]]+$") );
 	
-		// Convert String userAnswer digits into a Map userSelection with colours as value  
+		// Converts String userAnswer digits into colours, store it in the HashMap and in a String to display the choice  
 		for (int i = 0; i < userAnswer.length(); i++) {
 			userSelection.put(i, tabColorPool.get(Character.getNumericValue(userAnswer.charAt(i))));
 			
 			str += "|" + userSelection.get(i) + "|";
 		}
-		System.out.println("You have selected the folwing secret color combination : \n     *** " + str + " ***\n");
+		System.out.println(TextEnhencer.ANSI_YELLOW + "You have selected the folwing secret color combination : \n     *** " + str + " ***\n" + TextEnhencer.ANSI_RESET);
 	}
 	
 	private void initGame() {
 		
+		// repeat as long as the combination isn't found or the number or error allowed is reached 
 		do {		
 			// add a try after each question 
 			score++;
@@ -144,10 +165,13 @@ public class DefenderMastermind implements Mode{
 			
 		} while (correctPosition != this.combiLength && score < this.errorAllowed);
 		
+		// if the answer isn't found user looses 
 		if(correctPosition == this.combiLength) {
-			System.out.printf("\nYou loose !!! Computer found your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n", score);
+			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+..+*°*+."+ TextEnhencer.ANSI_CYAN + "\nComputer found your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
+		// if the answer is found user wins	
 		}else {
-			System.out.printf("\nYou Win !!! Computer could not find your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n", score);
+			displayFish();
+			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t     .+*°*+.+> | You Win !!! | <+..+*°*+.\nComputer could not find your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
 		}
 		
 	}
@@ -157,13 +181,14 @@ public class DefenderMastermind implements Mode{
 		
 		Random random = new Random(); 
 		int index = 0; 
-		//First try 
+		//if is empty (means first try) then generate a random combination  
 		if(tabComputerAnswer.isEmpty()) {	
 			for (int i = 0; i <userSelection.size(); i++) {
 				index = random.nextInt(tabColorPool.size());
 				tabComputerAnswer.put(i, tabColorPool.get(index));
 			}
-		// other tries	
+			
+		// After the first try 	
 		}else {
 			for (int i = 0; i < tabComputerAnswer.size(); i++) {
 				
@@ -175,10 +200,11 @@ public class DefenderMastermind implements Mode{
 					if(tabColorToReinject.contains(userSelection.get(i))) {		// ici 
 						if(!tabColorToReinject.isEmpty()) {
 							tabColorToReinject.remove(userSelection.get(i));
-							System.out.println(userSelection.get(i) + " has been found and therefore removed from tabtoReinject\n");
+							if (dev)
+								//indicates what colour has been removed from the pool of reinjected colours as it is present in the combination  (only in -dev mode)  
+								System.out.println(TextEnhencer.ANSI_RED + userSelection.get(i) + " has been found and therefore removed from tabtoReinject\n" + TextEnhencer.ANSI_RESET);
 						}
 					}
-					
 					
 				// if value of element in tabComputerAnswer exist but not at the right place 	
 				}else if(tabComputerAnswer.get(i).equals("Found4") && tabColorToReinject.size() > 0) {
@@ -186,22 +212,23 @@ public class DefenderMastermind implements Mode{
 					int index2 = random.nextInt(tabColorToReinject.size()); // ICI !!!! 
 					// put them in the next ComputerAnswer 
 					tabComputerAnswer.replace(i,(tabColorToReinject.get(index2)));
-					System.out.println(tabColorToReinject.get(index2) + " has been added to the combination");
+					if(dev)
+						//indicates what color from the pool of reinjected colours has been added to the new trial (only in -dev mode)  
+						System.out.println(TextEnhencer.ANSI_RED + tabColorToReinject.get(index2) + " has been added to the combination" + TextEnhencer.ANSI_RESET);
 					
 				//if value does not exist replace by a random value 	
 				}else {
 						int index3 = random.nextInt(tabColorPool.size());  
 						tabComputerAnswer.replace(i, tabColorPool.get(index3));
 				}
-				
 			}
-	
 		}
 	}
 	
 	private void compareAnswer() {
 		String str = ""; 
 		
+		// add values to a String for display 
 		for (int i = 0; i < tabComputerAnswer.size(); i++) {
 			str += "|" + tabComputerAnswer.get(i) + "|";
 		}
@@ -237,8 +264,11 @@ public class DefenderMastermind implements Mode{
 				}
 			}	
 		}
-		System.out.printf("\nComputer tries %s ---> %d well placed, %d exist but not well placed.\n",str, correctPosition, exist);
-		System.out.println("\n" + tabColorToReinject + "Colors to be reinjected for a new combination");
+		System.out.printf(TextEnhencer.ANSI_CYAN + "\nComputer tries %s ---> %d well placed, %d exist but not well placed.\n" + TextEnhencer.ANSI_RESET,str, correctPosition, exist);
+		
+		if(dev)
+			// indicates the pool of colours to be reinjected for next trial  
+			System.out.println(TextEnhencer.ANSI_RED + "\n" + tabColorToReinject + "Colors to be reinjected for a new combination\n" + TextEnhencer.ANSI_RESET);
 	
 	}
 }

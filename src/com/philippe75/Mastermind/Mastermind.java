@@ -6,8 +6,6 @@ import com.philippe75.game.Mode;
 
 public class Mastermind extends Game{
 	
-	Mode mode; 
-
 	public void startGame(GameMode gameMode) {
 		super.startGame(gameMode);
 		if(gameMode == GameMode.CHALLENGER) {

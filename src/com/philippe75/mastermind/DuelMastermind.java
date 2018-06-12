@@ -1,7 +1,5 @@
 package com.philippe75.mastermind;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ import java.util.Scanner;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 public class DuelMastermind implements Mode{
@@ -24,18 +23,18 @@ public class DuelMastermind implements Mode{
 	private Map<Integer, String> tabColCombi = new HashMap<>(); 
 	private Map<Integer, String> tabUserAnswer = new HashMap<>();
 	private Map<Integer, String> tabToCompare = new HashMap<>();
-	private Map<Integer, String> userSelection;
 	private Map<Integer, String> tabComputerAnswer = new HashMap<>();
 	private Map<Integer, String> tabToCompare2 = new HashMap<>(); 
+	private Map<Integer, String> userSelection;
 	private List<String> tabColor;
 	private List<String> tabColorPool;
 	private List<String> tabColorToReinject = new ArrayList<>();
 	
 	private int combiLength, correctPositionUser, correctPositionComputer; 
-	private int score = 0;
-	private String userAnswer=""; // if prob make userAnswer2 
+	private int tries = 0;
+	private String userAnswer=""; 
 	private String userSecretCombination;
-	private HowManyColors howManyColors;							// à modifier  
+	private HowManyColors howManyColors;					
 	Scanner clavier = new Scanner(System.in);
 	
 	//Boolean from Main 
@@ -46,25 +45,23 @@ public class DuelMastermind implements Mode{
 	}
 	
 	public void startTheGame() {
-		
-		// generate a secret combination 
-		sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
-		printWelcome();
-		initiateColorChoice();
-		generateQuestion();
-		requestUserSecretCombi();
-		displaySecretColorCombi();
-		printQuestion();
-		initGame();
+		if(setProperties()) {
+			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
+			printWelcome();
+			initiateColorChoice();
+			generateQuestion();
+			requestUserSecretCombi();
+			displaySecretColorCombi();
+			// generate a secret combination 
+			initGame();
+		}
 	}
 
-	private void setProperties() {
+	public boolean setProperties() {
 		Properties p = new Properties();
 		
-		try {
-			InputStream is = new FileInputStream("Ressources/dataConfig.properties");
+		try (InputStream is = getClass().getResourceAsStream("dataConfig.properties")){
 			p.load(is);
-		
 			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
 			howManyColors = HowManyColors.valueOf((p.getProperty("ColorPool")));
 			
@@ -72,19 +69,24 @@ public class DuelMastermind implements Mode{
 				this.dev = true; 	
 			}
 			
-		} catch (FileNotFoundException e) {
-			System.out.println("The file specified does not exit.");
+		} catch (NullPointerException e) {
+			System.err.println("The file dataConfig.properties could not be found.");
+			return false;
 		} catch (IOException e) {
-			System.out.println("Error with the propertiesFiles.");
+			System.err.println("Error with the propertiesFiles.");
+			return false;
 		}
+		return true;
 	}
 	
 	private void printWelcome() {
-		String 	str  = "******************************************\n";
+		String 	str = TextEnhencer.ANSI_YELLOW;
+				str += "\n\n******************************************\n";
 				str += "*******         WELCOME TO         *******\n";
 				str += "*******      MASTERMIND GAME       *******\n";
 				str += "*******         DUEL MODE          *******\n";	
 				str += "******************************************";
+				str += TextEnhencer.ANSI_RESET;
 		System.out.println(str); 
 	}
 	
@@ -117,8 +119,8 @@ public class DuelMastermind implements Mode{
 			i++;
 		}
 		
-		System.out.println("\n" + str);
-		System.out.println("\nPlease compose your secret color combination to be guessed by choosing " + combiLength + " colors amongst the colors listed.");
+		System.out.println(TextEnhencer.ANSI_YELLOW + "\n" + str);
+		System.out.println("\nPlease compose your secret color combination by choosing " + combiLength + " colors amongst the colors listed." + TextEnhencer.ANSI_RESET);
 	}
 	
 	private void requestUserSecretCombi() {
@@ -129,15 +131,17 @@ public class DuelMastermind implements Mode{
 			//Using Regex to make sure user enter the right value type (Integer), as well as,  the correct length of this value type, and not higher range of selection offers.   
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
-					System.out.println("Please enter a number instead of a characters.");					
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);					
 				}else if (userAnswer.length() > combiLength || userAnswer.length() < combiLength){	
-					System.out.println((userAnswer.length() > combiLength )? "The number of digits is superior to the number of digits required" 
-							: "The number of digits is inferior to the number of digits required");
+					System.out.println((userAnswer.length() > combiLength )? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET
+							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
 				}else if (!userAnswer.matches("^[./[0-"+(tabColorPool.size() -1) +"]]+$")) { 
-					System.out.printf("Your selection has to be composed of number bewteen [0] and [%d]\n", (tabColorPool.size()-1));
+					System.out.printf(TextEnhencer.ANSI_RED + "Your selection has to be composed of number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, (tabColorPool.size()-1));
 				}
 			}
+			System.out.println(TextEnhencer.ANSI_YELLOW);
 			this.userAnswer = clavier.nextLine();
+			System.out.println(TextEnhencer.ANSI_RESET);
 		} while ( userAnswer.length() > combiLength || userAnswer.length() < combiLength|| !userAnswer.matches("^[./[0-"+ (tabColorPool.size()-1)+"]]+$") || !userAnswer.matches("^[./[0-9]]+$") );
 	
 		// Convert String userAnswer digits into a Map userSelection with colours as value  
@@ -148,21 +152,21 @@ public class DuelMastermind implements Mode{
 		}
 		//reset user Anwser 
 		userAnswer = ""; 
-		System.out.println("You have selected the folwing secret color combination : \n     *** " + userSecretCombination + " ***\n");
+		System.out.println(TextEnhencer.ANSI_YELLOW + "You have selected the folwing secret color combination : \n\t*** " + userSecretCombination + " ***\n" + TextEnhencer.ANSI_RESET);
 	}
 	
 	
 	// display the secret combination if mode dev is activated
 	private void displaySecretColorCombi() {
-			
+		System.out.println(TextEnhencer.ANSI_CYAN + "Computer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);	
 		if(dev)
-			System.out.printf("*** Secret Color Combination : %s ***\n\n",sCG.toString());
+			System.out.printf(TextEnhencer.ANSI_CYAN + "*** Secret Color Combination : %s ***\n\n" + TextEnhencer.ANSI_RESET, sCG.toString());
+		System.out.println("");
 	}
 		
 	// print the question 
 	private void printQuestion() {	
 		String str ="";
-			
 			 
 		for (int i = 0; i < sCG.getColorPool().size(); i++) {
 				
@@ -172,7 +176,7 @@ public class DuelMastermind implements Mode{
 			colorPool.put(i, sCG.getColorPool().get(i)); 
 		}
 		//print the question containing the colorpool choices 
-		System.out.printf("You are the first to play!\n\nPlease enter a combination of %d choices amongst those colors :%s.\n", combiLength , str);
+		System.out.printf(TextEnhencer.ANSI_YELLOW + "Please enter a combination of %d choices amongst those colors :%s.\n" + TextEnhencer.ANSI_RESET, combiLength , str);
 	}
 	
 	private void initGame() {
@@ -180,9 +184,7 @@ public class DuelMastermind implements Mode{
 		tabColCombi = sCG.getTabColorCombination(); 
 			
 		do {		
-				// add a try after each question 
-				
-				tabUserAnswer.clear();
+			
 				getUserAnswer();
 				compareAnswerUser();
 				if(correctPositionUser != this.combiLength) {
@@ -193,33 +195,41 @@ public class DuelMastermind implements Mode{
 				
 			} while (correctPositionUser != this.combiLength && correctPositionComputer != this.combiLength );
 		if(correctPositionComputer == this.combiLength) {
-			System.out.printf("\n\t\t\t\t\t==== | GAME OVER ! ==== \n\nComputer found your secret combination first !!! The secret combination was %s\n", sCG.toString());
+			System.out.printf(TextEnhencer.ANSI_RED +  "\n\t\t\t   .+*°*+..+> | GAME OVER !!! | <.+.+*°*+." + TextEnhencer.ANSI_CYAN + "\n\nComputer found your secret combination first !!! The secret combination was %s\n" + TextEnhencer.ANSI_RESET, sCG.toString());
 			
 		}else {
-			System.out.printf("\n\t.+*°*+.+> Congratulations you WIN !!! <+.+*°*+.\n\nYou have found the correct secret color combination first !!!");
+			displayFish();
+			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t.+*°*+.+> | Congratulations you WIN !!! | <+.+*°*+.\n\nYou have found the correct secret color combination first !!!" + TextEnhencer.ANSI_RESET);
 		}
 	}
 	
 	private void getUserAnswer() {
-		 score++; 
+		 tries++; 
+		 tabUserAnswer.clear();
 		// Repeat while user didn't enter the correct value 
 		do {
 			//Using Regex to make sure user enter the right value type (Integer) and the correct length of this value type  
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
-					System.out.println("Please enter a number instead of a characters.");
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
 				}else if (!userAnswer.matches("^[./[0-"+ (sCG.getColorPool().size()-1) + "]]+$")) { 
-					System.out.printf("You have to enter a number bewteen [0] and [%d]\n", sCG.getColorPool().size()-1);
+					System.out.printf(TextEnhencer.ANSI_RED + "You have to enter a number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, sCG.getColorPool().size()-1);
 				}else {	
-					System.out.println((combiLength < userAnswer.length())? "The number of digits is superior to the number of digits required" 
-							: "The number of digits is inferior to the number of digits required");
+					System.out.println((combiLength < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET
+							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
 				}
 			}
-			if(score>1)
-				System.out.println("\nIt is your turn to play");
+			if(tries<2) {
+				System.out.println(TextEnhencer.ANSI_YELLOW + "You are the first to play!" + TextEnhencer.ANSI_RESET);
+			}else {
+				System.out.println(TextEnhencer.ANSI_YELLOW + "It is your turn to play" + TextEnhencer.ANSI_RESET);
+			}
+			printQuestion();
+			System.out.print(TextEnhencer.ANSI_YELLOW);
 			// store the user answer in String but with digits
 			this.userAnswer = clavier.nextLine();
-				
+			System.out.print(TextEnhencer.ANSI_RESET);
+			
 		} while (!userAnswer.matches("^[./[0-9]]+$") || combiLength != userAnswer.length() 
 				|| !userAnswer.matches("^[./[0-"+(sCG.getColorPool().size()-1) +"]]+$") );		
 	}
@@ -266,9 +276,7 @@ public class DuelMastermind implements Mode{
 				}
 			}	
 		}
-	
-		System.out.printf("Your anwser is %s ---> %d well placed, %d exist but not well placed.\n",str, correctPositionUser, exist);
-	
+		System.out.printf(TextEnhencer.ANSI_GREEN + "Your anwser is %s ---> %d well placed, %d exist but not well placed.\n" + TextEnhencer.ANSI_RESET,str, correctPositionUser, exist);
 	}
 	
 	private void generateComputerAnswer() {
@@ -293,10 +301,8 @@ public class DuelMastermind implements Mode{
 					if(tabColorToReinject.contains(userSelection.get(i))) {		// ici 
 						if(!tabColorToReinject.isEmpty()) {
 							tabColorToReinject.remove(userSelection.get(i));
-							
 						}
 					}
-					
 					
 				// if value of element in tabComputerAnswer exist but not at the right place 	
 				}else if(tabComputerAnswer.get(i).equals("Found4") && tabColorToReinject.size() > 0) {
@@ -353,12 +359,7 @@ public class DuelMastermind implements Mode{
 				}
 			}	
 		}
-		System.out.println("\nComputer has to find the following combination " + userSecretCombination);
-		System.out.printf("Computer tries %s ---> %d well placed, %d exist but not well placed.\n\n",str, correctPositionComputer, exist);
+		System.out.println(TextEnhencer.ANSI_CYAN + "\nComputer has to find the following combination " + userSecretCombination);
+		System.out.printf("Computer tries %s ---> %d well placed, %d exist but not well placed.\n\n" + TextEnhencer.ANSI_RESET,str, correctPositionComputer, exist);
 	}
-	
-	
-
-	
-
 }

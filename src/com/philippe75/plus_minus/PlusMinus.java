@@ -6,11 +6,9 @@ import com.philippe75.game.Mode;
 
 public class PlusMinus extends Game {
 	
-	Mode mode; 
-	
 	public void startGame(GameMode gameMode) {
-
 		super.startGame(gameMode);
+		
 		if(gameMode == GameMode.CHALLENGER) {
 			mode = new ChallengerPlusMinus();
 			mode.startTheGame();
@@ -23,5 +21,9 @@ public class PlusMinus extends Game {
 			mode = new DuelPlusMinus();
 			mode.startTheGame();
 		}	
+	}
+	
+	protected void fish() {
+		
 	}
 }

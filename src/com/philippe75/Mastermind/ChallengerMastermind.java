@@ -12,6 +12,7 @@ import java.util.Scanner;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 public class ChallengerMastermind implements Mode{
@@ -27,66 +28,66 @@ public class ChallengerMastermind implements Mode{
 	Scanner clavier = new Scanner(System.in);
 	
 	//Boolean from Main 
-	private boolean dev = Main.isDev(); 
+	private boolean dev = Main.isDev();
+
 	
 	public ChallengerMastermind() {
 		setProperties();
 	}
 	
 	public void startTheGame() {
-		
-		// generate a secret combination 
-		sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
-		
-		
-		printWelcome();
-		displaySecretColorCombi();
-		printQuestion();
-		initGame();
+		if(setProperties()) {
+			// generate a secret combination 
+			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
+			printWelcome();
+			displaySecretColorCombi();
+			printQuestion();
+			initGame();
+		}
 	}
 	
-	// set properties from ConfigFile 
-	
-	private void setProperties() {
+	// set properties from ConfigFile 	
+	public boolean setProperties() {
 		Properties p = new Properties();
 		
-		try {
-			InputStream is = new FileInputStream("Ressources/dataConfig.properties");
+		try (InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {
 			p.load(is);
-			
 			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
 			errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
 			howManyColors = HowManyColors.valueOf((p.getProperty("ColorPool")));
 			
 			if(new String("true").equals(p.getProperty("devMode"))) {
-				this.dev = true; 	
+				this.dev = true; 
 			}	
 				
-		} catch (FileNotFoundException e) {
-			System.out.println("The file specified does not exit.");
+		} catch (NullPointerException e) {
+			System.err.println("The file dataConfig.properties could not be found.");
+			return false;
 		} catch (IOException e) {
-			System.out.println("Error with the propertiesFiles.");
+			System.err.println("Error with the propertiesFiles.");
+			return false;
 		}
-		
+		return true; 
 	}
 	
 	
 	// print welcome message
 	private void printWelcome() {
-		String 	str  = "******************************************\n";
+		String 	str = TextEnhencer.ANSI_YELLOW;
+				str += "\n\n******************************************\n";
 				str += "*******         WELCOME TO         *******\n";
 				str += "*******      MASTERMIND GAME       *******\n";
 				str += "*******      CHALLENGER MODE       *******\n";	
 				str += "******************************************";
+				str += TextEnhencer.ANSI_RESET;
 		System.out.println(str); 
 	}
 	
 	// display the secret combination if mode dev is activated
 	private void displaySecretColorCombi() {
-		
-		
+		System.out.println(TextEnhencer.ANSI_CYAN+ "\nComputer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);
 		if(dev)
-			System.out.printf("*** Secret Color Combination : %s ***\n\n",sCG.toString());
+			System.out.printf(TextEnhencer.ANSI_CYAN + "*** Secret Color Combination : %s ***\n\n" + TextEnhencer.ANSI_RESET, sCG.toString());
 	}
 	
 	// print the question 
@@ -102,7 +103,7 @@ public class ChallengerMastermind implements Mode{
 			colorPool.put(i, sCG.getColorPool().get(i)); 
 		}
 		//print the question containing the colorpool choices 
-		System.out.printf("Please enter a combination of %d choices amongst those colors :%s.\n", combiLength , str);
+		System.out.printf(TextEnhencer.ANSI_YELLOW + "Please enter a combination of %d choices amongst those colors :%s.\n" + TextEnhencer.ANSI_RESET, combiLength , str);
 	}
 	
 	
@@ -120,9 +121,10 @@ public class ChallengerMastermind implements Mode{
 				
 			} while (correctPosition != this.combiLength && score < this.errorAllowed);
 		if(correctPosition == this.combiLength) {
-			System.out.printf("\nCongratulations !!! You have found the correct secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n", score);
+			displayFish();
+			System.out.printf( TextEnhencer.ANSI_YELLOW + "\n\t  .+*°*+..+> | Congratulations ! | <+..+*°+.\nYou have found the correct secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
 		}else {
-			System.out.println("\n\n\n\t\t ***** GAME OVER ! You were almost there. *****\nThe solution is "+ sCG.toString() +"I am sure you will be more succeful next time!\n");
+			System.out.println(TextEnhencer.ANSI_RED + "\n\t\t\t .+*°*+..+> | GAME OVER !!! | <+..+*°+."+ TextEnhencer.ANSI_CYAN + "\n\t\t\t\tYou were almost there.\nThe solution is "+ sCG.toString() +". I am sure you will be more succeful next time!\n"  + TextEnhencer.ANSI_RESET);
 		}
 	}
 	
@@ -133,16 +135,18 @@ public class ChallengerMastermind implements Mode{
 			//Using Regex to make sure user enter the right value type (Integer) and the correct length of this value type  
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
-					System.out.println("Please enter a number instead of a characters.");
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
 				}else if (!userAnswer.matches("^[./[0-"+ (sCG.getColorPool().size()-1) + "]]+$")) { 
-					System.out.printf("You have to enter a number bewteen [0] and [%d]\n", sCG.getColorPool().size()-1);
+					System.out.printf(TextEnhencer.ANSI_RED + "You have to enter a number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, sCG.getColorPool().size()-1);
 				}else {	
-					System.out.println((combiLength < userAnswer.length())? "The number of digits is superior to the number of digits required" 
-							: "The number of digits is inferior to the number of digits required");
+					System.out.println((combiLength < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET 
+							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
 				}
 			}
 			// store the user answer in String but with digits
+			System.out.print(TextEnhencer.ANSI_YELLOW);
 			this.userAnswer = clavier.nextLine();
+			System.out.print(TextEnhencer.ANSI_RESET);
 				
 		} while (!userAnswer.matches("^[./[0-9]]+$") || combiLength != userAnswer.length() 
 				|| !userAnswer.matches("^[./[0-"+(sCG.getColorPool().size()-1) +"]]+$") );		
@@ -191,7 +195,7 @@ public class ChallengerMastermind implements Mode{
 			}	
 		}
 		
-		System.out.printf("Your anwser is %s ---> %d well placed, %d exist but not well placed.\n",str, correctPosition, exist);
+		System.out.printf(TextEnhencer.ANSI_CYAN + "Your anwser is %s ---> %d well placed, %d exist but not well placed.\n" + TextEnhencer.ANSI_RESET,str, correctPosition, exist);
 		
 	}
 	
