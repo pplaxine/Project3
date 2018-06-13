@@ -1,5 +1,15 @@
 package com.philippe75.game;
 
+/**
+ * <b>Change the colours of output in console</b>
+ * 
+ * <p>
+ *  Is composed of 8 colours and a reset to reset to the initial colour. 
+ * </p>
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ */
 public class TextEnhencer {
 	
 	public static final String ANSI_RESET = "\u001B[0m";

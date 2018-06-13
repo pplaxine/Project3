@@ -44,6 +44,7 @@ public class DuelMastermind implements Mode{
 		setProperties();
 	}
 	
+	@Override
 	public void startTheGame() {
 		if(setProperties()) {
 			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
@@ -56,7 +57,8 @@ public class DuelMastermind implements Mode{
 			initGame();
 		}
 	}
-
+	
+	@Override
 	public boolean setProperties() {
 		Properties p = new Properties();
 		
@@ -79,7 +81,8 @@ public class DuelMastermind implements Mode{
 		return true;
 	}
 	
-	private void printWelcome() {
+	@Override
+	public void printWelcome() {
 		String 	str = TextEnhencer.ANSI_YELLOW;
 				str += "\n\n******************************************\n";
 				str += "*******         WELCOME TO         *******\n";

@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"com.philippe75.game","l":"Main"}]

@@ -3,22 +3,108 @@ package com.philippe75.game;
 
 import java.util.Scanner;
 
+import com.philippe75.mastermind.ChallengerMastermind;
+import com.philippe75.mastermind.DefenderMastermind;
+import com.philippe75.mastermind.DuelMastermind;
 import com.philippe75.mastermind.Mastermind;
+import com.philippe75.plus_minus.ChallengerPlusMinus;
+import com.philippe75.plus_minus.DefenderPlusMinus;
+import com.philippe75.plus_minus.DuelPlusMinus;
 import com.philippe75.plus_minus.PlusMinus;
-
+/**
+ * <b>Class containing the main method</b>
+ * 
+ * <p> 
+ * Runs the menu, where the user can choose the following :
+ * <ul>
+ * <li>
+ * At the beginning of the game : 
+ * <ul>
+ * <li>The game to play</li>
+ * <li>The mode of the game</li>
+ * <li>To quit the game</li>
+ * </ul>
+ * </li>
+ * <li>
+ * Once the game is over :
+ * <ul>
+ * <li>To play again</li>
+ * <li>To return to the main menu</li>
+ * <li>To quit the game</li>
+ * </ul>
+ * </li>
+ * </ul> 
+ * </p>
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ */
 public class Main {
 	
-	private static boolean playagain = false; 
+	/**
+	 * If true is returned, Same game starts again. 
+	 * 
+	 * Is modified in the selection menu once the game is over. 
+	 * 
+	 * @see Main#runMenu()
+	 * @see Main#afterGameChoice()
+	 */
+	private static boolean playagain = false;
+	
+	/**
+	 * returns true if "-dev" is passed as parameter at program launch.
+	 * 
+	 * Will starts the selected games in developer mode. 
+	 * 
+	 * @see Main#main(String[])
+	 * @see ChallengerPlusMinus
+	 * @see DefenderPlusMinus
+	 * @see DuelPlusMinus
+	 * @see ChallengerMastermind
+	 * @see DefenderMastermind
+	 * @see DuelMastermind 
+	 */
 	private static boolean dev; 
 	
-	
+	/**
+	 * Method main.
+	 * 
+	 * @param args  
+	 * 				starts selected game in developer mode if "-dev" is passed. 
+	 * @see Main#dev
+	 * @see ChallengerPlusMinus
+	 * @see DefenderPlusMinus
+	 * @see DuelPlusMinus
+	 * @see ChallengerMastermind
+	 * @see DefenderMastermind
+	 * @see DuelMastermind 
+	 */
 	public static void main(String[] args) {
 		
 		dev = (args.length > 0 && args[0].equals("-dev"))? true : false; 
 		runMenu();
 	}
 	
-	
+	/**
+	 * Runs the game selection menu.
+	 * 
+	 * Displays the welcome message.  
+	 * 
+	 * Displays the Game choice menu.
+	 * 
+	 * After game selection, displays the mode choice menu.
+	 * 
+	 * Starts game accordingly.
+	 * 
+	 * Once the game is over displays a after game choice menu. 
+	 * 
+	 * @see Main#printHeader()
+	 * @see Main#printMainMenu()
+	 * @see Main#printModeMenu()
+	 * @see Game#startGame(GameMode)
+	 * @see GameMode
+	 * @see Main#afterGameChoice()
+	 */
 	public static void runMenu() {
 		int userGameChoice = -1;
 		Game cPM = new PlusMinus();
@@ -40,7 +126,6 @@ public class Main {
 								cPM.startGame(GameMode.CHALLENGER);
 								afterGameChoice();
 							}while(playagain);
-								
 							
 						break; 
 						}else {
@@ -90,7 +175,11 @@ public class Main {
 		}
 	}  
 
-   	
+   	/**
+   	 * Displays the welcome message.
+   	 * 
+   	 * @see Main#runMenu()
+   	 */
  	private static void printHeader() {
  		String 	str = "\n\n************************************************\n";  
  				str += "***************	    Welcome  to   **************\n";
@@ -100,7 +189,11 @@ public class Main {
 		System.out.println(TextEnhencer.ANSI_GREEN + str + TextEnhencer.ANSI_RESET);
  	}
 	
- 	
+ 	/**
+ 	 * Displays the game choice menu.
+ 	 * 
+ 	 * @see Main#runMenu()
+ 	 */
 	private static void printMainMenu() {
 		String 	menu = TextEnhencer.ANSI_PURPLE; 
 				menu += "\nSelect your game : \n"; 
@@ -112,7 +205,11 @@ public class Main {
 		System.out.println(menu);	
 	}
 	
-	
+	/**
+	 * Displays the game mode choice menu.
+	 * 
+	 * @see Main#runMenu()
+	 */
 	private static void printModeMenu(){
 	   	String 	mode =TextEnhencer.ANSI_PURPLE;  
 	   			mode += "Select your mode : \n"; 
@@ -124,7 +221,15 @@ public class Main {
 		System.out.println(mode);
 	}
 	
-	
+	/**
+	 * Check if the entry of user is correct.
+	 * 
+	 * If the entry is higher than the number of questions, or inferior to null, or not a number, user must make a new entry.
+	 * 
+	 * @param numberofQuestion 
+	 * 							number of question in the menu.  
+	 * @return the user entry in integer format
+	 */
 	private static int getUserAnswer(int numberofQuestion) {
 		int userAnswer = -1; 
 		Scanner clavier = new Scanner(System.in); 
@@ -141,6 +246,14 @@ public class Main {
 		return userAnswer;
 	}
 	
+	/**
+	 * After game menu. 
+	 * 
+	 * Once the game is over, user can choose: to play again, to return to the main menu, or quit the game. 
+	 * 
+	 * @see Main#playagain
+	 * @see Main#runMenu()
+	 */
 	private static void afterGameChoice() {
 		playagain = false; 
 		
@@ -166,7 +279,14 @@ public class Main {
 		}
 	}
 
-	
+	/**
+	 * Getter 
+	 * 
+	 * Returns true if the program is launch with -dev as parameter.  
+	 * 
+	 * @return the value of dev. 
+	 * @see Main#dev
+	 */
 	public static boolean isDev() {
 		return dev;
 	}

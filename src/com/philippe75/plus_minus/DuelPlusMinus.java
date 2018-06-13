@@ -43,6 +43,7 @@ public class DuelPlusMinus implements Mode{
 		setProperties();
 	}
 	
+	@Override
 	public void startTheGame() {
 		if(setProperties()) {
 			sNG = new SecretNumGenerator(combiLength);
@@ -52,7 +53,8 @@ public class DuelPlusMinus implements Mode{
 			initGame();
 		}
 	}
-
+	
+	@Override
 	public boolean setProperties() {
 		Properties p = new Properties();
 		
@@ -73,8 +75,8 @@ public class DuelPlusMinus implements Mode{
 		}
 		return true;
 	}
-
-	private void printWelcome() {
+	@Override
+	public void printWelcome() {
 		String 	str = TextEnhencer.ANSI_YELLOW; 
 				str += "******************************************\n";
 				str += "*******        WELCOME TO          *******\n";

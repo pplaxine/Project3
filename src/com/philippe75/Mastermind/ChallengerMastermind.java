@@ -34,7 +34,7 @@ public class ChallengerMastermind implements Mode{
 	public ChallengerMastermind() {
 		setProperties();
 	}
-	
+	@Override
 	public void startTheGame() {
 		if(setProperties()) {
 			// generate a secret combination 
@@ -46,7 +46,8 @@ public class ChallengerMastermind implements Mode{
 		}
 	}
 	
-	// set properties from ConfigFile 	
+	// set properties from ConfigFile 
+	@Override
 	public boolean setProperties() {
 		Properties p = new Properties();
 		
@@ -72,7 +73,8 @@ public class ChallengerMastermind implements Mode{
 	
 	
 	// print welcome message
-	private void printWelcome() {
+	@Override
+	public void printWelcome() {
 		String 	str = TextEnhencer.ANSI_YELLOW;
 				str += "\n\n******************************************\n";
 				str += "*******         WELCOME TO         *******\n";
