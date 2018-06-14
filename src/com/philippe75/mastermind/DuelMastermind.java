@@ -11,9 +11,11 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
@@ -42,11 +44,12 @@ public class DuelMastermind implements Mode{
 	
 	public DuelMastermind() {
 		setProperties();
+		if(setProperties())
+			startTheGame();
 	}
 	
 	@Override
 	public void startTheGame() {
-		if(setProperties()) {
 			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
 			printWelcome();
 			initiateColorChoice();
@@ -55,31 +58,19 @@ public class DuelMastermind implements Mode{
 			displaySecretColorCombi();
 			// generate a secret combination 
 			initGame();
-		}
 	}
 	
 	@Override
 	public boolean setProperties() {
-		Properties p = new Properties();
 		
-		try (InputStream is = getClass().getResourceAsStream("dataConfig.properties")){
-			p.load(is);
-			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
-			howManyColors = HowManyColors.valueOf((p.getProperty("ColorPool")));
-			
-			if(new String("true").equals(p.getProperty("devMode"))) {
-				this.dev = true; 	
-			}
-			
-		} catch (NullPointerException e) {
-			System.err.println("The file dataConfig.properties could not be found.");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error with the propertiesFiles.");
-			return false;
-		}
-		return true;
+		howManyColors = HowManyColors.valueOf((PropertiesFile.getPropertiesFile("ColorPool")));
+		combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
+		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
+			this.dev = true;
+		}	
+		return true; 
 	}
+	
 	
 	@Override
 	public void printWelcome() {
@@ -201,7 +192,7 @@ public class DuelMastermind implements Mode{
 			System.out.printf(TextEnhencer.ANSI_RED +  "\n\t\t\t   .+*°*+..+> | GAME OVER !!! | <.+.+*°*+." + TextEnhencer.ANSI_CYAN + "\n\nComputer found your secret combination first !!! The secret combination was %s\n" + TextEnhencer.ANSI_RESET, sCG.toString());
 			
 		}else {
-			displayFish();
+			Fish.displayFish();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t.+*°*+.+> | Congratulations you WIN !!! | <+.+*°*+.\n\nYou have found the correct secret color combination first !!!" + TextEnhencer.ANSI_RESET);
 		}
 	}

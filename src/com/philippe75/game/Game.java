@@ -30,20 +30,7 @@ public abstract class Game {
 	 */
 	private GameMode gameMode;
 	
-	/**
-	 * Interface from which all the games inherit.
-	 * Becomes, via the polymorphism, accessible to child class of Game class.
-	 * 
-	 * @see PlusMinus
-	 * @see ChallengerPlusMinus
-	 * @see DefenderPlusMinus
-	 * @see DuelPlusMinus
-	 * @see Mastermind
-	 * @see ChallengerMastermind
-	 * @see DefenderMastermind
-	 * @see DuelMastermind
-	 */
-	public Mode mode; 
+	protected ModeFactory modefactory;
 
 	/**
 	 * Via polymorphism the startGame method of a the child class will be invoked when called in Main.   

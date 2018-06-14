@@ -11,8 +11,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import com.philippe75.game.Fish;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
@@ -41,40 +43,29 @@ public class DuelPlusMinus implements Mode{
 	// constructor
 	public DuelPlusMinus() {
 		setProperties();
+		if(setProperties())
+			startTheGame();
 	}
 	
 	@Override
 	public void startTheGame() {
-		if(setProperties()) {
 			sNG = new SecretNumGenerator(combiLength);
 			printWelcome();	
 			requestUserSecretNum();
 			displaySecretNum();
 			initGame();
-		}
 	}
 	
 	@Override
 	public boolean setProperties() {
-		Properties p = new Properties();
-		
-		try(InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {	
-			p.load(is);
-			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
-			if(new String("true").equals(p.getProperty("devMode"))) {
-				this.dev = true; 	
-			}
-
-			
-		} catch (NullPointerException e) {
-			System.err.println("The file dataConfig.properties could not be found.");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error with the propertiesFiles.");
-			return false;
-		}
-		return true;
+	
+		combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
+		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
+			this.dev = true;
+		}	
+		return true; 
 	}
+	
 	@Override
 	public void printWelcome() {
 		String 	str = TextEnhencer.ANSI_YELLOW; 
@@ -137,7 +128,7 @@ public class DuelPlusMinus implements Mode{
 		
 		// Print Result once the game is over. 
 		if (sNG.getTabNumber().toString().equals(tabUserAnswer.toString())){
-			displayFish();
+			Fish.displayFish();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t .+*°*+.+> | Congratulation !!! | <+.+*°*+.\n\t You found the computers secret code first !!!  \n" + TextEnhencer.ANSI_RESET);				
 		}else {
 			System.out.printf(TextEnhencer.ANSI_RED + "\n\t\t\t   .+*°*+.+> | GAME OVER !!!  | <+.+*°*+." + TextEnhencer.ANSI_CYAN + "\nComputer found the answer first !!! the secret number was %s. You'll have more chance next time! \n" + TextEnhencer.ANSI_RESET, sNG.getRandomNumber());
@@ -179,7 +170,7 @@ public class DuelPlusMinus implements Mode{
 		
 		// Print hint if the answer isn't found or the game finished 
 		if(!sNG.getTabNumber().toString().equals(tabUserAnswer.toString())) {
-			System.out.println(TextEnhencer.ANSI_GREEN + "Your Answer " + userAnswer + " isn't so far, here is the hint ---> " + hint + TextEnhencer.ANSI_RESET);				
+			System.out.println(TextEnhencer.ANSI_GREEN + "\nYour Answer " + userAnswer + " isn't so far, here is the hint ---> " + hint + TextEnhencer.ANSI_RESET);				
 		}
 		userAnswer = ""; 
 	}

@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import com.philippe75.game.Fish;
 import com.philippe75.game.Mode;
+import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
@@ -191,8 +193,10 @@ public class DefenderPlusMinus implements Mode{
 	 * @see ChallengerPlusMinus#setProperties()
 	 * @see ChallengerPlusMinus#errorAllowed
 	 */
-	public DefenderPlusMinus () {	
+	public DefenderPlusMinus () {
 		setProperties();
+		if(setProperties())
+			startTheGame();
 	}
 	
 	/**
@@ -215,11 +219,9 @@ public class DefenderPlusMinus implements Mode{
 	 */
 	@Override
 	public void startTheGame() {
-		if(setProperties()) {
 			printWelcome();
 			requestUserSecretNum();
 			initGame();
-		}
 	}
 	
 	/**
@@ -229,20 +231,9 @@ public class DefenderPlusMinus implements Mode{
 	 */
 	@Override
 	public boolean setProperties() {
-		Properties p = new Properties();
-		try(InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {	
 	
-			p.load(is);
-			errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
-			
-		} catch (NullPointerException e) {
-			System.err.println("The file dataConfig.properties could not be found.");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error with the propertiesFiles.");
-			return false;
-		}
-		return true;
+		errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
+		return true; 
 	}
 	
 	/**
@@ -352,7 +343,7 @@ public class DefenderPlusMinus implements Mode{
 		if(tabComputerAnswer.toString().equals(tabUserCode.toString())) {
 			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+.+*°*+.\n" + TextEnhencer.ANSI_CYAN + "You loose! Computer found your code after %d attempts.\n" + TextEnhencer.ANSI_RESET, score );	
 		}else {
-			displayFish();
+			Fish.displayFish();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t   .+*°*+.+> | Congratulation ! | <+.+*°*+.\n\t Computer couldn't find your code after %d attempts" + TextEnhencer.ANSI_RESET, score );	
 		}
 		

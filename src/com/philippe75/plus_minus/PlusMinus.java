@@ -3,6 +3,7 @@ package com.philippe75.plus_minus;
 import com.philippe75.game.Game;
 import com.philippe75.game.GameMode;
 import com.philippe75.game.Mode;
+import com.philippe75.game.ModeFactory;
 
 /**
  * <b>This class starts the PlusMinus game with the selected mode.</b> 
@@ -22,6 +23,10 @@ import com.philippe75.game.Mode;
  */
 public class PlusMinus extends Game {
 	
+	public PlusMinus() {
+		super.modefactory = new ModeFactory();
+	}
+	
 	/**
 	 * Starts the selected game with the mode passed in parameter. 
 	 * 
@@ -36,16 +41,13 @@ public class PlusMinus extends Game {
 		super.startGame(gameMode);
 		
 		if(gameMode == GameMode.CHALLENGER) {
-			mode = new ChallengerPlusMinus();
-			mode.startTheGame();
+			modefactory.createMode("ChallengerPlusMinus"); 
 			
 		}else if (gameMode == GameMode.DEFENDER) {
-			mode = new DefenderPlusMinus();
-			mode.startTheGame();
+			modefactory.createMode("DefenderPlusMinus"); 
 			
 		}else {
-			mode = new DuelPlusMinus();
-			mode.startTheGame();
+			modefactory.createMode("DuelPlusMinus");
 		}	
 	}
 }

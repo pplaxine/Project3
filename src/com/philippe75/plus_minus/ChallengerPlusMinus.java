@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import com.philippe75.game.Fish;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
@@ -157,6 +159,8 @@ public class ChallengerPlusMinus implements Mode{
 	 */
 	public ChallengerPlusMinus() {	
 		setProperties();
+		if (setProperties())
+			startTheGame();
 	}
 	
 	/**
@@ -184,13 +188,12 @@ public class ChallengerPlusMinus implements Mode{
 	 */
 	@Override
 	public void startTheGame() {
-		if (setProperties()) {
+		
 			sNG = new SecretNumGenerator(combiLength);
 			printWelcome();	
 			displaySecretNum(); 
 			System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter a number of " + sNG.getNumberSize() + (sNG.getNumberSize() > 1 ? " digits." : " digit." + TextEnhencer.ANSI_RESET));
 			initGame();
-		}
 	}
 	
 	/**
@@ -203,26 +206,15 @@ public class ChallengerPlusMinus implements Mode{
 	 */
 	@Override
 	public boolean setProperties() {
-		Properties p = new Properties();
-		
-		try(InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {	
-			p.load(is);
-			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
-			errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
-		
-			if(new String("true").equals(p.getProperty("devMode"))) {
-				this.dev = true; 	
-			}
-		} catch (NullPointerException e) {
-			System.err.print("The file dataConfig.properties could not be found.");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error with the propertiesFiles.");
-			return false;
-		}
-		return true;
+	
+		combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
+		errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
+		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
+			this.dev = true;
+		}	
+		return true; 
 	}
-
+	
 	/**
 	 * Display the welcome screen.
 	 * 
@@ -240,6 +232,8 @@ public class ChallengerPlusMinus implements Mode{
 		System.out.println(str); 
 	}
 	
+
+
 	/**
 	 * Displays the secret combination if mode dev is activated
 	 *  
@@ -320,7 +314,7 @@ public class ChallengerPlusMinus implements Mode{
 		
 		// Print Result once the game is over. 
 		if (sNG.getTabNumber().toString().equals(tabUserAnswer.toString())){
-			displayFish();
+			Fish.displayFish();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\t   .+*°*+.+> | Congratulation !!! | <+.+*°*+.\n\t   You found the answer after %d trials!!! \n"+ TextEnhencer.ANSI_RESET, score);
 		}else {
 			System.out.printf(TextEnhencer.ANSI_RED + "\t   .+*°*+.+> | GAME OVER !!!! | <+.+*°*+.\n"+ TextEnhencer.ANSI_CYAN +  "\t\t The secret number was %s \n", sNG.getRandomNumber() + TextEnhencer.ANSI_RESET);

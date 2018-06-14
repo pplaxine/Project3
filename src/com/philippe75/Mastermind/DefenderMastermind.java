@@ -11,9 +11,11 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 
 public class DefenderMastermind implements Mode{
@@ -33,43 +35,31 @@ public class DefenderMastermind implements Mode{
 	private boolean dev = Main.isDev();
 	
 	public DefenderMastermind() {
-		setProperties();	
+		setProperties();
+		if(setProperties())
+			startTheGame();
 	}
 	
 	@Override
 	public void startTheGame() {
-		if(setProperties()) {
 			printWelcome();
 			initiateColorChoice();
 			generateQuestion();
 			requestUserSecretCombi();
 			initGame();
-		}
 	}
 	
 	// charge the dataConfig.properties file
 	@Override
 	public boolean setProperties() {
-		Properties p = new Properties();
 		
-		try(InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {
-			p.load(is);
-			errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
-			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
-			howManyColors = HowManyColors.valueOf((p.getProperty("ColorPool")));
-			
-			if(new String("true").equals(p.getProperty("devMode"))) {
-				this.dev = true; 	
-			}	
-			
-		} catch (NullPointerException e) {
-			System.err.println("The file dataConfig.properties could not be found.");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error with the propertiesFiles.");
-			return false;
-		}
-		return true;
+		howManyColors = HowManyColors.valueOf((PropertiesFile.getPropertiesFile("ColorPool")));
+		combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
+		errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
+		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
+			this.dev = true;
+		}	
+		return true; 
 	}
 
 	@Override
@@ -171,7 +161,7 @@ public class DefenderMastermind implements Mode{
 			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+..+*°*+."+ TextEnhencer.ANSI_CYAN + "\nComputer found your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
 		// if the answer is found user wins	
 		}else {
-			displayFish();
+			Fish.displayFish();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t     .+*°*+.+> | You Win !!! | <+..+*°*+.\nComputer could not find your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
 		}
 		

@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
+import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
@@ -33,41 +35,28 @@ public class ChallengerMastermind implements Mode{
 	
 	public ChallengerMastermind() {
 		setProperties();
+		if(setProperties())
+			startTheGame();
 	}
 	@Override
 	public void startTheGame() {
-		if(setProperties()) {
-			// generate a secret combination 
 			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
 			printWelcome();
 			displaySecretColorCombi();
 			printQuestion();
 			initGame();
-		}
 	}
 	
 	// set properties from ConfigFile 
 	@Override
 	public boolean setProperties() {
-		Properties p = new Properties();
 		
-		try (InputStream is = getClass().getResourceAsStream("dataConfig.properties")) {
-			p.load(is);
-			combiLength = Integer.parseInt(p.getProperty("CombinationLength"));
-			errorAllowed = Integer.parseInt(p.getProperty("errorAllowed"));
-			howManyColors = HowManyColors.valueOf((p.getProperty("ColorPool")));
-			
-			if(new String("true").equals(p.getProperty("devMode"))) {
-				this.dev = true; 
-			}	
-				
-		} catch (NullPointerException e) {
-			System.err.println("The file dataConfig.properties could not be found.");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error with the propertiesFiles.");
-			return false;
-		}
+		howManyColors = HowManyColors.valueOf((PropertiesFile.getPropertiesFile("ColorPool")));
+		combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
+		errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
+		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
+			this.dev = true;
+		}	
 		return true; 
 	}
 	
@@ -123,7 +112,7 @@ public class ChallengerMastermind implements Mode{
 				
 			} while (correctPosition != this.combiLength && score < this.errorAllowed);
 		if(correctPosition == this.combiLength) {
-			displayFish();
+			Fish.displayFish();
 			System.out.printf( TextEnhencer.ANSI_YELLOW + "\n\t  .+*°*+..+> | Congratulations ! | <+..+*°+.\nYou have found the correct secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
 		}else {
 			System.out.println(TextEnhencer.ANSI_RED + "\n\t\t\t .+*°*+..+> | GAME OVER !!! | <+..+*°+."+ TextEnhencer.ANSI_CYAN + "\n\t\t\t\tYou were almost there.\nThe solution is "+ sCG.toString() +". I am sure you will be more succeful next time!\n"  + TextEnhencer.ANSI_RESET);

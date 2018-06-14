@@ -3,6 +3,7 @@ package com.philippe75.mastermind;
 import com.philippe75.game.Game;
 import com.philippe75.game.GameMode;
 import com.philippe75.game.Mode;
+import com.philippe75.game.ModeFactory;
 
 /**
  * <b>This class starts the Mastermind game with the selected mode.</b> 
@@ -22,6 +23,10 @@ import com.philippe75.game.Mode;
  */
 public class Mastermind extends Game{
 	
+	public Mastermind() {
+		super.modefactory = new ModeFactory();
+	}
+	
 	/**
 	 * Starts the selected game with the mode passed in parameter. 
 	 * 
@@ -35,15 +40,13 @@ public class Mastermind extends Game{
 	public void startGame(GameMode gameMode) {
 		super.startGame(gameMode);
 		if(gameMode == GameMode.CHALLENGER) {
-			mode = new ChallengerMastermind(); 
-			mode.startTheGame();
+			modefactory.createMode("ChallengerMastermind"); 
 			
 		}else if (gameMode == GameMode.DEFENDER) {
-			mode = new DefenderMastermind();
-			mode.startTheGame();
+			modefactory.createMode("DefenderMastermind"); 
+			
 		}else {
-			mode = new DuelMastermind();
-			mode.startTheGame();
-		}	
+			modefactory.createMode("DuelMastermind");
+		}
 	}
 }
