@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.philippe75.game.Fish;
 import com.philippe75.game.Mode;
 import com.philippe75.game.PropertiesFile;
@@ -185,6 +187,8 @@ public class DefenderPlusMinus implements Mode{
 	 */
 	private int score = 0; 
 	
+	private static final Logger log = Logger.getLogger(DefenderPlusMinus.class);
+	
 	/**
 	 * Constructor of Defender PlusMinus.
 	 * 
@@ -194,7 +198,6 @@ public class DefenderPlusMinus implements Mode{
 	 * @see ChallengerPlusMinus#errorAllowed
 	 */
 	public DefenderPlusMinus () {
-		setProperties();
 		if(setProperties())
 			startTheGame();
 	}
@@ -219,9 +222,11 @@ public class DefenderPlusMinus implements Mode{
 	 */
 	@Override
 	public void startTheGame() {
-			printWelcome();
-			requestUserSecretNum();
-			initGame();
+		log.info("Start of PlusMinus game in defender mode");
+		printWelcome();
+		requestUserSecretNum();
+		initGame();
+		log.info("End of the game");
 	}
 	
 	/**
@@ -231,8 +236,8 @@ public class DefenderPlusMinus implements Mode{
 	 */
 	@Override
 	public boolean setProperties() {
-	
 		errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
+		log.info("Properties set successfully");
 		return true; 
 	}
 	
@@ -271,6 +276,7 @@ public class DefenderPlusMinus implements Mode{
 			if(!userCode.equals("")) {
 				if(!userCode.matches("^[./[0-9]]+$")) { 
 					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters.");
+					log.warn("User entry mismatch the type required");
 				}
 			}
 			System.out.print(TextEnhencer.ANSI_YELLOW);
@@ -428,8 +434,9 @@ public class DefenderPlusMinus implements Mode{
 				}else {
 					maxValue = valuesMinMax.get("maxValue");
 				}	
+				minValue = valuesMinMax.get("minValue");
 				
-				newValue = ((maxValue)/2);
+				newValue = (((maxValue)/2) < minValue)? minValue : ((maxValue)/2);
 		 
 				tabComputerAnswer2.add(newValue);
 				//store the new maxValue 

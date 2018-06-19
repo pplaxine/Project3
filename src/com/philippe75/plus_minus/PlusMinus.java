@@ -38,7 +38,6 @@ public class PlusMinus extends Game {
 	 * @see Mode#startTheGame()
 	 */
 	public void startGame(GameMode gameMode) {
-		super.startGame(gameMode);
 		
 		if(gameMode == GameMode.CHALLENGER) {
 			modefactory.createMode("ChallengerPlusMinus"); 

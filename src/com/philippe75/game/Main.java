@@ -3,6 +3,10 @@ package com.philippe75.game;
 
 import java.util.Scanner;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
+
 import com.philippe75.mastermind.ChallengerMastermind;
 import com.philippe75.mastermind.DefenderMastermind;
 import com.philippe75.mastermind.DuelMastermind;
@@ -66,6 +70,8 @@ public class Main {
 	 */
 	private static boolean dev; 
 	
+	
+	private static final Logger log = Logger.getLogger(Main.class);
 	/**
 	 * Method main.
 	 * 
@@ -81,7 +87,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		dev = (args.length > 0 && args[0].equals("-dev"))? true : false; 
+		log.info("Program started successfully");
+		
+		dev = (args.length > 0 && args[0].equals("-dev"))? true : false;
 		runMenu();
 	}
 	
@@ -106,6 +114,7 @@ public class Main {
 	 * @see Main#afterGameChoice()
 	 */
 	public static void runMenu() {
+		
 		int userGameChoice = -1;
 		Game cPM = new PlusMinus();
 		Game cMM = new Mastermind();
@@ -114,7 +123,7 @@ public class Main {
 		printHeader();
 		
 		while (!arret) {
-			
+			log.info("Game and Game modes menu runs");
 			printMainMenu();
 			userGameChoice = getUserAnswer(3);
 			switch (userGameChoice) {
@@ -169,6 +178,7 @@ public class Main {
 			}
 				break; 
 			case 3: 
+				log.info("Program ended sucessfully");
 				System.exit(0);
 				break;
 			}
@@ -241,6 +251,7 @@ public class Main {
 				System.out.print(TextEnhencer.ANSI_RESET);
 			} catch (NumberFormatException e) {
 				System.out.print(TextEnhencer.ANSI_RED + "Incorrect value. " + TextEnhencer.ANSI_RESET);
+				log.error("Users entry mismatch the required entry type");
 			}
 		}
 		return userAnswer;
@@ -273,9 +284,10 @@ public class Main {
 		if(userDecision == 1) {
 			playagain = true; 
 		}else if(userDecision == 2) {
-			
+		
 		}else {
-			System.exit(0);			
+			log.info("Program ended successfully");
+			System.exit(0);	
 		}
 	}
 

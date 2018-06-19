@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.philippe75.game.Fish;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
@@ -46,106 +48,108 @@ import com.philippe75.generators.SecretNumGenerator;
  */
 public class ChallengerPlusMinus implements Mode{
 		
-		/**
-		 * Secret combination generator. 
-		 * 
-		 * For more information about the generator, please see SecretNumberGenerator class doc.  
-		 * 
-		 * @see SecretNumGenerator
-		 * @see ChallengerPlusMinus#startTheGame()
-		 */
-		private SecretNumGenerator sNG;
+	/**
+	 * Secret combination generator. 
+	 * 
+	 * For more information about the generator, please see SecretNumberGenerator class doc.  
+	 * 
+	 * @see SecretNumGenerator
+	 * @see ChallengerPlusMinus#startTheGame()
+	 */
+	private SecretNumGenerator sNG;
 		
-		/**
-		 * errors allowed in the game.
-		 * 
-		 * Defines the number of tries the user has.
-		 * It can be modified via the dataConfig.properties file 
-		 *  
-		 * @see ChallengerPlusMinus#setProperties()
-		 * @see ChallengerPlusMinus#initGame()
-		 */
-		private int errorAllowed;
+	/**
+	 * errors allowed in the game.
+	 * 
+	 * Defines the number of tries the user has.
+	 * It can be modified via the dataConfig.properties file 
+	 *  
+	 * @see ChallengerPlusMinus#setProperties()
+	 * @see ChallengerPlusMinus#initGame()
+	 */
+	private int errorAllowed;
 		
-		/**
-		 * combination length for the game. 
-		 * 
-		 * Defines the length of the secret combination to be generated
-		 * It can be modified via the dataConfig.properties file 
-		 * 
-		 * @see ChallengerPlusMinus#setProperties()
-		 * @see ChallengerPlusMinus#startTheGame()
-		 */
-		private int combiLength; 
+	/**
+	 * combination length for the game. 
+	 * 
+	 * Defines the length of the secret combination to be generated
+	 * It can be modified via the dataConfig.properties file 
+	 * 
+	 * @see ChallengerPlusMinus#setProperties()
+	 * @see ChallengerPlusMinus#startTheGame()
+	 */
+	private int combiLength; 
 		
-		/**
-		 * hint for users next try. 
-		 * 
-		 * Contains a chain of indications "+" or "-" corresponding to the comparison between users answer digits and secret combination digits.  
-		 * 
-		 * Is also used to display the hint to the user.
-		 * 
-		 * @see ChallengerPlusMinus#generateHint(List, List)
-		 * @see ChallengerPlusMinus#initGame()
-		 */
-		private String hint;
+	/**
+	 * hint for users next try. 
+	 * 
+	 * Contains a chain of indications "+" or "-" corresponding to the comparison between users answer digits and secret combination digits.  
+	 * 
+	 * Is also used to display the hint to the user.
+	 * 
+	 * @see ChallengerPlusMinus#generateHint(List, List)
+	 * @see ChallengerPlusMinus#initGame()
+	 */
+	private String hint;
 		
-		/**
-		 * Users answer in String format.
-		 *  
-		 * Store users answer from keyboard entry. The Entry is in form of chain of numbers.
-		 * 
-		 * The content is transfered to an ArrayList for further processing. 
-		 * 
-		 * Also used to verify if the users answer complies with the entry requirements  
-		 * 
-		 * @see ChallengerPlusMinus#initGame()
-		 * @see ChallengerPlusMinus#tabUserAnswer
-		 */
-		private String userAnswer = "";
+	/**
+	 * Users answer in String format.
+	 *  
+	 * Store users answer from keyboard entry. The Entry is in form of chain of numbers.
+	 * 
+	 * The content is transfered to an ArrayList for further processing. 
+	 * 
+	 * Also used to verify if the users answer complies with the entry requirements  
+	 * 
+	 * @see ChallengerPlusMinus#initGame()
+	 * @see ChallengerPlusMinus#tabUserAnswer
+	 */
+	private String userAnswer = "";
 		
-		/**
-		 * User answer in List format.
-		 * 
-		 * Store each digit of users Answer as an element of the List. 
-		 * 
-		 * The List is then used for comparison with secret combination list. 
-		 *  
-		 * @see ChallengerPlusMinus#initGame()
-		 * @see ChallengerPlusMinus#generateHint(List, List)
-		 * @see SecretNumGenerator#getTabNumber() 
-		 */
-		private List<Integer> tabUserAnswer; 
+	/**
+	 * User answer in List format.
+	 * 
+	 * Store each digit of users Answer as an element of the List. 
+	 * 
+	 * The List is then used for comparison with secret combination list. 
+	 *  
+	 * @see ChallengerPlusMinus#initGame()
+	 * @see ChallengerPlusMinus#generateHint(List, List)
+	 * @see SecretNumGenerator#getTabNumber() 
+	 */
+	private List<Integer> tabUserAnswer; 
 		
-		/**
-		 * Number of tries made by the user.
-		 * 
-		 * Each try increases by 1 the score.
-		 * 
-		 * To define if the game has to end, score is compared to number of errors allowed.
-		 * 
-		 * Used to display the number of tries at the end of the game.
-		 * 
-		 * @see ChallengerPlusMinus#initGame()
-		 * @see ChallengerPlusMinus#errorAllowed
-		 * 
-		 */
-		private int score = 0; 
+	/**
+	 * Number of tries made by the user.
+	 * 
+	 * Each try increases by 1 the score.
+	 * 
+	 * To define if the game has to end, score is compared to number of errors allowed.
+	 * 
+	 * Used to display the number of tries at the end of the game.
+	 * 
+	 * @see ChallengerPlusMinus#initGame()
+	 * @see ChallengerPlusMinus#errorAllowed
+	 * 
+	 */
+	private int score = 0; 
 		
-		/**
-		 * Runs the game in developer mode if true is returned.
-		 * 
-		 * By default, if an argument -dev is passed when starting the program, the boolean will return the value true. 
-		 * 
-		 * Returns also true, if in dataProperties file the value of devMode is set to true;   
-		 *  
-		 * @see ChallengerPlusMinus#displaySecretNum()
-		 * @see Main#isDev()
-		 * @see Main#dev
-		 * @see Main#main(String[])
-		 * @see ChallengerPlusMinus#setProperties()
-		 */
-		boolean dev = Main.isDev();
+	/**
+	 * Runs the game in developer mode if true is returned.
+	 * 
+	 * By default, if an argument -dev is passed when starting the program, the boolean will return the value true. 
+	 * 
+	 * Returns also true, if in dataProperties file the value of devMode is set to true;   
+	 *  
+	 * @see ChallengerPlusMinus#displaySecretNum()
+	 * @see Main#isDev()
+	 * @see Main#dev
+	 * @see Main#main(String[])
+	 * @see ChallengerPlusMinus#setProperties()
+	 */
+	boolean dev = Main.isDev();
+		
+	private static final Logger log = Logger.getLogger(ChallengerPlusMinus.class);
 		
 	/**
 	 * Constructor of ChallengerPlusMinus.
@@ -158,7 +162,6 @@ public class ChallengerPlusMinus implements Mode{
 	 * @see ChallengerPlusMinus#dev
 	 */
 	public ChallengerPlusMinus() {	
-		setProperties();
 		if (setProperties())
 			startTheGame();
 	}
@@ -188,12 +191,13 @@ public class ChallengerPlusMinus implements Mode{
 	 */
 	@Override
 	public void startTheGame() {
-		
-			sNG = new SecretNumGenerator(combiLength);
-			printWelcome();	
-			displaySecretNum(); 
-			System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter a number of " + sNG.getNumberSize() + (sNG.getNumberSize() > 1 ? " digits." : " digit." + TextEnhencer.ANSI_RESET));
-			initGame();
+		log.info("Start of PlusMinus game in challenger mode");
+		sNG = new SecretNumGenerator(combiLength);
+		printWelcome();	
+		displaySecretNum(); 
+		System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter a number of " + sNG.getNumberSize() + (sNG.getNumberSize() > 1 ? " digits." : " digit." + TextEnhencer.ANSI_RESET));
+		initGame();
+		log.info("End of the game");
 	}
 	
 	/**
@@ -212,7 +216,8 @@ public class ChallengerPlusMinus implements Mode{
 		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
 			this.dev = true;
 		}	
-		return true; 
+		log.info("Properties set successfully");
+		return true;
 	}
 	
 	/**
@@ -242,7 +247,8 @@ public class ChallengerPlusMinus implements Mode{
 	 */
 	protected void displaySecretNum() {
 		System.out.println(TextEnhencer.ANSI_CYAN+ "\nComputer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);
-		if(dev)			
+		if(dev)	
+			log.info("Game is running in developer mode");
 			System.out.println(TextEnhencer.ANSI_CYAN + "\t*** Secret combination : " + sNG.getRandomNumber() + " ***\n" + TextEnhencer.ANSI_RESET);
 	}
 	
@@ -288,8 +294,11 @@ public class ChallengerPlusMinus implements Mode{
 				if(userAnswer !="") {
 					if(!userAnswer.matches("^[./[0-9]]+$")) { 
 						System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
+						log.warn("User entry mismatch the type required");
 					}else {
-						System.out.println((sNG.getNumberSize() < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET : TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+						System.out.println((sNG.getNumberSize() < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET 
+								: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+						log.warn("User entry mismatch the length of digits required");
 					}
 				}
 				System.out.print(TextEnhencer.ANSI_YELLOW);	

@@ -38,7 +38,7 @@ public class Mastermind extends Game{
 	 * @see Mode#startTheGame()
 	 */
 	public void startGame(GameMode gameMode) {
-		super.startGame(gameMode);
+	
 		if(gameMode == GameMode.CHALLENGER) {
 			modefactory.createMode("ChallengerMastermind"); 
 			

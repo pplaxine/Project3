@@ -11,6 +11,8 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
@@ -34,19 +36,24 @@ public class DefenderMastermind implements Mode{
 	//Boolean from Main 
 	private boolean dev = Main.isDev();
 	
+	private static final Logger log = Logger.getLogger(DefenderMastermind.class);
+	
 	public DefenderMastermind() {
-		setProperties();
 		if(setProperties())
 			startTheGame();
 	}
 	
 	@Override
 	public void startTheGame() {
-			printWelcome();
-			initiateColorChoice();
-			generateQuestion();
-			requestUserSecretCombi();
-			initGame();
+		log.info("Start of Mastermind game in defender mode");
+		if(dev)
+			log.info("Game is running in developer mode");
+		printWelcome();
+		initiateColorChoice();
+		generateQuestion();
+		requestUserSecretCombi();
+		initGame();
+		log.info("End of the game");
 	}
 	
 	// charge the dataConfig.properties file
@@ -58,7 +65,8 @@ public class DefenderMastermind implements Mode{
 		errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
 		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
 			this.dev = true;
-		}	
+		}
+		log.info("Properties have been sucessfully set");
 		return true; 
 	}
 
@@ -121,12 +129,15 @@ public class DefenderMastermind implements Mode{
 			//Using Regex to make sure user enter the right value type (Integer), as well as,  the correct length of this value type, and not higher range of selection offers.   
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
-					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);					
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);	
+					log.warn("User entry mismatch the type required");
 				}else if (userAnswer.length() > combiLength || userAnswer.length() < combiLength){	
 					System.out.println((userAnswer.length() > combiLength )? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET
 							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the length of digits required");
 				}else if (!userAnswer.matches("^[./[0-"+(tabColorPool.size() -1) +"]]+$")) { 
 					System.out.printf(TextEnhencer.ANSI_RED + "Your selection has to be composed of number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, (tabColorPool.size()-1));
+					log.warn("User entry mismatch the possible answer choices");
 				}
 			}
 			System.out.print(TextEnhencer.ANSI_YELLOW);

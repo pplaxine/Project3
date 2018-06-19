@@ -1,15 +1,14 @@
 package com.philippe75.mastermind;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
+
+import org.apache.log4j.Logger;
 
 import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
@@ -42,22 +41,26 @@ public class DuelMastermind implements Mode{
 	//Boolean from Main 
 	private boolean dev = Main.isDev(); 
 	
+	private static final Logger log = Logger.getLogger(DuelMastermind.class);
+	
 	public DuelMastermind() {
-		setProperties();
 		if(setProperties())
 			startTheGame();
 	}
 	
 	@Override
 	public void startTheGame() {
-			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
-			printWelcome();
-			initiateColorChoice();
-			generateQuestion();
-			requestUserSecretCombi();
-			displaySecretColorCombi();
-			// generate a secret combination 
-			initGame();
+		log.info("Start of Mastermind game in duel mode");
+		if(dev)
+			log.info("Game is running in developer mode");
+		sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
+		printWelcome();
+		initiateColorChoice();
+		generateQuestion();
+		requestUserSecretCombi();
+		displaySecretColorCombi();
+		initGame();
+		log.info("End of the game");
 	}
 	
 	@Override
@@ -68,6 +71,7 @@ public class DuelMastermind implements Mode{
 		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
 			this.dev = true;
 		}	
+		log.info("Properties have been sucessfully set");
 		return true; 
 	}
 	
@@ -125,17 +129,20 @@ public class DuelMastermind implements Mode{
 			//Using Regex to make sure user enter the right value type (Integer), as well as,  the correct length of this value type, and not higher range of selection offers.   
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
-					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);					
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the type required");
 				}else if (userAnswer.length() > combiLength || userAnswer.length() < combiLength){	
 					System.out.println((userAnswer.length() > combiLength )? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET
 							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the length of digits required");
 				}else if (!userAnswer.matches("^[./[0-"+(tabColorPool.size() -1) +"]]+$")) { 
 					System.out.printf(TextEnhencer.ANSI_RED + "Your selection has to be composed of number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, (tabColorPool.size()-1));
+					log.warn("User entry mismatch the possible answer choices");
 				}
 			}
-			System.out.println(TextEnhencer.ANSI_YELLOW);
+			System.out.print(TextEnhencer.ANSI_YELLOW);
 			this.userAnswer = clavier.nextLine();
-			System.out.println(TextEnhencer.ANSI_RESET);
+			System.out.print(TextEnhencer.ANSI_RESET);
 		} while ( userAnswer.length() > combiLength || userAnswer.length() < combiLength|| !userAnswer.matches("^[./[0-"+ (tabColorPool.size()-1)+"]]+$") || !userAnswer.matches("^[./[0-9]]+$") );
 	
 		// Convert String userAnswer digits into a Map userSelection with colours as value  
@@ -206,11 +213,14 @@ public class DuelMastermind implements Mode{
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
 					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the type required");
 				}else if (!userAnswer.matches("^[./[0-"+ (sCG.getColorPool().size()-1) + "]]+$")) { 
 					System.out.printf(TextEnhencer.ANSI_RED + "You have to enter a number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, sCG.getColorPool().size()-1);
+					log.warn("User entry mismatch the possible answer choices");
 				}else {	
 					System.out.println((combiLength < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET
 							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the length of digits required");
 				}
 			}
 			if(tries<2) {

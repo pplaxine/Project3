@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
@@ -16,6 +18,7 @@ import com.philippe75.game.Mode;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
+import com.philippe75.plus_minus.ChallengerPlusMinus;
 
 public class ChallengerMastermind implements Mode{
 	
@@ -31,20 +34,23 @@ public class ChallengerMastermind implements Mode{
 	
 	//Boolean from Main 
 	private boolean dev = Main.isDev();
+	
+	private static final Logger log = Logger.getLogger(ChallengerMastermind.class);
 
 	
 	public ChallengerMastermind() {
-		setProperties();
 		if(setProperties())
 			startTheGame();
 	}
 	@Override
 	public void startTheGame() {
-			sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
-			printWelcome();
-			displaySecretColorCombi();
-			printQuestion();
-			initGame();
+		log.info("Start of Mastermind game in challenger mode");
+		sCG = new SecretColorCombinationGenerator(combiLength, howManyColors);
+		printWelcome();
+		displaySecretColorCombi();
+		printQuestion();
+		initGame();
+		log.info("End of the game");
 	}
 	
 	// set properties from ConfigFile 
@@ -57,7 +63,8 @@ public class ChallengerMastermind implements Mode{
 		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
 			this.dev = true;
 		}	
-		return true; 
+		log.info("Properties set successfully");
+		return true;
 	}
 	
 	
@@ -78,6 +85,7 @@ public class ChallengerMastermind implements Mode{
 	private void displaySecretColorCombi() {
 		System.out.println(TextEnhencer.ANSI_CYAN+ "\nComputer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);
 		if(dev)
+			log.info("Game is running in developer mode");
 			System.out.printf(TextEnhencer.ANSI_CYAN + "*** Secret Color Combination : %s ***\n\n" + TextEnhencer.ANSI_RESET, sCG.toString());
 	}
 	
@@ -127,11 +135,14 @@ public class ChallengerMastermind implements Mode{
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
 					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the type required");
 				}else if (!userAnswer.matches("^[./[0-"+ (sCG.getColorPool().size()-1) + "]]+$")) { 
 					System.out.printf(TextEnhencer.ANSI_RED + "You have to enter a number bewteen [0] and [%d]\n" + TextEnhencer.ANSI_RESET, sCG.getColorPool().size()-1);
+					log.warn("User entry mismatch the possible answer choices");
 				}else {	
 					System.out.println((combiLength < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET 
 							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the length of digits required");
 				}
 			}
 			// store the user answer in String but with digits
@@ -187,8 +198,5 @@ public class ChallengerMastermind implements Mode{
 		}
 		
 		System.out.printf(TextEnhencer.ANSI_CYAN + "Your anwser is %s ---> %d well placed, %d exist but not well placed.\n" + TextEnhencer.ANSI_RESET,str, correctPosition, exist);
-		
 	}
-	
-	
 }

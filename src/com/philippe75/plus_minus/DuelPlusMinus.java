@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.philippe75.game.Fish;
 import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
@@ -40,20 +42,23 @@ public class DuelPlusMinus implements Mode{
 	private String computerAnswerStringFormat;
 	private int minValue, maxValue, newValue;
 	
+	private static final Logger log = Logger.getLogger(DuelPlusMinus.class);
+	
 	// constructor
 	public DuelPlusMinus() {
-		setProperties();
 		if(setProperties())
 			startTheGame();
 	}
 	
 	@Override
 	public void startTheGame() {
-			sNG = new SecretNumGenerator(combiLength);
-			printWelcome();	
-			requestUserSecretNum();
-			displaySecretNum();
-			initGame();
+		log.info("Start of PlusMinus game in duel mode");
+		sNG = new SecretNumGenerator(combiLength);
+		printWelcome();	
+		requestUserSecretNum();
+		displaySecretNum();
+		initGame();
+		log.info("End of the game");
 	}
 	
 	@Override
@@ -62,7 +67,8 @@ public class DuelPlusMinus implements Mode{
 		combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
 		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
 			this.dev = true;
-		}	
+		}
+		log.info("Properties set successfully");
 		return true; 
 	}
 	
@@ -80,7 +86,8 @@ public class DuelPlusMinus implements Mode{
 	
 	protected void displaySecretNum() {
 		System.out.println(TextEnhencer.ANSI_CYAN + "\nComputer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);
-		if(dev) 		
+		if(dev) 
+			log.info("Game is running in developer mode");
 			System.out.println(TextEnhencer.ANSI_CYAN + "*** Secret Num : " + sNG.getRandomNumber() + " *** " + TextEnhencer.ANSI_RESET);
 		
 	}
@@ -95,10 +102,12 @@ public class DuelPlusMinus implements Mode{
 			//Using Regex to make sure user enter the right value type (Integer), as well as,  the correct length of this value type, and not higher range of selection offers.   
 			if(userCode !="") {
 				if(!userCode.matches("^[./[0-9]]+$")) { 
-					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);					
+					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);	
+					log.warn("User entry mismatch the type required");
 				}else if (userCode.length() > combiLength || userCode.length() < combiLength){	
 					System.out.println((userCode.length() > combiLength )? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET 
 							: TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the length of digits required");
 				}
 			}
 			// store the user answer in a string
@@ -142,8 +151,11 @@ public class DuelPlusMinus implements Mode{
 			if(userAnswer !="") {
 				if(!userAnswer.matches("^[./[0-9]]+$")) { 
 					System.out.println(TextEnhencer.ANSI_RED + "Please enter a number instead of a characters." + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the type required");
 				}else {
-					System.out.println((sNG.getNumberSize() < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET : TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					System.out.println((sNG.getNumberSize() < userAnswer.length())? TextEnhencer.ANSI_RED + "The number of digits is superior to the number of digits required" + TextEnhencer.ANSI_RESET : 
+						TextEnhencer.ANSI_RED + "The number of digits is inferior to the number of digits required" + TextEnhencer.ANSI_RESET);
+					log.warn("User entry mismatch the length of digits required");
 				}
 			}
 			
