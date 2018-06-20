@@ -1,6 +1,8 @@
-20-06-2018 15:24:22 INFO  Main:97 - Program started successfully
-20-06-2018 15:24:22 INFO  Main:133 - Game and Game modes menu runs
-20-06-2018 15:24:31 INFO  DefenderPlusMinus:225 - Properties set successfully
-20-06-2018 15:24:31 INFO  DefenderPlusMinus:210 - Start of PlusMinus game in defender mode
-20-06-2018 15:24:34 INFO  DefenderPlusMinus:214 - End of the game
-20-06-2018 15:24:55 INFO  Main:296 - Program ended successfully
+20-06-2018 21:16:14 INFO  Main:95 - Program started successfully
+20-06-2018 21:16:14 INFO  Main:135 - Game and Game modes menu runs
+20-06-2018 21:16:18 INFO  ChallengerPlusMinus:216 - Properties set successfully
+20-06-2018 21:16:18 INFO  ChallengerPlusMinus:192 - Start of PlusMinus game in challenger mode
+20-06-2018 21:16:18 INFO  ChallengerPlusMinus:248 - Game is running in developer mode
+20-06-2018 21:16:20 INFO  ChallengerPlusMinus:197 - End of the game
+20-06-2018 21:16:20 INFO  Main:135 - Game and Game modes menu runs
+20-06-2018 21:16:38 INFO  Main:150 - Program ended sucessfully

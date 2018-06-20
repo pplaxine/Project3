@@ -9,13 +9,13 @@ import org.apache.log4j.Logger;
 import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
-import com.philippe75.game.Mode;
+import com.philippe75.game.IGame;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
- * <b>ChallengerMastermind is a class that handle the Mastermind game in Challenger Mode.</b>
+ * <b>ChallengerMastermind is a class that handle the Mastermind game in Challenger IGame.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A random colour combination is generated.</li>
@@ -40,7 +40,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * @author PPlaxine
  * @version 1.0
  */
-public class ChallengerMastermind implements Mode{
+public class ChallengerMastermind implements IGame{
 	
 	/**
 	 * Secret colour combination generator. 
@@ -293,7 +293,7 @@ public class ChallengerMastermind implements Mode{
 	 * @see ChallengerMastermind#getUserAnswer()
 	 * @see ChallengerMastermind#compareAnswer()
 	 * @see ChallengerMastermind#errorAllowed
-	 * @see Mode#displayFish()
+	 * @see IGame#displayFish()
 	 */
 	private void initGame() {
 		// store the combination in tabColComni 

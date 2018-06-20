@@ -12,13 +12,13 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.philippe75.game.Fish;
-import com.philippe75.game.Mode;
+import com.philippe75.game.IGame;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
 /**
- * <b>DefenderPlusMinus is a class that handle the PlusMinus game in Defender Mode.</b>
+ * <b>DefenderPlusMinus is a class that handle the PlusMinus game in Defender IGame.</b>
  * <p>Steps of the game :
  * <ul>
  * <li>User enter a combination.</li>
@@ -44,7 +44,7 @@ import com.philippe75.generators.SecretNumGenerator;
  * @version 1.0
  *
  */
-public class DefenderPlusMinus implements Mode{
+public class DefenderPlusMinus implements IGame{
 	
 	/**
 	 * Secret combination generator. 
@@ -305,7 +305,7 @@ public class DefenderPlusMinus implements Mode{
 	 * @see DefenderPlusMinus#hint
 	 * @see DefenderPlusMinus#ArrayListIntegerToString(List)
 	 * @see ChallengerPlusMinus#errorAllowed
-	 * @see Mode#displayFish()
+	 * @see IGame#displayFish()
 	 */
 	public void initGame() {
 		 

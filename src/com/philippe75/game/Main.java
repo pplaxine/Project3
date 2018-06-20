@@ -3,18 +3,16 @@ package com.philippe75.game;
 
 import java.util.Scanner;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import com.philippe75.mastermind.ChallengerMastermind;
 import com.philippe75.mastermind.DefenderMastermind;
 import com.philippe75.mastermind.DuelMastermind;
-import com.philippe75.mastermind.Mastermind;
+import com.philippe75.newPack.GameType;
+import com.philippe75.newPack.Menusettings;
 import com.philippe75.plus_minus.ChallengerPlusMinus;
 import com.philippe75.plus_minus.DefenderPlusMinus;
 import com.philippe75.plus_minus.DuelPlusMinus;
-import com.philippe75.plus_minus.PlusMinus;
 /**
  * <b>Class containing the main method</b>
  * 
@@ -97,7 +95,12 @@ public class Main {
 		log.info("Program started successfully");
 		
 		dev = (args.length > 0 && args[0].equals("-dev"))? true : false;
-		runMenu();
+		while(true) {
+			Menusettings settings = runMenu();
+			ModeFactory factory = new ModeFactory();
+			IGame mode = factory.createMode(settings);
+		}
+
 	}
 	
 	/**
@@ -120,12 +123,11 @@ public class Main {
 	 * @see GameMode
 	 * @see Main#afterGameChoice()
 	 */
-	public static void runMenu() {
+	public static Menusettings runMenu() {
 		
 		int userGameChoice = -1;
-		Game cPM = new PlusMinus();
-		Game cMM = new Mastermind();
-	
+		Menusettings settings = new Menusettings();
+		
 		boolean arret = false; 
 		printHeader();
 		
@@ -135,62 +137,41 @@ public class Main {
 			userGameChoice = getUserAnswer(3);
 			switch (userGameChoice) {
 			case 1:
-			case 2:{	printModeMenu();	
-						switch (getUserAnswer(4)) {
-						case 1: if (userGameChoice == 1){
-							do {
-								cPM.startGame(GameMode.CHALLENGER);
-								afterGameChoice();
-							}while(playagain);
-							
-						break; 
-						}else {
-							do {
-								cMM.startGame(GameMode.CHALLENGER);
-								afterGameChoice();
-							}while(playagain);
-						}
-								
-						break;
-						case 2: if (userGameChoice == 1){
-							do {
-								cPM.startGame(GameMode.DEFENDER);
-								afterGameChoice();
-							}while(playagain);
-						}else {
-							do {
-								cMM.startGame(GameMode.DEFENDER);
-								afterGameChoice();
-							}while(playagain);
-						}
-							
-						break;
-						case 3: if (userGameChoice == 1){
-							do {
-								cPM.startGame(GameMode.DUEL);
-								afterGameChoice();
-							}while(playagain);
-						}else {
-							do {
-								cMM.startGame(GameMode.DUEL);
-								afterGameChoice();
-							}while(playagain);
-						}
-							
-						break;
-						case 4: 
-							
-						break;
-							}
-			}
-				break; 
+				settings.setGameType(GameType.PLUSMINUS);
+				chooseMode(settings);
+				arret = true;
+				break;
+			case 2:
+				settings.setGameType(GameType.MASTERMIND);
+				chooseMode(settings);
+				arret = true;
+				break;
 			case 3: 
 				log.info("Program ended sucessfully");
 				System.exit(0);
+				arret = true;
 				break;
 			}
 		}
+		return settings;
 	}  
+	
+	private static void chooseMode(Menusettings menusettings) {
+		int userGameChoice = -1;
+		
+		printModeMenu();	
+		switch (getUserAnswer(4)) {
+		case 1: 
+			menusettings.setGameMode(GameMode.CHALLENGER);
+			break;
+		case 2: 
+			menusettings.setGameMode(GameMode.DEFENDER);
+			break;
+		case 3: 
+			menusettings.setGameMode(GameMode.DUEL);
+			break;
+		}	
+	}
 
    	/**
    	 * Displays the welcome message.

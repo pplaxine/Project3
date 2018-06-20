@@ -13,15 +13,16 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.philippe75.game.Fish;
+import com.philippe75.game.Game;
 import com.philippe75.game.Main;
-import com.philippe75.game.Mode;
+import com.philippe75.game.IGame;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
 
 /**
- * <b>ChallengerPlusMinus is a class that handle the PlusMinus game in Challenger Mode.</b>
+ * <b>ChallengerPlusMinus is a class that handle the PlusMinus game in Challenger IGame.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A random combination is generated.</li>
@@ -46,7 +47,7 @@ import com.philippe75.generators.SecretNumGenerator;
  * @author PPlaxine
  * @version 1.0
  */
-public class ChallengerPlusMinus implements Mode{
+public class ChallengerPlusMinus extends Game{
 		
 	/**
 	 * Secret combination generator. 
@@ -275,7 +276,7 @@ public class ChallengerPlusMinus implements Mode{
 	 * 								The user answer contained in a List
 	 * @see ChallengerPlusMinus#hint
 	 * @see ChallengerPlusMinus#errorAllowed
-	 * @see Mode#displayFish()
+	 * @see IGame#displayFish()
 	 */
 	public void initGame() {
 		tabUserAnswer = new ArrayList<Integer>();

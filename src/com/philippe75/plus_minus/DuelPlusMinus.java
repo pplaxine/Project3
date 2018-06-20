@@ -10,13 +10,13 @@ import org.apache.log4j.Logger;
 
 import com.philippe75.game.Fish;
 import com.philippe75.game.Main;
-import com.philippe75.game.Mode;
+import com.philippe75.game.IGame;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
 /**
- * <b>DuelPlusMinus is a class that handle the PlusMinus game in Duel Mode.</b>
+ * <b>DuelPlusMinus is a class that handle the PlusMinus game in Duel IGame.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>user enters a secret combination for the computer to guess.</li>
@@ -44,7 +44,7 @@ import com.philippe75.generators.SecretNumGenerator;
  * @author PPlaxine
  * @version 1.0
  */
-public class DuelPlusMinus implements Mode{
+public class DuelPlusMinus implements IGame{
 	
 	/**
 	 * Secret combination generator. 

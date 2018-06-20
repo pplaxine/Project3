@@ -13,13 +13,13 @@ import org.apache.log4j.Logger;
 import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
-import com.philippe75.game.Mode;
+import com.philippe75.game.IGame;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
- * <b>DuelMastermind is a class that handle the Mastermind game in Duel Mode.</b>
+ * <b>DuelMastermind is a class that handle the Mastermind game in Duel IGame.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A colour pool is created and the choices are displayed to the users.</li>
@@ -48,7 +48,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * @author PPlaxine
  * @version 1.0
  */
-public class DuelMastermind implements Mode{
+public class DuelMastermind implements IGame{
 	
 	/**
 	 * Secret colour combination generator. 
@@ -449,7 +449,7 @@ public class DuelMastermind implements Mode{
 	 * @see DuelMastermind#compareAnswerUser()
 	 * @see DuelMastermind#generateComputerAnswer()
 	 * @see DuelMastermind#compareAnswerComputer()
-	 * @see Mode#displayFish()
+	 * @see IGame#displayFish()
 	 */
 	private void initGame() {
 		// store the combination in tabColComni 

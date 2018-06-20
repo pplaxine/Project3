@@ -13,14 +13,14 @@ import org.apache.log4j.Logger;
 import com.philippe75.game.Fish;
 import com.philippe75.game.HowManyColors;
 import com.philippe75.game.Main;
-import com.philippe75.game.Mode;
+import com.philippe75.game.IGame;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 import com.philippe75.plus_minus.DefenderPlusMinus;
 
 /**
- * <b>DefenderMastermind is a class that handle the Mastermind game in Defender Mode.</b>
+ * <b>DefenderMastermind is a class that handle the Mastermind game in Defender IGame.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A colour pool is created and the choices are displayed to the users.</li>
@@ -46,7 +46,7 @@ import com.philippe75.plus_minus.DefenderPlusMinus;
  * @author PPlaxine
  * @version 1.0
  */
-public class DefenderMastermind implements Mode{
+public class DefenderMastermind implements IGame{
 
 	/**
 	 * combination length for the game. 
@@ -360,7 +360,7 @@ public class DefenderMastermind implements Mode{
 	 * @see DefenderMastermind#generateComputerAnswer()
 	 * @see DefenderMastermind#compareAnswer()
 	 * @see ChallengerMastermind#errorAllowed
-	 * @see Mode#displayFish()
+	 * @see IGame#displayFish()
 	 */
 	private void initGame() {
 		

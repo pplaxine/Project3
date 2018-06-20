@@ -8,7 +8,7 @@ package com.philippe75.game;
  * @author PPlaxine
  * @version 1.0
  */
-public interface Mode {
+public interface IGame {
 	
 	public void startTheGame();
 	
