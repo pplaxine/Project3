@@ -1,14 +1,18 @@
 package com.philippe75.game;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.oracle.tools.packager.Log;
-
+/**
+ * <b>Read and load the properties file </b>
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ *
+ */
 public class PropertiesFile {
 
 	private static final Logger log = Logger.getLogger(Properties.class);

@@ -1,13 +1,10 @@
 package com.philippe75.mastermind;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -19,30 +16,192 @@ import com.philippe75.game.Main;
 import com.philippe75.game.Mode;
 import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
+import com.philippe75.generators.SecretColorCombinationGenerator;
+import com.philippe75.plus_minus.DefenderPlusMinus;
 
+/**
+ * <b>DefenderMastermind is a class that handle the Mastermind game in Defender Mode.</b>
+ * <p>Steps of the game : 
+ * <ul>
+ * <li>A colour pool is created and the choices are displayed to the users.</li>
+ * <li>User creates a colour combination, to be guessed by the computer, amongst those colours.</li>
+ * <li>Computer tries a combination.</li>
+ * <li>for each answer an hint is return. This hint indicates, how many colours are well placed and how many are present but not well placed in the combination.</li>
+ * <li>Computer tries combinations until it finds the answer or the number of tries permitted is reached.</li>
+ * <li>If Computer finds the secret combination, user looses, otherwise user wins.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * The random colour combination is generated via a SecretColoCombinationGenerator. 
+ * </p>
+ * 
+ * <p>
+ * The secret combination length, the pool of colours, and the number of errors allowed can be set in a DataConfig.properties file.
+ * </p>
+ * 
+ * @see SecretColorCombinationGenerator
+ * @see DefenderMastermind#setProperties()
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ */
 public class DefenderMastermind implements Mode{
 
-	private int combiLength, errorAllowed, correctPosition, score;
+	/**
+	 * combination length for the game. 
+	 * 
+	 * Defines the length of the secret combination to be generated
+	 * It can be modified via the dataConfig.properties file 
+	 * 
+	 * @see DefenderMastermind#setProperties()
+	 * @see DefenderMastermind#startTheGame()
+	 */
+	private int combiLength; 
+	
+	/**
+	 * errors allowed in the game.
+	 * 
+	 * Defines the number of tries the computer has.
+	 * It can be modified via the dataConfig.properties file 
+	 *  
+	 * @see DefenderMastermind#setProperties()
+	 * @see DefenderMastermind#initGame()
+	 */
+	private int errorAllowed;
+	
+	/**
+	 * Store the number of colours at the correct position. 
+	 * 
+	 *  @see DefenderMastermind#initGame()
+	 *  @see DefenderMastermind#compareAnswer()
+	 */
+	private int correctPosition; 
+	
+	/**
+	 * Stores the users combination of numerical value in String format. 
+	 * 
+	 * Is used to verify if the answer is a correct entry.  
+	 * 
+	 * @see DefenderMastermind#requestUserSecretCombi()
+	 * @see DefenderMastermind#userSelection
+	 */
 	private String userAnswer="";
+	
+	/**
+	 * Enumeration that define the size of the colour pool to request to SecretColorCombinationGenerator. 
+	 * 
+	 * @see SecretColorCombinationGenerator
+	 * @see DefenderMastermind#setProperties()
+	 * @see DefenderMastermind#startTheGame()
+	 */
 	private HowManyColors howManyColors;
 	
+	/**
+	 * Stores user combination with colours as values in String format. 
+	 * 
+	 * Also used to compare and generates computer answer.   
+	 * 
+	 * @see DefenderMastermind#requestUserSecretCombi()
+	 * @see DefenderMastermind#compareAnswer()
+	 * @see DefenderMastermind#generateComputerAnswer()
+	 */
 	private Map<Integer, String> userSelection; 
+	
+	/**
+	 * Stores the computer answer in Map format for comparison. 
+	 * 
+	 * @see DefenderMastermind#compareAnswer()
+	 * @see DefenderMastermind#generateComputerAnswer()
+	 */
 	private Map<Integer, String> tabComputerAnswer = new HashMap<>();
+	
+	/**
+	 * Used to compare computers answer and the users secret colour combination. 
+	 * 
+	 * @see DefenderMastermind#compareAnswer()
+	 */
 	private Map<Integer, String> tabToCompare = new HashMap<>();	
+	
+	/**
+	 * Store the colours present but not well placed, to be re-injected in the next computer answer. 
+	 * 
+	 * @see DefenderMastermind#generateComputerAnswer()
+	 * @see DefenderMastermind#compareAnswer()
+	 */
 	private List<String> tabColorToReinject = new ArrayList<>();
+	
+	/**
+	 * Pool of colours of the size defined by HowManyColors, for the player to choose from. 
+	 * 
+	 * @see DefenderMastermind#initiateColorChoice()
+	 * @see DefenderMastermind#generateQuestion()
+	 * @see DefenderMastermind#requestUserSecretCombi()
+	 * @see DefenderMastermind#generateComputerAnswer()
+	 */
 	private List<String> tabColorPool;
+	
+	/**
+	 * Pool containing all the possible colours.
+	 * 
+	 * @see DefenderMastermind#initiateColorChoice()
+	 * @see DefenderMastermind#tabColorPool
+	 */
 	private List<String> tabColor;
+	
 	Scanner clavier = new Scanner(System.in);
-	//Boolean from Main 
+	
+	/**
+	 * Runs the game in developer mode if true is returned.
+	 * 
+	 * By default, if an argument -dev is passed when starting the program, the boolean will return the value true. 
+	 * 
+	 * Returns also true, if in dataProperties file the value of devMode is set to true;   
+	 *  
+	 * @see DefenderMastermind#displaySecretNum()
+	 * @see Main#isDev()
+	 * @see Main#dev
+	 * @see Main#main(String[])
+	 * @see ChallengerMastermind#setProperties()
+	 */
 	private boolean dev = Main.isDev();
 	
+	/**
+	 * Creates a logger to generate log of the class.	
+	 */
 	private static final Logger log = Logger.getLogger(DefenderMastermind.class);
 	
+	/**
+	 * Constructor of DenfenderMastermind.
+	 * 
+	 * When the class is instantiated, load properties to be used by the game.
+	 * 
+	 * @see DefenderMastermind#setProperties()
+	 * @see DefenderMastermind#howManyColors
+	 * @see DefenderMastermind#combiLength
+	 * @see DefenderMastermind#errorAllowed
+	 * @see DefenderMastermind#dev
+	 */
 	public DefenderMastermind() {
 		if(setProperties())
 			startTheGame();
 	}
 	
+	/**
+	 * Starts the game.  
+	 * 
+	 * A welcome screen is displayed.
+	 * 
+	 * Displays a request for user to make an entry. 
+	 * 
+	 * Initiate the game.
+	 *  
+	 * @see DefenderMastermind#printWelcome()
+	 * @see DefenderMastermind#initiateColorChoice()
+	 * @see DefenderMastermind#generateQuestion()
+	 * @see DefenderMastermind#requestUserSecretCombi()
+	 * @see DenfenderMastermind#initGame()
+	 */
 	@Override
 	public void startTheGame() {
 		log.info("Start of Mastermind game in defender mode");
@@ -56,7 +215,15 @@ public class DefenderMastermind implements Mode{
 		log.info("End of the game");
 	}
 	
-	// charge the dataConfig.properties file
+	/**
+	 * Returns true if the properties are set.
+	 * 
+	 * 	@see DefenderMastermind#howManyColors
+	 *  @see DefenderMastermind#combiLength
+	 *  @see DefenderMastermind#errorAllowed
+	 *  @see DefenderMastermind#dev
+	 * 	@see DefenderMastermind#startTheGame()
+	 */
 	@Override
 	public boolean setProperties() {
 		
@@ -70,6 +237,11 @@ public class DefenderMastermind implements Mode{
 		return true; 
 	}
 
+	/**
+	 * Display the welcome screen.
+	 * 
+	 * @see DefenderMastermind#startTheGame()
+	 */
 	@Override
 	public void printWelcome() {
 		String 	str = TextEnhencer.ANSI_YELLOW; 
@@ -82,7 +254,13 @@ public class DefenderMastermind implements Mode{
 		System.out.println(str); 
 	}
 	
-	// create a random pool of color 
+	/**
+	 * Create a random pool of colour.
+	 * 
+	 *  @see DefenderMastermind#tabColorPool
+	 *  @see DefenderMastermind#tabColor
+	 *  @see DefenderMastermind#howManyColors
+	 */
 	private void initiateColorChoice() {
 		tabColorPool = new ArrayList<String>();
 		tabColor = new ArrayList<String>();
@@ -102,10 +280,13 @@ public class DefenderMastermind implements Mode{
 		
 		//add a defined quantity of colours to the pool 
 		tabColorPool.addAll(tabColor.subList(0, howManyColors.getIntValue()));
-	
 	}
 	
-	// creates the question to summit to the user 
+	/**
+	 * Creates the question to summit to the user.
+	 * 
+	 * @see DefenderMastermind#tabColorPool
+	 */
 	private void generateQuestion() {
 		int i = 0;
 		String str =""; 
@@ -120,6 +301,13 @@ public class DefenderMastermind implements Mode{
 	}
 	
 	
+	/**
+	 *  Request the user to make a keyboard entry.
+	 *  
+	 *  also verify if the entry is correct.
+	 *  
+	 *  @see DefenderMastermind#userAnswer
+	 */
 	private void requestUserSecretCombi() {
 		
 		//creates new HashMap to store user combination choice 
@@ -155,30 +343,55 @@ public class DefenderMastermind implements Mode{
 		System.out.println(TextEnhencer.ANSI_YELLOW + "You have selected the folwing secret color combination : \n     *** " + str + " ***\n" + TextEnhencer.ANSI_RESET);
 	}
 	
+	/**
+	 * Initiate the game. 
+	 * 
+	 * Increases the number of tries of the computer.
+	 * 
+	 * Get the computer answer. 
+	 * 
+	 * Compare the computer answer. 
+	 * 
+	 * All those steps are repeated as long as the secret combination is not found or if the value of error allowed isn't reached by score value. 
+	 * 
+	 * If computer can't find the secret combination, user Wins. Otherwise, user looses.     
+	 * 
+	 * @see DefenderMastermind#tries
+	 * @see DefenderMastermind#generateComputerAnswer()
+	 * @see DefenderMastermind#compareAnswer()
+	 * @see ChallengerMastermind#errorAllowed
+	 * @see Mode#displayFish()
+	 */
 	private void initGame() {
 		
+		int tries = 0; 
 		// repeat as long as the combination isn't found or the number or error allowed is reached 
 		do {		
 			// add a try after each question 
-			score++;
+			tries++;
 			
 			generateComputerAnswer();
 			compareAnswer();
 			
-		} while (correctPosition != this.combiLength && score < this.errorAllowed);
+		} while (correctPosition != this.combiLength && tries < this.errorAllowed);
 		
 		// if the answer isn't found user looses 
 		if(correctPosition == this.combiLength) {
-			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+..+*°*+."+ TextEnhencer.ANSI_CYAN + "\nComputer found your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
+			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+..+*°*+."+ TextEnhencer.ANSI_CYAN + "\nComputer found your secret color combination after %d " + ((tries < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, tries);
 		// if the answer is found user wins	
 		}else {
 			Fish.displayFish();
-			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t     .+*°*+.+> | You Win !!! | <+..+*°*+.\nComputer could not find your secret color combination after %d " + ((score < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, score);
+			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t     .+*°*+.+> | You Win !!! | <+..+*°*+.\nComputer could not find your secret color combination after %d " + ((tries < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, tries);
 		}
 		
 	}
 	
-	// Find the correct way to handle the result and generate new combination 
+	/**
+	 * Finds the correct way to handle the result and generate new answer based on the previous. 
+	 * 
+	 * @see DefenderMastermind#tabComputerAnswer
+	 * @see DefenderMastermind#tabColorToReinject
+	 */
 	private void generateComputerAnswer() {
 		
 		Random random = new Random(); 
@@ -227,6 +440,15 @@ public class DefenderMastermind implements Mode{
 		}
 	}
 	
+	/**
+	 * Compare computer answer with the users secret colours combination. 
+	 * 
+	 * Indicates how many colours are well placed and how many are present but not well placed in the combination.
+	 * 
+	 * @see DefenderMastermind#tabComputerAnswer
+	 * @see DefenderMastermind#userSelection
+	 * @see DefenderMastermind#tabToCompare
+	 */
 	private void compareAnswer() {
 		String str = ""; 
 		

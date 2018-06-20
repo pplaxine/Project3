@@ -31,10 +31,16 @@ public abstract class Game {
 	 */
 	private GameMode gameMode;
 	
+	/**
+	 * The ModeFactory will create an object of type Mode.
+	 * 
+	 *  @see ModeFactory
+	 *  @see Mode
+	 */
 	protected ModeFactory modefactory;
 
 	/**
-	 * Via polymorphism the startGame method of a the child class will be invoked when called in Main.   
+	 * The startGame method of a the child class will be invoked when called in Main.   
 	 * 
 	 * @param gameMode
 	 * 					The mode required to play the game. 

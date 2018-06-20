@@ -70,7 +70,14 @@ public class Main {
 	 */
 	private static boolean dev; 
 	
-	
+	/**
+	 * Creates a logger to generate log of the class.
+	 * 
+	 * @see Main#main(String[])
+	 * @see Main#runMenu()
+	 * @see Main#getUserAnswer(int)
+	 * @see Main#afterGameChoice()
+	 */
 	private static final Logger log = Logger.getLogger(Main.class);
 	/**
 	 * Method main.

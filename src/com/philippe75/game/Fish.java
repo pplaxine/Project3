@@ -1,5 +1,12 @@
 package com.philippe75.game;
 
+
+/**
+ * <b>This class displays picture in String format</b>
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ */
 public class Fish {
 
 	public static void displayFish() {

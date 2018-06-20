@@ -23,6 +23,9 @@ import com.philippe75.game.ModeFactory;
  */
 public class Mastermind extends Game{
 	
+	/**
+	 * Constructor of the class. 
+	 */
 	public Mastermind() {
 		super.modefactory = new ModeFactory();
 	}
@@ -30,12 +33,13 @@ public class Mastermind extends Game{
 	/**
 	 * Starts the selected game with the mode passed in parameter. 
 	 * 
-	 * Depending on the mode selected, a new instance of the game in that mode is created and started.  
+	 * Depending on the mode selected, a Mode Factory creates a new instance of the game in that Mode. 
 	 * 
 	 * @param gameMode 
 	 * 					The mode to start the game with. 
 	 * @see GameMode
 	 * @see Mode#startTheGame()
+	 * @see ModeFactory#createMode(String)
 	 */
 	public void startGame(GameMode gameMode) {
 	

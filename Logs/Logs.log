@@ -1,12 +1,6 @@
-19-06-2018 19:16:12 INFO  Main:90 - Program started successfully
-19-06-2018 19:16:12 INFO  Main:126 - Game and Game modes menu runs
-19-06-2018 19:16:16 INFO  ChallengerPlusMinus:219 - Properties set successfully
-19-06-2018 19:16:16 INFO  ChallengerPlusMinus:194 - Start of PlusMinus game in challenger mode
-19-06-2018 19:16:16 INFO  ChallengerPlusMinus:251 - Game is running in developer mode
-19-06-2018 19:16:19 INFO  ChallengerPlusMinus:200 - End of the game
-19-06-2018 19:16:21 INFO  Main:126 - Game and Game modes menu runs
-19-06-2018 19:16:25 INFO  ChallengerMastermind:66 - Properties set successfully
-19-06-2018 19:16:25 INFO  ChallengerMastermind:47 - Start of Mastermind game in challenger mode
-19-06-2018 19:16:25 INFO  ChallengerMastermind:88 - Game is running in developer mode
-19-06-2018 19:16:30 INFO  ChallengerMastermind:53 - End of the game
-19-06-2018 19:16:31 INFO  Main:289 - Program ended successfully
+20-06-2018 15:24:22 INFO  Main:97 - Program started successfully
+20-06-2018 15:24:22 INFO  Main:133 - Game and Game modes menu runs
+20-06-2018 15:24:31 INFO  DefenderPlusMinus:225 - Properties set successfully
+20-06-2018 15:24:31 INFO  DefenderPlusMinus:210 - Start of PlusMinus game in defender mode
+20-06-2018 15:24:34 INFO  DefenderPlusMinus:214 - End of the game
+20-06-2018 15:24:55 INFO  Main:296 - Program ended successfully

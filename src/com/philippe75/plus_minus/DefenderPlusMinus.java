@@ -23,7 +23,7 @@ import com.philippe75.generators.SecretNumGenerator;
  * <ul>
  * <li>User enter a combination.</li>
  * <li>Computer tries a combination.</li>
- * <li>for each answer an hint is return. This hint indicates for each digit of the user answer if the secret combination digit is higher or lower.</li>
+ * <li>for each answer an hint is return. This hint indicates for each digit of the computer answer if the secret combination digit is higher or lower.</li>
  * <li>Computer tries combinations until he finds the answer or the number of tries permitted is reached.</li>
  * <li>If computer finds the secret combination user looses, otherwise he wins.</li>
  * </ul>
@@ -171,26 +171,14 @@ public class DefenderPlusMinus implements Mode{
 	 * @see DefenderPlusMinus#valuesMinMax
 	 */
 	private int maxValue;
-	
+
 	/**
-	 * Number of tries made by the Computer.
-	 * 
-	 * Each try increases by 1 the score.
-	 * 
-	 * To define if the game has to end, score is compared to number of errors allowed.
-	 * 
-	 * Used to display the number of tries at the end of the game.
-	 * 
-	 * @see DefenderPlusMinus#initGame()
-	 * @see DefenderPlusMinus#errorAllowed
-	 * 
+	 * Creates a logger to generate log of the class.	
 	 */
-	private int score = 0; 
-	
 	private static final Logger log = Logger.getLogger(DefenderPlusMinus.class);
 	
 	/**
-	 * Constructor of Defender PlusMinus.
+	 * Constructor of DefenderPlusMinus.
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
@@ -205,8 +193,6 @@ public class DefenderPlusMinus implements Mode{
 	/**
 	 * Starts the game.  
 	 * 
-	 * The content is read only if properties are well set.
-	 * 
 	 * A welcome screen is displayed.
 	 * 
 	 * The secret combination is displayed if the developer mode is activated.
@@ -215,7 +201,6 @@ public class DefenderPlusMinus implements Mode{
 	 * 
 	 * Initiate the game. 
 	 * 
-	 * @see DefenderPlusMinus#setProperties()
 	 * @see DenferPlusMinus#printWelcome()
 	 * @see DefenderPlusMinus#requestUserSecretNum()
 	 * @see DefenderPlusMinus#initGame()
@@ -324,12 +309,13 @@ public class DefenderPlusMinus implements Mode{
 	 */
 	public void initGame() {
 		 
+		int tries = 0;
 		// Repeat the question while Computer has enough tries left and hasn't found the answer
 		do {
 			// add a try after each question 
-			score++;
+			tries++;
 			
-			if(score < 2) {
+			if(tries < 2) {
 				tabComputerAnswer = generateComputerFirstTry();
 			}else {
 				tabComputerAnswer = generateAnswerWithHint();
@@ -343,14 +329,14 @@ public class DefenderPlusMinus implements Mode{
 			//print computers answer and show the hint
 			System.out.printf(TextEnhencer.ANSI_CYAN + "Computer tries %s ---> %s \n" + TextEnhencer.ANSI_RESET, computerAnswerStringFormat, hint);
 			
-		} while (!tabComputerAnswer.toString().equals(tabUserCode.toString()) && score < errorAllowed);
+		} while (!tabComputerAnswer.toString().equals(tabUserCode.toString()) && tries < errorAllowed);
 		
 		// Print Result once the game is over.
 		if(tabComputerAnswer.toString().equals(tabUserCode.toString())) {
-			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+.+*°*+.\n" + TextEnhencer.ANSI_CYAN + "You loose! Computer found your code after %d attempts.\n" + TextEnhencer.ANSI_RESET, score );	
+			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+.+*°*+.\n" + TextEnhencer.ANSI_CYAN + "You loose! Computer found your code after %d attempts.\n" + TextEnhencer.ANSI_RESET, tries );	
 		}else {
 			Fish.displayFish();
-			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t   .+*°*+.+> | Congratulation ! | <+.+*°*+.\n\t Computer couldn't find your code after %d attempts" + TextEnhencer.ANSI_RESET, score );	
+			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t   .+*°*+.+> | Congratulation ! | <+.+*°*+.\n\t Computer couldn't find your code after %d attempts" + TextEnhencer.ANSI_RESET, tries );	
 		}
 		
 		
