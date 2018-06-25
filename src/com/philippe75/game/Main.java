@@ -41,7 +41,8 @@ import com.philippe75.plus_minus.DuelPlusMinus;
  */
 public class Main {
 	
-	public static int gameRuns; 
+	private static int gameRuns;
+	private static final int PARENTAL_CONTROL = 3;
 	
 	/**
 	 * returns true if "-dev" is passed as parameter at program launch.
@@ -93,9 +94,11 @@ public class Main {
 			do {
 				IGame mode = factory.createMode(settings);
 				gameRuns++;
-			}while(menu.afterGameChoice());		
-		}while (true && gameRuns < 10);
-		System.out.println("Enougth video Game for today ... You should go back to your studies Mate !");
+			}while(menu.afterGameChoice() && gameRuns < PARENTAL_CONTROL);		
+		}while (true && gameRuns < PARENTAL_CONTROL);
+		
+		System.out.println(TextEnhencer.ANSI_CYAN + "Enougth video Game for today ... You should go back to your studies Mate !" + TextEnhencer.ANSI_RESET);
+		log.info("Program started successfully");
 	}
 
 	/**

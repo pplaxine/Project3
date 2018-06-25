@@ -46,7 +46,7 @@ import com.philippe75.plus_minus.DefenderPlusMinus;
  * @author PPlaxine
  * @version 1.0
  */
-public class DefenderMastermind implements IGame{
+public class DefenderMastermind extends Mastermind{
 
 	/**
 	 * combination length for the game. 
@@ -362,7 +362,7 @@ public class DefenderMastermind implements IGame{
 	 * @see ChallengerMastermind#errorAllowed
 	 * @see IGame#displayFish()
 	 */
-	private void initGame() {
+	public void initGame() {
 		
 		int tries = 0; 
 		// repeat as long as the combination isn't found or the number or error allowed is reached 

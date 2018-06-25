@@ -40,7 +40,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * @author PPlaxine
  * @version 1.0
  */
-public class ChallengerMastermind implements IGame{
+public class ChallengerMastermind extends Mastermind{
 	
 	/**
 	 * Secret colour combination generator. 
@@ -295,7 +295,7 @@ public class ChallengerMastermind implements IGame{
 	 * @see ChallengerMastermind#errorAllowed
 	 * @see IGame#displayFish()
 	 */
-	private void initGame() {
+	public void initGame() {
 		// store the combination in tabColComni 
 		tabColCombi = sCG.getTabColorCombination(); 
 		int tries = 0; 

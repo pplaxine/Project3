@@ -1,15 +1,7 @@
-25-06-2018 15:52:57 INFO  Main:86 - Program started successfully
-25-06-2018 15:53:02 INFO  Menu:59 - Game and Game modes menu runs
-25-06-2018 15:53:02 INFO  ChallengerPlusMinus:217 - Properties set successfully
-25-06-2018 15:53:02 INFO  ChallengerPlusMinus:193 - Start of PlusMinus game in challenger mode
-25-06-2018 15:53:02 INFO  ChallengerPlusMinus:249 - Game is running in developer mode
-25-06-2018 15:53:04 INFO  ChallengerPlusMinus:198 - End of the game
-25-06-2018 15:53:10 INFO  Menu:59 - Game and Game modes menu runs
-25-06-2018 15:53:10 INFO  ChallengerMastermind:222 - Properties set successfully
-25-06-2018 15:53:10 INFO  ChallengerMastermind:195 - Start of Mastermind game in challenger mode
-25-06-2018 15:53:10 INFO  ChallengerMastermind:253 - Game is running in developer mode
-25-06-2018 15:53:17 INFO  ChallengerMastermind:201 - End of the game
-25-06-2018 15:53:20 INFO  ChallengerMastermind:222 - Properties set successfully
-25-06-2018 15:53:20 INFO  ChallengerMastermind:195 - Start of Mastermind game in challenger mode
-25-06-2018 15:53:20 INFO  ChallengerMastermind:253 - Game is running in developer mode
-25-06-2018 15:53:27 INFO  ChallengerMastermind:201 - End of the game
+25-06-2018 20:29:55 INFO  Main:87 - Program started successfully
+25-06-2018 20:30:00 INFO  Menu:59 - Game and Game modes menu runs
+25-06-2018 20:30:00 INFO  PlusMinus:209 - Properties set successfully
+25-06-2018 20:30:00 INFO  DuelPlusMinus:77 - Start of PlusMinus game in duel mode
+25-06-2018 20:30:01 INFO  DuelPlusMinus:112 - Game is running in developer mode
+25-06-2018 20:30:07 INFO  DuelPlusMinus:83 - End of the game
+25-06-2018 20:30:09 INFO  Menu:202 - Program ended successfully

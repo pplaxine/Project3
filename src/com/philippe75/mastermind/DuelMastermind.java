@@ -48,7 +48,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * @author PPlaxine
  * @version 1.0
  */
-public class DuelMastermind implements IGame{
+public class DuelMastermind extends Mastermind{
 	
 	/**
 	 * Secret colour combination generator. 
@@ -451,7 +451,7 @@ public class DuelMastermind implements IGame{
 	 * @see DuelMastermind#compareAnswerComputer()
 	 * @see IGame#displayFish()
 	 */
-	private void initGame() {
+	public void initGame() {
 		// store the combination in tabColComni 
 		tabColCombi = sCG.getTabColorCombination(); 
 			

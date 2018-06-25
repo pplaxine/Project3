@@ -16,6 +16,8 @@ public interface IGame {
 	
 	public void printWelcome();
 	
+	public void initGame();
+	
 	
 }
 
