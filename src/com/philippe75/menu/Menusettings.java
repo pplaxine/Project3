@@ -1,6 +1,4 @@
-package com.philippe75.newPack;
-
-import com.philippe75.game.GameMode;
+package com.philippe75.menu;
 
 public class Menusettings {
 	

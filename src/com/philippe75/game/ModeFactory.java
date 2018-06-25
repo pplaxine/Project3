@@ -3,8 +3,9 @@ package com.philippe75.game;
 import com.philippe75.mastermind.ChallengerMastermind;
 import com.philippe75.mastermind.DefenderMastermind;
 import com.philippe75.mastermind.DuelMastermind;
-import com.philippe75.newPack.GameType;
-import com.philippe75.newPack.Menusettings;
+import com.philippe75.menu.GameMode;
+import com.philippe75.menu.GameType;
+import com.philippe75.menu.Menusettings;
 import com.philippe75.plus_minus.ChallengerPlusMinus;
 import com.philippe75.plus_minus.DefenderPlusMinus;
 import com.philippe75.plus_minus.DuelPlusMinus;
@@ -48,9 +49,9 @@ public class ModeFactory {
 		
 		if (settings.getGameType() == GameType.PLUSMINUS) {
 			if (settings.getGameMode() == GameMode.CHALLENGER)
-				return	 new ChallengerPlusMinus(); 
+				return	new ChallengerPlusMinus(); 
 			if (settings.getGameMode() == GameMode.DEFENDER)
-				return 	new DefenderPlusMinus();
+				return new DefenderPlusMinus();
 			else
 				return new DuelPlusMinus();
 		}else {

@@ -1,7 +1,6 @@
-package com.philippe75.newPack;
+package com.philippe75.menu;
 
 public enum GameType {
 	PLUSMINUS(),
 	MASTERMIND();
-	
 }

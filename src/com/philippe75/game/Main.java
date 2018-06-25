@@ -1,15 +1,13 @@
 package com.philippe75.game;
 
 
-import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 
 import com.philippe75.mastermind.ChallengerMastermind;
 import com.philippe75.mastermind.DefenderMastermind;
 import com.philippe75.mastermind.DuelMastermind;
-import com.philippe75.newPack.GameType;
-import com.philippe75.newPack.Menusettings;
+import com.philippe75.menu.Menu;
+import com.philippe75.menu.Menusettings;
 import com.philippe75.plus_minus.ChallengerPlusMinus;
 import com.philippe75.plus_minus.DefenderPlusMinus;
 import com.philippe75.plus_minus.DuelPlusMinus;
@@ -43,15 +41,7 @@ import com.philippe75.plus_minus.DuelPlusMinus;
  */
 public class Main {
 	
-	/**
-	 * If true is returned, Same game starts again. 
-	 * 
-	 * Is modified in the selection menu once the game is over. 
-	 * 
-	 * @see Main#runMenu()
-	 * @see Main#afterGameChoice()
-	 */
-	private static boolean playagain = false;
+	public static int gameRuns; 
 	
 	/**
 	 * returns true if "-dev" is passed as parameter at program launch.
@@ -77,6 +67,7 @@ public class Main {
 	 * @see Main#afterGameChoice()
 	 */
 	private static final Logger log = Logger.getLogger(Main.class);
+	
 	/**
 	 * Method main.
 	 * 
@@ -93,190 +84,18 @@ public class Main {
 	public static void main(String[] args) {
 		
 		log.info("Program started successfully");
-		
 		dev = (args.length > 0 && args[0].equals("-dev"))? true : false;
-		while(true) {
-			Menusettings settings = runMenu();
+		 
+		do {
+			Menu menu = new Menu();
+			Menusettings settings = menu.runMenu();
 			ModeFactory factory = new ModeFactory();
-			IGame mode = factory.createMode(settings);
-		}
-
-	}
-	
-	/**
-	 * Runs the game selection menu.
-	 * 
-	 * Displays the welcome message.  
-	 * 
-	 * Displays the Game choice menu.
-	 * 
-	 * After game selection, displays the mode choice menu.
-	 * 
-	 * Starts game accordingly.
-	 * 
-	 * Once the game is over displays a after game choice menu. 
-	 * 
-	 * @see Main#printHeader()
-	 * @see Main#printMainMenu()
-	 * @see Main#printModeMenu()
-	 * @see Game#startGame(GameMode)
-	 * @see GameMode
-	 * @see Main#afterGameChoice()
-	 */
-	public static Menusettings runMenu() {
-		
-		int userGameChoice = -1;
-		Menusettings settings = new Menusettings();
-		
-		boolean arret = false; 
-		printHeader();
-		
-		while (!arret) {
-			log.info("Game and Game modes menu runs");
-			printMainMenu();
-			userGameChoice = getUserAnswer(3);
-			switch (userGameChoice) {
-			case 1:
-				settings.setGameType(GameType.PLUSMINUS);
-				chooseMode(settings);
-				arret = true;
-				break;
-			case 2:
-				settings.setGameType(GameType.MASTERMIND);
-				chooseMode(settings);
-				arret = true;
-				break;
-			case 3: 
-				log.info("Program ended sucessfully");
-				System.exit(0);
-				arret = true;
-				break;
-			}
-		}
-		return settings;
-	}  
-	
-	private static void chooseMode(Menusettings menusettings) {
-		int userGameChoice = -1;
-		
-		printModeMenu();	
-		switch (getUserAnswer(4)) {
-		case 1: 
-			menusettings.setGameMode(GameMode.CHALLENGER);
-			break;
-		case 2: 
-			menusettings.setGameMode(GameMode.DEFENDER);
-			break;
-		case 3: 
-			menusettings.setGameMode(GameMode.DUEL);
-			break;
-		}	
-	}
-
-   	/**
-   	 * Displays the welcome message.
-   	 * 
-   	 * @see Main#runMenu()
-   	 */
- 	private static void printHeader() {
- 		String 	str = "\n\n************************************************\n";  
- 				str += "***************	    Welcome  to   **************\n";
- 				str += "***************	    the GAME !!!  **************\n";
- 				str += "***************	     	     	  **************\n";
- 				str += "************************************************";
-		System.out.println(TextEnhencer.ANSI_GREEN + str + TextEnhencer.ANSI_RESET);
- 	}
-	
- 	/**
- 	 * Displays the game choice menu.
- 	 * 
- 	 * @see Main#runMenu()
- 	 */
-	private static void printMainMenu() {
-		String 	menu = TextEnhencer.ANSI_PURPLE; 
-				menu += "\nSelect your game : \n"; 
-				menu +=	"\tPlusMoins : ......enter [1]\n";
-				menu += "\tMastermind : .....enter [2]\n";
-				menu += "\tQuit the game : ..enter [3]\n";
-				menu += TextEnhencer.ANSI_RESET;
-			
-		System.out.println(menu);	
-	}
-	
-	/**
-	 * Displays the game mode choice menu.
-	 * 
-	 * @see Main#runMenu()
-	 */
-	private static void printModeMenu(){
-	   	String 	mode =TextEnhencer.ANSI_PURPLE;  
-	   			mode += "Select your mode : \n"; 
-	   			mode +=	"\tChallenger : .................enter [1]\n";
-	   			mode +=	"\tDefenseur : ..................enter [2]\n";
-	   			mode +=	"\tDuel : .......................enter [3]\n";
-	   			mode +=	"\tBack to previous screen : ....enter [4]\n";
-	   			mode += TextEnhencer.ANSI_RESET;
-		System.out.println(mode);
-	}
-	
-	/**
-	 * Check if the entry of user is correct.
-	 * 
-	 * If the entry is higher than the number of questions, or inferior to null, or not a number, user must make a new entry.
-	 * 
-	 * @param numberofQuestion 
-	 * 							number of question in the menu.  
-	 * @return the user entry in integer format
-	 */
-	private static int getUserAnswer(int numberofQuestion) {
-		int userAnswer = -1; 
-		Scanner clavier = new Scanner(System.in); 
-		while (userAnswer > numberofQuestion || userAnswer < 0 ) {
-			try {
-				System.out.print(TextEnhencer.ANSI_PURPLE + "Enter your choice here below : \n" + TextEnhencer.ANSI_RESET);
-				System.out.print(TextEnhencer.ANSI_YELLOW);
-				userAnswer = Integer.parseInt(clavier.nextLine()); 
-				System.out.print(TextEnhencer.ANSI_RESET);
-			} catch (NumberFormatException e) {
-				System.out.print(TextEnhencer.ANSI_RED + "Incorrect value. " + TextEnhencer.ANSI_RESET);
-				log.error("Users entry mismatch the required entry type");
-			}
-		}
-		return userAnswer;
-	}
-	
-	/**
-	 * After game menu. 
-	 * 
-	 * Once the game is over, user can choose: to play again, to return to the main menu, or quit the game. 
-	 * 
-	 * @see Main#playagain
-	 * @see Main#runMenu()
-	 */
-	private static void afterGameChoice() {
-		playagain = false; 
-		
-		String 	menu = TextEnhencer.ANSI_GREEN; 
-				menu += "\n_____________________________________________________________________\n";
-				menu += "_____________________________________________________________________\n";
-				menu += "_____________________________________________________________________\n";
-				menu += "_____________________________________________________________________\n\n";
-				menu +=  "\nWhat would you like to do now ? : \n"; 
-				menu +=	"\tPlay again ? : ..................enter [1]\n";
-				menu += "\tReturn to the main menu ? : .....enter [2]\n";
-				menu += "\tQuit the game : .................enter [3]\n";
-				menu += TextEnhencer.ANSI_RESET;
-		System.out.println(menu);	
-		int userDecision = getUserAnswer(3);
-		
-		if(userDecision == 1) {
-			playagain = true; 
-		}else if(userDecision == 2) {
-		
-		}else {
-			log.info("Program ended successfully");
-			System.exit(0);	
-		}
+			do {
+				IGame mode = factory.createMode(settings);
+				gameRuns++;
+			}while(menu.afterGameChoice());		
+		}while (true && gameRuns < 10);
+		System.out.println("Enougth video Game for today ... You should go back to your studies Mate !");
 	}
 
 	/**
