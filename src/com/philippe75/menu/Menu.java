@@ -10,16 +10,8 @@ import com.philippe75.game.TextEnhencer;
 
 public class Menu {
 	
-	/**
-	 * If true is returned, Same game starts again. 
-	 * 
-	 * Is modified in the selection menu once the game is over. 
-	 * 
-	 * @see Main#runMenu()
-	 * @see Main#afterGameChoice()
-	 */
-	private boolean playagain = false;
-	
+	private Boolean backMenu;
+
 	/**
 	 * Creates a logger to generate log of the class.
 	 * 
@@ -54,19 +46,20 @@ public class Menu {
 		
 		Menusettings settings = new Menusettings();
 		printHeader();
-		chooseGame(settings);
+		do {
+			chooseGame(settings);
+		} while (backMenu);
 		
-		log.info("Game and Game modes menu runs");
+		log.info("Menu started successfully");
 
 		return settings;
 	} 
 	
 	private void chooseGame(Menusettings settings) {
-		int userGameChoice = -1;
+		
 		printMainMenu();
-		userGameChoice = getUserAnswer(3);
 			
-		switch (userGameChoice) {
+		switch (getUserAnswer(3)) {
 		case 1:
 			settings.setGameType(GameType.PLUSMINUS);
 			chooseMode(settings);
@@ -84,7 +77,8 @@ public class Menu {
 	
 	private void chooseMode(Menusettings menusettings) {
 		
-		printModeMenu();	
+		printModeMenu();
+		backMenu = false;
 		switch (getUserAnswer(4)) {
 		case 1: 
 			menusettings.setGameMode(GameMode.CHALLENGER);
@@ -95,7 +89,10 @@ public class Menu {
 		case 3: 
 			menusettings.setGameMode(GameMode.DUEL);
 			break;
-		}	
+		default:  
+			backMenu = true;
+			break;	
+		}
 	}
 
    	/**

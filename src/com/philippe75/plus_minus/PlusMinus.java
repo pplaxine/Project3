@@ -27,43 +27,6 @@ public abstract class PlusMinus extends Game{
 	 */
 	protected SecretNumGenerator sNG, sNG2;
 	
-	/**
-	 * errors allowed in the game.
-	 * 
-	 * Defines the number of tries the user has.
-	 * It can be modified via the dataConfig.properties file 
-	 *  
-	 * @see ChallengerPlusMinus#setProperties()
-	 * @see ChallengerPlusMinus#initGame()
-	 */
-	protected int errorAllowed;
-	
-	/**
-	 * combination length for the game. 
-	 * 
-	 * Defines the length of the secret combination to be generated
-	 * It can be modified via the dataConfig.properties file 
-	 * 
-	 * @see ChallengerPlusMinus#setProperties()
-	 * @see ChallengerPlusMinus#startTheGame()
-	 */
-	protected int combiLength;
-	
-	/**
-	 * Runs the game in developer mode if true is returned.
-	 * 
-	 * By default, if an argument -dev is passed when starting the program, the boolean will return the value true. 
-	 * 
-	 * Returns also true, if in dataProperties file the value of devMode is set to true;   
-	 *  
-	 * @see ChallengerPlusMinus#displaySecretNum()
-	 * @see Main#isDev()
-	 * @see Main#dev
-	 * @see Main#main(String[])
-	 * @see ChallengerPlusMinus#setProperties()
-	 */
-	protected boolean dev = Main.isDev();
-	
 	//Att Challenger-------------------------------------------------------------
 
 	
@@ -137,9 +100,7 @@ public abstract class PlusMinus extends Game{
 	 * @see DefenderPlusMinus#generateComputerFirstTry()
 	 * @see DefenderPlusMinus#ArrayListIntegerToString(List)
 	 */
-	protected String computerAnswerStringFormat;
-
-	protected int tries;
+	private String computerAnswerStringFormat;
 	
 	/**
 	 * Stores for each digit the min value and max value range to get a new digit from.
@@ -190,25 +151,8 @@ public abstract class PlusMinus extends Game{
 	 */
 	private static final Logger log = Logger.getLogger(PlusMinus.class);
 	
-	/**
-	 * Returns true if the properties are set.
-	 * 
-	 *  @see ChallengerPlusMinus#combiLength
-	 *  @see ChallengerPlusMinus#errorAllowed
-	 *  @see ChallengerPlusMinus#dev
-	 * 	@see ChallengerPlusMinus#startTheGame()
-	 */
-	@Override
-	public boolean setProperties() {
+
 	
-		this.combiLength = Integer.parseInt(PropertiesFile.getPropertiesFile("CombinationLength"));
-		this.errorAllowed = Integer.parseInt(PropertiesFile.getPropertiesFile("errorAllowed"));
-		if(new String("true").equals(PropertiesFile.getPropertiesFile("devMode"))) {
-			this.dev = true;
-		}	
-		log.info("Properties set successfully");
-		return true;
-	}
 	
 	/**
 	 * Generates the hint. 
@@ -241,6 +185,7 @@ public abstract class PlusMinus extends Game{
 	
 	//Challenger --------------------------
 	
+	
 	/**
 	 *  Request the user to make a keyboard entry.
 	 *  
@@ -250,7 +195,6 @@ public abstract class PlusMinus extends Game{
 	 */
 	protected String requestUserAnswer() {
 		String userAnswer="";
-		Scanner clavier = new Scanner(System.in);
 		// Repeat while user didn't enter the correct value 
 		do {
 			//Using Regex to make sure user enter the right value type (Integer) and the correct length of this value type  
@@ -308,12 +252,10 @@ public abstract class PlusMinus extends Game{
 	 * @see DefenderPlusMinus#userCode 
 	 * @see DefenderPlusMinus#tabUserCode
 	 */
-	protected void requestUserSecretNum() {
-		
-		Scanner clavier = new Scanner(System.in);
+	protected int requestUserSecretNum() {
 		
 		String userCode = "";
-		System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter your secret combination below " + TextEnhencer.ANSI_RESET); 
+		System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter your secret combination of below " + TextEnhencer.ANSI_RESET); 
 		
 		//Using Regex to make sure user enter the right value type (Integer).
 		do {
@@ -335,6 +277,7 @@ public abstract class PlusMinus extends Game{
 		for (int i = 0; i < userCode.length(); i++) {
 			tabUserCode.add(Character.getNumericValue(userCode.charAt(i)));  
 		}
+		return userCode.length();
 	}
 
 	/**
@@ -345,7 +288,7 @@ public abstract class PlusMinus extends Game{
 	 * @see DuelPlusMinus#generateAnswerWithHint()
 	 */
 	protected void generateComputerAnswer() {
-		if(tries < 2) {
+		if(super.tries < 2) {
 			tabComputerAnswer = generateComputerFirstTry();
 		}else {
 			tabComputerAnswer = generateAnswerWithHint();

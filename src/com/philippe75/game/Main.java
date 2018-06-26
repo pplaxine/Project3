@@ -91,10 +91,12 @@ public class Main {
 			Menu menu = new Menu();
 			Menusettings settings = menu.runMenu();
 			ModeFactory factory = new ModeFactory();
+			
 			do {
 				IGame mode = factory.createMode(settings);
 				gameRuns++;
-			}while(menu.afterGameChoice() && gameRuns < PARENTAL_CONTROL);		
+			}while(menu.afterGameChoice() && gameRuns < PARENTAL_CONTROL);	
+			
 		}while (true && gameRuns < PARENTAL_CONTROL);
 		
 		System.out.println(TextEnhencer.ANSI_CYAN + "Enougth video Game for today ... You should go back to your studies Mate !" + TextEnhencer.ANSI_RESET);

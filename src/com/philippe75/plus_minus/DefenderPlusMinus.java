@@ -1,21 +1,12 @@
 package com.philippe75.plus_minus;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.philippe75.game.Fish;
 import com.philippe75.game.IGame;
-import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
-import com.philippe75.generators.SecretNumGenerator;
 
 /**
  * <b>DefenderPlusMinus is a class that handle the PlusMinus game in Defender IGame.</b>
@@ -135,21 +126,21 @@ public class DefenderPlusMinus extends PlusMinus{
 	 * @see IGame#displayFish()
 	 */
 	public void initGame() {
-		this.tries = 0; 
+		super.tries = 0; 
 		
 		// Repeat the question while Computer has enough tries left and hasn't found the answer
 		do {
-			this.tries++;
+			super.tries++;
 			generateComputerAnswer();
 			generateComputerHint();
-		} while (!tabComputerAnswer.toString().equals(tabUserCode.toString()) && tries < this.errorAllowed);
+		} while (!tabComputerAnswer.toString().equals(tabUserCode.toString()) && super.tries < this.errorAllowed);
 		
 		// Print Result once the game is over.
 		if(tabComputerAnswer.toString().equals(tabUserCode.toString())) {
-			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+.+*°*+.\n" + TextEnhencer.ANSI_CYAN + "You loose! Computer found your code after %d attempts.\n" + TextEnhencer.ANSI_RESET, tries );	
+			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+.+*°*+.\n" + TextEnhencer.ANSI_CYAN + "You loose! Computer found your code after %d attempts.\n" + TextEnhencer.ANSI_RESET, super.tries );	
 		}else {
 			Fish.displayFish();
-			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t   .+*°*+.+> | Congratulation ! | <+.+*°*+.\n\t Computer couldn't find your code after %d attempts" + TextEnhencer.ANSI_RESET, tries );	
+			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t   .+*°*+.+> | Congratulation ! | <+.+*°*+.\n\t Computer couldn't find your code after %d attempts" + TextEnhencer.ANSI_RESET, super.tries );	
 		}
 	}
 }

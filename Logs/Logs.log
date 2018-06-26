@@ -1,7 +1,0 @@
-25-06-2018 20:29:55 INFO  Main:87 - Program started successfully
-25-06-2018 20:30:00 INFO  Menu:59 - Game and Game modes menu runs
-25-06-2018 20:30:00 INFO  PlusMinus:209 - Properties set successfully
-25-06-2018 20:30:00 INFO  DuelPlusMinus:77 - Start of PlusMinus game in duel mode
-25-06-2018 20:30:01 INFO  DuelPlusMinus:112 - Game is running in developer mode
-25-06-2018 20:30:07 INFO  DuelPlusMinus:83 - End of the game
-25-06-2018 20:30:09 INFO  Menu:202 - Program ended successfully

@@ -75,9 +75,11 @@ public class DuelPlusMinus extends PlusMinus{
 	@Override
 	public void startTheGame() {
 		log.info("Start of PlusMinus game in duel mode");
-		this.sNG = new SecretNumGenerator(this.combiLength);
+		this.sNG = new SecretNumGenerator(super.combiLength);
 		printWelcome();	
-		requestUserSecretNum();
+		do {
+			requestUserSecretNum();
+		} while (requestUserSecretNum() != super.combiLength);
 		displaySecretNum();
 		initGame();
 		log.info("End of the game");
@@ -131,10 +133,10 @@ public class DuelPlusMinus extends PlusMinus{
 	 */
 	public void initGame() {
 		this.tabUserAnswer = new ArrayList<Integer>();
-		this.tries = 0;
+		super.tries = 0;
 		do {
-			this.tries++;
-			if(tries < 2) 	
+			super.tries++;
+			if(super.tries < 2) 	
 				System.out.println(TextEnhencer.ANSI_YELLOW + "\nYour are the first to play!");
 			else
 				System.out.println(TextEnhencer.ANSI_YELLOW + "\nIt's your turn to play ...");	

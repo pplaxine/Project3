@@ -7,8 +7,6 @@ import org.apache.log4j.Logger;
 
 import com.philippe75.game.Fish;
 import com.philippe75.game.IGame;
-import com.philippe75.game.Main;
-import com.philippe75.game.PropertiesFile;
 import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
@@ -116,7 +114,7 @@ public class ChallengerPlusMinus extends PlusMinus{
 		System.out.println(TextEnhencer.ANSI_CYAN+ "\nComputer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);
 		if(dev) {
 			log.info("Game is running in developer mode");
-			System.out.println(TextEnhencer.ANSI_CYAN + "\t*** Secret combination : " + this.sNG.getRandomNumber() + " ***\n" + TextEnhencer.ANSI_RESET);
+			System.out.println(TextEnhencer.ANSI_GREEN + "\t*** Secret combination : " + this.sNG.getRandomNumber() + " ***\n" + TextEnhencer.ANSI_RESET);
 		}
 	}
 	
