@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.philippe75.game.Fish;
+import com.philippe75.extra.Dino;
+import com.philippe75.extra.Fish;
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.IGame;
-import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
 
@@ -159,9 +160,14 @@ public class ChallengerPlusMinus extends PlusMinus{
 		
 		// Print Result once the game is over. 
 		if (this.sNG.getTabNumber().toString().equals(this.tabUserAnswer.toString())){
-			Fish.displayFish();
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Fish());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\t   .+*°*+.+> | Congratulation !!! | <+.+*°*+.\n\t   You found the answer after %d trials!!! \n"+ TextEnhencer.ANSI_RESET, tries);
 		}else {
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Dino());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_RED + "\t   .+*°*+.+> | GAME OVER !!!! | <+.+*°*+.\n"+ TextEnhencer.ANSI_CYAN +  "\t\t The secret number was %s \n", this.sNG.getRandomNumber() + TextEnhencer.ANSI_RESET);
 		}
 	}

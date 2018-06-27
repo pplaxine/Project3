@@ -1,17 +1,13 @@
 package com.philippe75.mastermind;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-import com.philippe75.game.Fish;
-import com.philippe75.game.HowManyColors;
-import com.philippe75.game.Main;
+import com.philippe75.extra.Dino;
+import com.philippe75.extra.Fish;
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.IGame;
-import com.philippe75.game.PropertiesFile;
-import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
@@ -133,24 +129,27 @@ public class ChallengerMastermind extends Mastermind{
 		// store the combination in tabColComni 
 		this.tabColCombi = new HashMap<>(); 
 		this.tabColCombi = sCG.getTabColorCombination(); 
-		int tries = 0; 
+		super.tries = 0; 
 			
 		do {		
-				// add a try after each question 
-				tries++;
-				
-				getUserAnswer();
-				compareUserAnswer();
-				
-			} while (correctPositionUser != this.combiLength && tries < this.errorAllowed);
+			tries++;
+			getUserAnswer();
+			compareUserAnswer();
+		} while (correctPositionUser != this.combiLength && tries < this.errorAllowed);
+		// if the answer is found user wins	
 		if(correctPositionUser == this.combiLength) {
-			Fish.displayFish();
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Fish());
+			this.displayEndGamePic();
 			System.out.printf( TextEnhencer.ANSI_YELLOW + "\n\t  .+*°*+..+> | Congratulations ! | <+..+*°+.\nYou have found the correct secret color combination after %d " + ((tries < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, tries);
+		// if the answer isn't found user looses 
 		}else {
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Dino());
+			this.displayEndGamePic();
 			System.out.println(TextEnhencer.ANSI_RED + "\n\t\t\t .+*°*+..+> | GAME OVER !!! | <+..+*°+."+ TextEnhencer.ANSI_CYAN + "\n\t\t\t\tYou were almost there.\nThe solution is "+ sCG.toString() +". I am sure you will be more succeful next time!\n"  + TextEnhencer.ANSI_RESET);
 		}
 	}
-	
 }	
 
 	

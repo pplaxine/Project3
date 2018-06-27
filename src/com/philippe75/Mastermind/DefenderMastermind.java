@@ -2,9 +2,10 @@ package com.philippe75.mastermind;
 
 import org.apache.log4j.Logger;
 
-import com.philippe75.game.Fish;
+import com.philippe75.extra.Dino;
+import com.philippe75.extra.Fish;
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.IGame;
-import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
@@ -101,7 +102,6 @@ public class DefenderMastermind extends Mastermind{
 				str += TextEnhencer.ANSI_RESET;
 		System.out.println(str); 
 	}
-	
 
 	/**
 	 * Initiate the game. 
@@ -123,27 +123,26 @@ public class DefenderMastermind extends Mastermind{
 	 * @see IGame#displayFish()
 	 */
 	public void initGame() {
+		super.tries = 0; 
 		
-		int tries = 0; 
-		// repeat as long as the combination isn't found or the number or error allowed is reached 
 		do {		
-			// add a try after each question 
 			tries++;
 			generateComputerAnswer();
 			compareComputerAnswer();
-			
 		} while (correctPositionComputer != this.combiLength && tries < this.errorAllowed);
 		
 		// if the answer isn't found user looses 
 		if(correctPositionComputer == this.combiLength) {
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Dino());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+..+*°*+."+ TextEnhencer.ANSI_CYAN + "\nComputer found your secret color combination after %d " + ((tries < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, tries);
 		// if the answer is found user wins	
 		}else {
-			Fish.displayFish();
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Fish());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t     .+*°*+.+> | You Win !!! | <+..+*°*+.\nComputer could not find your secret color combination after %d " + ((tries < 2)? "trial." : "trials.") + "\n" + TextEnhencer.ANSI_RESET, tries);
 		}
-		
 	}
-	
-
 }

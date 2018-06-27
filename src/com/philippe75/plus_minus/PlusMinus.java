@@ -4,21 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.Game;
-import com.philippe75.game.Main;
-import com.philippe75.game.PropertiesFile;
-import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
 public abstract class PlusMinus extends Game{
 
 	
 	/**
-	 * Secret combination generator. 
+	 * Secret combination generator.
+	 * 
+	 * Generates random number. 
 	 * 
 	 * For more information about the generator, please see SecretNumberGenerator class doc.  
 	 * 
@@ -27,8 +26,12 @@ public abstract class PlusMinus extends Game{
 	 */
 	protected SecretNumGenerator sNG, sNG2;
 	
-	//Att Challenger-------------------------------------------------------------
-
+	/**
+	 * Creates a logger to generate log of the class.	
+	 */
+	private static final Logger log = Logger.getLogger(PlusMinus.class);
+	
+	//Challenger, Duel ATT-------------------------------------------------------------
 	
 	/**
 	 * Users answer in String format.
@@ -56,9 +59,9 @@ public abstract class PlusMinus extends Game{
 	 * @see SecretNumGenerator#getTabNumber() 
 	 */
 	protected List<Integer> tabUserAnswer; 
+
 	
-	//Att Defender-------------------------------------------------------------
-	
+	//Defender, Duel ATT-------------------------------------------------------------
 	
 	/**
 	 * Users combination in List format. 
@@ -145,15 +148,9 @@ public abstract class PlusMinus extends Game{
 	
 	private Map<Integer, Map<String, Integer>> mapValuesMinMax = new HashMap<>(); 
 	
-	//-------------------------------------------------------------------------
-	/**
-	 * Creates a logger to generate log of the class.	
-	 */
-	private static final Logger log = Logger.getLogger(PlusMinus.class);
 	
+	//Common methods -------------------------------------------------------------
 
-	
-	
 	/**
 	 * Generates the hint. 
 	 * 
@@ -182,9 +179,9 @@ public abstract class PlusMinus extends Game{
 		}
 		return hint; 
 	}
+
 	
-	//Challenger --------------------------
-	
+	//Challenger, Duel methods -------------------------------------------------------------
 	
 	/**
 	 *  Request the user to make a keyboard entry.
@@ -216,7 +213,6 @@ public abstract class PlusMinus extends Game{
 		return userAnswer;
 	}
 	
-	
 	/**
 	 * Display a hint for players next move.
 	 * 
@@ -231,7 +227,6 @@ public abstract class PlusMinus extends Game{
 		for (int i = 0; i < userAnswer.length(); i++) {
 			tabUserAnswer.add(Character.getNumericValue(userAnswer.charAt(i)));  
 		}
-		System.out.println("lol");
 		// Generate the user next move hint 
 		hint = this.generateHint(this.sNG.getTabNumber(), this.tabUserAnswer); 
 		
@@ -241,8 +236,9 @@ public abstract class PlusMinus extends Game{
 		}
 		userAnswer = ""; 
 	}
-	//Defender --------------------------------------------------------------
 	
+	
+	//Defender, Duel methods -------------------------------------------------------------
 	
 	/**
 	 * Request the user to enter a secret combination and create an ArrayList with the entry.
@@ -410,7 +406,6 @@ public abstract class PlusMinus extends Game{
 		
 		return tabComputerAnswer;  
 	}
-
 	
 	/**
 	 * Display a hint for computers next move. 
@@ -441,7 +436,4 @@ public abstract class PlusMinus extends Game{
 		}
 		return str; 
 	}
-	
-	
-	
 }

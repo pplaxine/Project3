@@ -1,5 +1,4 @@
-package com.philippe75.game;
-
+package com.philippe75.extra;
 
 /**
  * <b>This class displays picture in String format</b>
@@ -7,9 +6,12 @@ package com.philippe75.game;
  * @author PPlaxine
  * @version 1.0
  */
-public class Fish {
+public class Fish implements EndOfGameDisplay {
 
-	public static void displayFish() {
+	/**
+	 * Displays an happy fish.
+	 */
+	public void display() {
 		
 		String 	str = TextEnhencer.ANSI_GREEN;  
 				str +="\t.....................................(_).......\n";

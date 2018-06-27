@@ -1,9 +1,14 @@
 package com.philippe75.game;
 
 /**
- * This interface constrains all the class that implements it to define a startTheGame() method, as well as, a setProperties method. 
+ * <b>This interface constrains all the class that implements it to define the following methods : </b>
  * 
- * A method displayFish is reachable to all the class implementing this interface.It display a drawing of a fish in String format.     
+ * <p>
+ * <li>startTheGame()</li>
+ * <li>setProperties()</li>
+ * <li>rinWelcome()</li>
+ * <li>initGame()</li>
+ * </p>
  * 
  * @author PPlaxine
  * @version 1.0
@@ -17,7 +22,6 @@ public interface IGame {
 	public void printWelcome();
 	
 	public void initGame();
-	
 	
 }
 

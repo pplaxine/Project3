@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import com.philippe75.game.Fish;
-import com.philippe75.game.TextEnhencer;
+import com.philippe75.extra.Dino;
+import com.philippe75.extra.Fish;
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.generators.SecretNumGenerator;
 
 /**
@@ -151,9 +152,14 @@ public class DuelPlusMinus extends PlusMinus{
 		
 		// Print Result once the game is over. 
 		if (this.sNG.getTabNumber().toString().equals(this.tabUserAnswer.toString())){
-			Fish.displayFish();
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Fish());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t .+*°*+.+> | Congratulation !!! | <+.+*°*+.\n\t You found the computers secret code first !!!  \n" + TextEnhencer.ANSI_RESET);				
 		}else {
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Dino());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_RED + "\n\t\t\t   .+*°*+.+> | GAME OVER !!!  | <+.+*°*+." + TextEnhencer.ANSI_CYAN + "\nComputer found the answer first !!! the secret number was %s. You'll have more chance next time! \n" + TextEnhencer.ANSI_RESET, this.sNG.getRandomNumber());
 		}
 	}

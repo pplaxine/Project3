@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.philippe75.game.Fish;
+import com.philippe75.extra.Dino;
+import com.philippe75.extra.Fish;
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.IGame;
-import com.philippe75.game.TextEnhencer;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
@@ -82,7 +83,6 @@ public class DuelMastermind extends Mastermind{
 		log.info("Start of Mastermind game in duel mode");
 		if(dev)
 			log.info("Game is running in developer mode");
-		System.out.println("lol");
 		sCG = new SecretColorCombinationGenerator(super.combiLength, super.howManyColors);
 		printWelcome();
 		initiateColorChoice();
@@ -132,12 +132,12 @@ public class DuelMastermind extends Mastermind{
 	 * @see IGame#displayFish()
 	 */
 	public void initGame() {
-		// store the combination in tabColComni 
+		// store the combination in tabColComni.
 		this.tabColCombi = new HashMap<>(); 
 		this.tabColCombi = sCG.getTabColorCombination(); 
-			
+		super.tries = 0; 
+		
 		do {		
-			
 			super.tries++;
 			if(super.tries < 2) 	
 				System.out.println(TextEnhencer.ANSI_YELLOW + "\nYour are the first to play!");
@@ -154,13 +154,18 @@ public class DuelMastermind extends Mastermind{
 				
 		} while (correctPositionUser != this.combiLength && correctPositionComputer != this.combiLength );
 		
+		//if computer finds the answer first, user looses. 
 		if(correctPositionComputer == this.combiLength) {
-			System.out.printf(TextEnhencer.ANSI_RED +  "\n\t\t\t   .+*°*+..+> | GAME OVER !!! | <.+.+*°*+." + TextEnhencer.ANSI_CYAN + "\n\nComputer found your secret combination first !!! The secret combination was %s\n" + TextEnhencer.ANSI_RESET, sCG.toString());
-			
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Dino());
+			this.displayEndGamePic();
+			System.out.printf(TextEnhencer.ANSI_RED +  "\n\t\t   .+*°*+..+> | GAME OVER !!! | <.+.+*°*+." + TextEnhencer.ANSI_CYAN + "\n\nComputer found your secret combination first !!! The secret combination was %s\n" + TextEnhencer.ANSI_RESET, sCG.toString());
+		//if user finds the answer first, he wins.	
 		}else {
-			Fish.displayFish();
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Fish());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t.+*°*+.+> | Congratulations you WIN !!! | <+.+*°*+.\n\nYou have found the correct secret color combination first !!!" + TextEnhencer.ANSI_RESET);
 		}
 	}
-
 }

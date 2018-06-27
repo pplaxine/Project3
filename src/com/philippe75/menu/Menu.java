@@ -4,43 +4,64 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.Game;
 import com.philippe75.game.Main;
-import com.philippe75.game.TextEnhencer;
 
+/**
+ * <b>Class that runs game menu</b>
+ * 
+ * <p> 
+ * Runs the menu, where the user can choose the following :
+ * <ul>
+ * <li>
+ * At the beginning of the game : 
+ * <ul>
+ * <li>The game to play</li>
+ * <li>The mode of the game</li>
+ * <li>To quit the game</li>
+ * </ul>
+ * </li>
+ * <li>
+ * Once the game is over :
+ * <ul>
+ * <li>To play again</li>
+ * <li>To return to the main menu</li>
+ * <li>To quit the game</li>
+ * </ul>
+ * </li>
+ * </ul> 
+ * </p>
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ * 
+ * @author Windows
+ *
+ */
 public class Menu {
 	
+	/**
+	 * Returns to the first menu if true.
+	 * 
+	 * @see Menu#runMenu()
+	 */
 	private Boolean backMenu;
 
 	/**
 	 * Creates a logger to generate log of the class.
-	 * 
-	 * @see Main#main(String[])
-	 * @see Main#runMenu()
-	 * @see Main#getUserAnswer(int)
-	 * @see Main#afterGameChoice()
 	 */
 	private final Logger log = Logger.getLogger(Menu.class);
 
 	/**
 	 * Runs the game selection menu.
 	 * 
-	 * Displays the welcome message.  
+	 * Displays the welcome message. 
 	 * 
-	 * Displays the Game choice menu.
+	 * @return user game and mode selection.
 	 * 
-	 * After game selection, displays the mode choice menu.
+	 * @see Menu#chooseGame(Menusettings)
 	 * 
-	 * Starts game accordingly.
-	 * 
-	 * Once the game is over displays a after game choice menu. 
-	 * 
-	 * @see Main#printHeader()
-	 * @see Main#printMainMenu()
-	 * @see Main#printModeMenu()
-	 * @see Game#startGame(GameMode)
-	 * @see GameMode
-	 * @see Main#afterGameChoice()
 	 */
 	public Menusettings runMenu() {
 		
@@ -55,6 +76,15 @@ public class Menu {
 		return settings;
 	} 
 	
+	/**
+	 * Displays the game selection menu. 
+	 * 
+	 * Stores the users choice. 
+	 *
+	 * @param where user game and mode selection will be stored. 
+	 * 
+	 * @see Menu#chooseMode(Menusettings)
+	 */
 	private void chooseGame(Menusettings settings) {
 		
 		printMainMenu();
@@ -75,6 +105,13 @@ public class Menu {
 		}
 	}
 	
+	/**
+	 * Displays the game mode selection menu. 
+	 * 
+	 * Stores the users choice. 
+	 *
+	 * @param where user game and mode selection will be stored. 
+	 */
 	private void chooseMode(Menusettings menusettings) {
 		
 		printModeMenu();
@@ -112,7 +149,7 @@ public class Menu {
  	/**
  	 * Displays the game choice menu.
  	 * 
- 	 * @see Main#runMenu()
+ 	 * @see Menu#runMenu()
  	 */
 	private void printMainMenu() {
 		String 	menu = TextEnhencer.ANSI_PURPLE; 
@@ -128,7 +165,7 @@ public class Menu {
 	/**
 	 * Displays the game mode choice menu.
 	 * 
-	 * @see Main#runMenu()
+	 * @see Menu#runMenu()
 	 */
 	private void printModeMenu(){
 	   	String 	mode =TextEnhencer.ANSI_PURPLE;  
@@ -172,8 +209,7 @@ public class Menu {
 	 * 
 	 * Once the game is over, user can choose: to play again, to return to the main menu, or quit the game. 
 	 * 
-	 * @see Main#playagain
-	 * @see Main#runMenu()
+	 * @see Main#main(String[])
 	 */
 	public Boolean afterGameChoice() {
 		

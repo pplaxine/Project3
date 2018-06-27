@@ -1,4 +1,4 @@
-package com.philippe75.game;
+package com.philippe75.extra;
 
 /**
  * <b>Change the colours of output in console</b>

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import com.philippe75.game.HowManyColors;
-
 /**
  * <b>SecretColorCombinationGenerator is a class that generate a random combination of colours.</b>
  * 

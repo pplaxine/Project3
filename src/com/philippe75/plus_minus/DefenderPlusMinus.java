@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.philippe75.game.Fish;
+import com.philippe75.extra.Dino;
+import com.philippe75.extra.Fish;
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.IGame;
-import com.philippe75.game.TextEnhencer;
 
 /**
  * <b>DefenderPlusMinus is a class that handle the PlusMinus game in Defender IGame.</b>
@@ -137,9 +138,14 @@ public class DefenderPlusMinus extends PlusMinus{
 		
 		// Print Result once the game is over.
 		if(tabComputerAnswer.toString().equals(tabUserCode.toString())) {
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Dino());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_RED + "\n\t   .+*°*+.+> | GAME OVER !!! | <+.+*°*+.\n" + TextEnhencer.ANSI_CYAN + "You loose! Computer found your code after %d attempts.\n" + TextEnhencer.ANSI_RESET, super.tries );	
 		}else {
-			Fish.displayFish();
+			//Strategy Pattern 
+			this.setEndOfGameDisplay(new Fish());
+			this.displayEndGamePic();
 			System.out.printf(TextEnhencer.ANSI_YELLOW + "\n\t   .+*°*+.+> | Congratulation ! | <+.+*°*+.\n\t Computer couldn't find your code after %d attempts" + TextEnhencer.ANSI_RESET, super.tries );	
 		}
 	}

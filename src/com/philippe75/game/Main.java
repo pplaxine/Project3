@@ -3,6 +3,7 @@ package com.philippe75.game;
 
 import org.apache.log4j.Logger;
 
+import com.philippe75.extra.TextEnhencer;
 import com.philippe75.mastermind.ChallengerMastermind;
 import com.philippe75.mastermind.DefenderMastermind;
 import com.philippe75.mastermind.DuelMastermind;
@@ -15,25 +16,7 @@ import com.philippe75.plus_minus.DuelPlusMinus;
  * <b>Class containing the main method</b>
  * 
  * <p> 
- * Runs the menu, where the user can choose the following :
- * <ul>
- * <li>
- * At the beginning of the game : 
- * <ul>
- * <li>The game to play</li>
- * <li>The mode of the game</li>
- * <li>To quit the game</li>
- * </ul>
- * </li>
- * <li>
- * Once the game is over :
- * <ul>
- * <li>To play again</li>
- * <li>To return to the main menu</li>
- * <li>To quit the game</li>
- * </ul>
- * </li>
- * </ul> 
+ * Runs the menu, where the user can choose the game and the mode.
  * </p>
  * 
  * @author PPlaxine
@@ -41,7 +24,20 @@ import com.philippe75.plus_minus.DuelPlusMinus;
  */
 public class Main {
 	
+	/**
+	 * How many time the game had been launched 
+	 * 
+	 * @see Main#main(String[])
+	 * @see Main#PARENTAL_CONTROL
+	 */
 	private static int gameRuns;
+	
+	/**
+	 * How many time the game can be played before a warning is given
+	 * 
+	 * @see Main#main(String[])
+	 * @see Main#gameRuns
+	 */
 	private static final int PARENTAL_CONTROL = 3;
 	
 	/**
@@ -50,37 +46,22 @@ public class Main {
 	 * Will starts the selected games in developer mode. 
 	 * 
 	 * @see Main#main(String[])
-	 * @see ChallengerPlusMinus
-	 * @see DefenderPlusMinus
-	 * @see DuelPlusMinus
-	 * @see ChallengerMastermind
-	 * @see DefenderMastermind
-	 * @see DuelMastermind 
+ 	 * @see Game#dev
 	 */
 	private static boolean dev; 
 	
 	/**
 	 * Creates a logger to generate log of the class.
-	 * 
-	 * @see Main#main(String[])
-	 * @see Main#runMenu()
-	 * @see Main#getUserAnswer(int)
-	 * @see Main#afterGameChoice()
 	 */
 	private static final Logger log = Logger.getLogger(Main.class);
 	
 	/**
 	 * Method main.
 	 * 
+	 * Starts the menu.
+	 * 
 	 * @param args  
 	 * 				starts selected game in developer mode if "-dev" is passed. 
-	 * @see Main#dev
-	 * @see ChallengerPlusMinus
-	 * @see DefenderPlusMinus
-	 * @see DuelPlusMinus
-	 * @see ChallengerMastermind
-	 * @see DefenderMastermind
-	 * @see DuelMastermind 
 	 */
 	public static void main(String[] args) {
 		

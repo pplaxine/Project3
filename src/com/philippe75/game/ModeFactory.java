@@ -12,10 +12,10 @@ import com.philippe75.plus_minus.DuelPlusMinus;
 
 /**
  * 
- * <b>This class is a factory that creates an instance of the required IGame</b>
+ * <b>This class is a factory that creates an instance of the Game in required Mode.</b>
  * 
  * <p>
- * The different IGame are : 
+ * The different Modes are : 
  * <ul>
  * <li>ChallengerPlusMinus</li>
  * <li>DefenderPlusMinus</li>
@@ -32,11 +32,11 @@ import com.philippe75.plus_minus.DuelPlusMinus;
 public class ModeFactory {
 		
 	/**
-	 * Instantiate the IGame of the game depending on requested mode passed into parameter.  
+	 * Instantiates the Game with mode required that are contained in Menusettings passed into parameter.  
 	 * 
-	 * @param mode
-	 * 				The mode to stars the game with. 
-	 * @return an instance of the game of the required mode. 
+	 * @param settings 
+	 * 					The type of game and mode of the game.  
+	 * @return an instance of the game in the required mode. 
 	 * 
 	 * @see ChallengerPlusMinus
 	 * @see DefenderPlusMinus
