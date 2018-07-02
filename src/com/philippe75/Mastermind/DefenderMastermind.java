@@ -5,11 +5,11 @@ import org.apache.log4j.Logger;
 import com.philippe75.extra.Dino;
 import com.philippe75.extra.Fish;
 import com.philippe75.extra.TextEnhencer;
-import com.philippe75.game.IGame;
+import com.philippe75.game.Game;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
- * <b>DefenderMastermind is a class that handle the Mastermind game in Defender IGame.</b>
+ * <b>DefenderMastermind is a class that handle the Mastermind game in defender mode.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A colour pool is created and the choices are displayed to the users.</li>
@@ -30,7 +30,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * </p>
  * 
  * @see SecretColorCombinationGenerator
- * @see DefenderMastermind#setProperties()
+ * @see Game#setProperties()
  * 
  * @author PPlaxine
  * @version 1.0
@@ -47,11 +47,11 @@ public class DefenderMastermind extends Mastermind{
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
-	 * @see DefenderMastermind#setProperties()
-	 * @see DefenderMastermind#howManyColors
-	 * @see DefenderMastermind#combiLength
-	 * @see DefenderMastermind#errorAllowed
-	 * @see DefenderMastermind#dev
+	 * @see Game#setProperties()
+	 * @see Game#howManyColors
+	 * @see Game#combiLength
+	 * @see Game#errorAllowed
+	 * @see Game#dev
 	 */
 	public DefenderMastermind() {
 		if(setProperties())
@@ -68,9 +68,9 @@ public class DefenderMastermind extends Mastermind{
 	 * Initiate the game.
 	 *  
 	 * @see DefenderMastermind#printWelcome()
-	 * @see DefenderMastermind#initiateColorChoice()
-	 * @see DefenderMastermind#generateQuestion()
-	 * @see DefenderMastermind#requestUserSecretCombi()
+	 * @see Mastermind#initiateColorChoice()
+	 * @see Mastermind#generateQuestion()
+	 * @see Mastermind#requestUserSecretCombi()
 	 * @see DenfenderMastermind#initGame()
 	 */
 	@Override
@@ -116,11 +116,10 @@ public class DefenderMastermind extends Mastermind{
 	 * 
 	 * If computer can't find the secret combination, user Wins. Otherwise, user looses.     
 	 * 
-	 * @see DefenderMastermind#tries
-	 * @see DefenderMastermind#generateComputerAnswer()
-	 * @see DefenderMastermind#compareAnswer()
-	 * @see ChallengerMastermind#errorAllowed
-	 * @see IGame#displayFish()
+	 * @see Game#tries
+	 * @see Mastermind#generateComputerAnswer()
+	 * @see Mastermind#compareAnswer()
+	 * @see Game#errorAllowed
 	 */
 	public void initGame() {
 		super.tries = 0; 

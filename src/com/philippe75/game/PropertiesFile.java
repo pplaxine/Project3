@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * <b>Read and load the properties file </b>
+ * <b>Read and load the properties file.</b>
  * 
  * @author PPlaxine
  * @version 1.0

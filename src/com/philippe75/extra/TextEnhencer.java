@@ -1,7 +1,7 @@
 package com.philippe75.extra;
 
 /**
- * <b>Change the colours of output in console</b>
+ * <b>Change the colours of output in console.</b>
  * 
  * <p>
  *  Is composed of 8 colours and a reset to reset to the initial colour. 

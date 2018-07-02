@@ -1,16 +1,14 @@
 package com.philippe75.plus_minus;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import com.philippe75.extra.Dino;
 import com.philippe75.extra.Fish;
 import com.philippe75.extra.TextEnhencer;
-import com.philippe75.game.IGame;
+import com.philippe75.game.Game;
 
 /**
- * <b>DefenderPlusMinus is a class that handle the PlusMinus game in Defender IGame.</b>
+ * <b>DefenderPlusMinus is a class that handle the PlusMinus game in defender mode.</b>
  * <p>Steps of the game :
  * <ul>
  * <li>User enter a combination.</li>
@@ -48,8 +46,8 @@ public class DefenderPlusMinus extends PlusMinus{
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
-	 * @see ChallengerPlusMinus#setProperties()
-	 * @see ChallengerPlusMinus#errorAllowed
+	 * @see Game#setProperties()
+	 * @see PlusMinus#errorAllowed
 	 */
 	public DefenderPlusMinus () {
 		if(this.setProperties())
@@ -116,15 +114,8 @@ public class DefenderPlusMinus extends PlusMinus{
 	 * 
 	 * If user find the secret combination, he wins. A drawing and a message are displayed. Otherwise, user loose. a message is displayed.     
 	 * 
-	 * @see DefenderPlusMinus#score
-	 * @see DefenderPlusMinus#generateComputerFirstTry()
-	 * @see DefenderPlusMinus#generateAnswerWithHint()
-	 * @see DefenderPlusMinus#tabComputerAnswer
-	 * @see DefenderPlusMinus#createHint(List, List)
-	 * @see DefenderPlusMinus#hint
-	 * @see DefenderPlusMinus#ArrayListIntegerToString(List)
-	 * @see ChallengerPlusMinus#errorAllowed
-	 * @see IGame#displayFish()
+	 * @see PlusMinus#generateComputerAnswer()
+	 * @see PlusMinus#generateAnswerWithHint()
 	 */
 	public void initGame() {
 		super.tries = 0; 

@@ -1,10 +1,5 @@
-26-06-2018 17:19:36 INFO  Main:88 - Program started successfully
-26-06-2018 17:19:43 INFO  Menu:53 - Menu started successfully
-26-06-2018 17:19:43 INFO  Game:99 - Properties set successfully
-26-06-2018 17:19:43 INFO  ChallengerPlusMinus:83 - Start of PlusMinus game in challenger mode
-26-06-2018 17:19:43 INFO  ChallengerPlusMinus:117 - Game is running in developer mode
-26-06-2018 17:19:51 INFO  ChallengerPlusMinus:88 - End of the game
-26-06-2018 17:20:05 INFO  Game:99 - Properties set successfully
-26-06-2018 17:20:05 INFO  ChallengerPlusMinus:83 - Start of PlusMinus game in challenger mode
-26-06-2018 17:20:05 INFO  ChallengerPlusMinus:117 - Game is running in developer mode
-26-06-2018 17:20:08 INFO  ChallengerPlusMinus:88 - End of the game
+02-07-2018 14:50:00 INFO  Main:68 - Program started successfully
+02-07-2018 14:50:04 INFO  Menu:73 - Menu started successfully
+02-07-2018 14:50:04 INFO  Game:133 - Properties set successfully
+02-07-2018 14:50:04 INFO  DefenderPlusMinus:74 - Start of PlusMinus game in defender mode
+02-07-2018 14:50:07 INFO  DefenderPlusMinus:78 - End of the game

@@ -13,7 +13,7 @@ import com.philippe75.plus_minus.ChallengerPlusMinus;
 import com.philippe75.plus_minus.DefenderPlusMinus;
 import com.philippe75.plus_minus.DuelPlusMinus;
 /**
- * <b>Class containing the main method</b>
+ * <b>Class containing the main method.</b>
  * 
  * <p> 
  * Runs the menu, where the user can choose the game and the mode.
@@ -25,7 +25,7 @@ import com.philippe75.plus_minus.DuelPlusMinus;
 public class Main {
 	
 	/**
-	 * How many time the game had been launched 
+	 * How many time the game had been launched. 
 	 * 
 	 * @see Main#main(String[])
 	 * @see Main#PARENTAL_CONTROL
@@ -33,7 +33,7 @@ public class Main {
 	private static int gameRuns;
 	
 	/**
-	 * How many time the game can be played before a warning is given
+	 * How many time the game can be played before a warning is given.
 	 * 
 	 * @see Main#main(String[])
 	 * @see Main#gameRuns

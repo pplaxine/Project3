@@ -1,14 +1,14 @@
 package com.philippe75.menu;
 
 /**
- * <b>Enumeration of the possible mode for each game</b>  
+ * <b>Enumeration of the possible mode for each game.</b>  
  * 
  * <p>
- * Is composed of three different mode
+ * Is composed of three different mode.
  * <ul>
- * <li>Challenger</li>
- * <li>Defender</li>
- * <li>Duel</li>
+ * <li>Challenger.</li>
+ * <li>Defender.</li>
+ * <li>Duel.</li>
  * </ul>
  * </p>
  * 

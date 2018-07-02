@@ -24,7 +24,7 @@ import java.util.Random;
 public class SecretNumGenerator {
 	
 	/**
-	 * Length of the combination 
+	 * Length of the combination. 
 	 * 
 	 * Used to define how long must be the combination.   
 	 * 
@@ -40,7 +40,7 @@ public class SecretNumGenerator {
 	private List<Integer> tabNumber = new ArrayList<Integer>(); 
 	
 	/**
-	 * Store the combination generated in String format
+	 * Store the combination generated in String format.
 	 * 
 	 * @see SecretNumGenerator#generate()
 	 */
@@ -84,7 +84,7 @@ public class SecretNumGenerator {
 	}
 	
 	/**
-	 * Getter 
+	 * Getter. 
 	 * 
 	 * @return The TabNumber value.
 	 * @see SecretNumGenerator#tabNumber
@@ -94,7 +94,7 @@ public class SecretNumGenerator {
 	}
 	
 	/**
-	 * Getter 
+	 * Getter. 
 	 * 
 	 * @return The RandomNumber value.
 	 * @See SecretNumGenerator#randomNumber
@@ -104,7 +104,7 @@ public class SecretNumGenerator {
 	}
 	
 	/**
-	 * Getter 
+	 * Getter. 
 	 * 
 	 * @return The size of the combination.
 	 * @See SecretNumGenerator#numberSize

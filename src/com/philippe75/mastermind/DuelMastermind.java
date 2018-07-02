@@ -7,11 +7,11 @@ import org.apache.log4j.Logger;
 import com.philippe75.extra.Dino;
 import com.philippe75.extra.Fish;
 import com.philippe75.extra.TextEnhencer;
-import com.philippe75.game.IGame;
+import com.philippe75.game.Game;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
- * <b>DuelMastermind is a class that handle the Mastermind game in Duel IGame.</b>
+ * <b>DuelMastermind is a class that handle the Mastermind game in duel mode.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A colour pool is created and the choices are displayed to the users.</li>
@@ -35,7 +35,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * </p>
  * 
  * @see SecretColorCombinationGenerator
- * @see ChallengerMastermind#setProperties()
+ * @see Game#setProperties()
  * 
  * @author PPlaxine
  * @version 1.0
@@ -52,10 +52,10 @@ public class DuelMastermind extends Mastermind{
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
-	 * @see DuelMastermind#setProperties()
-	 * @see DuelMastermind#howManyColors
-	 * @see DuelMastermind#combiLength
-	 * @see DuelMastermind#dev
+	 * @see Game#setProperties()
+	 * @see Game#howManyColors
+	 * @see Game#combiLength
+	 * @see Game#dev
 	 */
 	public DuelMastermind() {
 		if(setProperties())
@@ -72,10 +72,10 @@ public class DuelMastermind extends Mastermind{
 	 * Initiate the game.
 	 *  
 	 * @see DuelMastermind#printWelcome()
-	 * @see DuelMastermind#initiateColorChoice()
-	 * @see DuelMastermind#generateQuestion()
-	 * @see DuelMastermind#requestUserSecretCombi()
-	 * @see DuelMastermind#displaySecretColorCombi()
+	 * @see Mastermind#initiateColorChoice()
+	 * @see Mastermind#generateQuestion()
+	 * @see Mastermind#requestUserSecretCombi()
+	 * @see Mastermind#displaySecretColorCombi()
 	 * @see DuelMastermind#initGame()
 	 */
 	@Override
@@ -125,11 +125,10 @@ public class DuelMastermind extends Mastermind{
 	 * 
 	 * If user finds the secret combination first, he Wins. If computer finds the secret combination first, user looses.     
 	 * 
-	 * @see DuelMastermind#getUserAnswer()
-	 * @see DuelMastermind#compareAnswerUser()
-	 * @see DuelMastermind#generateComputerAnswer()
-	 * @see DuelMastermind#compareAnswerComputer()
-	 * @see IGame#displayFish()
+	 * @see Mastermind#getUserAnswer()
+	 * @see Mastermind#compareAnswerUser()
+	 * @see Mastermind#generateComputerAnswer()
+	 * @see Mastermind#compareAnswerComputer()
 	 */
 	public void initGame() {
 		// store the combination in tabColComni.

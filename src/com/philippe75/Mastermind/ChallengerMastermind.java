@@ -7,11 +7,11 @@ import org.apache.log4j.Logger;
 import com.philippe75.extra.Dino;
 import com.philippe75.extra.Fish;
 import com.philippe75.extra.TextEnhencer;
-import com.philippe75.game.IGame;
+import com.philippe75.game.Game;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 
 /**
- * <b>ChallengerMastermind is a class that handle the Mastermind game in Challenger IGame.</b>
+ * <b>ChallengerMastermind is a class that handle the Mastermind game in challenger mode.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A random colour combination is generated.</li>
@@ -31,7 +31,7 @@ import com.philippe75.generators.SecretColorCombinationGenerator;
  * </p>
  * 
  * @see SecretColorCombinationGenerator
- * @see ChallengerMastermind#setProperties()
+ * @see Game#setProperties()
  * 
  * @author PPlaxine
  * @version 1.0
@@ -48,11 +48,11 @@ public class ChallengerMastermind extends Mastermind{
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
-	 * @see ChallengerMastermind#setProperties()
-	 * @see ChallengerMastermind#howManyColors
-	 * @see ChallengerMastermind#combiLength
-	 * @see ChallengerMastermind#errorAllowed
-	 * @see ChallengerMastermind#dev
+	 * @see Game#setProperties()
+	 * @see Game#howManyColors
+	 * @see Game#combiLength
+	 * @see Game#errorAllowed
+	 * @see Game#dev
 	 */
 	public ChallengerMastermind() {
 		if(setProperties())
@@ -75,7 +75,7 @@ public class ChallengerMastermind extends Mastermind{
 	 * @see SecretColorCombinationGenerator
 	 * @see ChallengerMastermind#printWelcome()
 	 * @see ChallengerMastermind#displaySecretNum()
-	 * @see ChallengerMastermind#printQuestion()
+	 * @see Mastermind#printQuestion()
 	 * @see ChallengerMastermind#initGame()
 	 */
 	@Override
@@ -119,11 +119,10 @@ public class ChallengerMastermind extends Mastermind{
 	 * 
 	 * If user finds the secret combination, he wins. A drawing and a message are displayed. Otherwise, user loose. a message is displayed.     
 	 * 
-	 * @see ChallengerMastermind#tries
-	 * @see ChallengerMastermind#getUserAnswer()
-	 * @see ChallengerMastermind#compareAnswer()
-	 * @see ChallengerMastermind#errorAllowed
-	 * @see IGame#displayFish()
+	 * @see Mastermind#tries
+	 * @see Mastermind#getUserAnswer()
+	 * @see Mastermind#compareAnswer()
+	 * @see Game#errorAllowed
 	 */
 	public void initGame() {
 		// store the combination in tabColComni 

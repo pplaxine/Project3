@@ -11,16 +11,17 @@ import com.philippe75.generators.HowManyColors;
 import com.philippe75.generators.SecretColorCombinationGenerator;
 import com.philippe75.mastermind.ChallengerMastermind;
 import com.philippe75.mastermind.DefenderMastermind;
+import com.philippe75.mastermind.DuelMastermind;
 import com.philippe75.mastermind.Mastermind;
 import com.philippe75.plus_minus.ChallengerPlusMinus;
 import com.philippe75.plus_minus.DuelPlusMinus;
 import com.philippe75.plus_minus.PlusMinus;
 
 /**
- * <b>This abstract class contains all method common to both games </b> 
+ * <b>This abstract class contains all method common to both games.</b> 
  * 
- *<p>PlusMinus Game</p>
- *<p>Mastermind Game</p> 
+ *<p>PlusMinus Game.</p>
+ *<p>Mastermind Game.</p> 
  * 
  * @author PPlaxine
  * @version 1.0
@@ -29,7 +30,7 @@ public abstract class Game implements IGame{
 	
 	
 	/**
-	 * Used as part of Design Strategy pattern to display pics at the end of the game 
+	 * Used as part of Design Strategy pattern to display pics at the end of the game. 
 	 * 
 	 * @see Game#displayEndGamePic()
 	 */
@@ -55,8 +56,8 @@ public abstract class Game implements IGame{
 	/**
 	 * combination length for the game. 
 	 * 
-	 * Defines the length of the secret combination to be generated
-	 * It can be modified via the dataConfig.properties file 
+	 * Defines the length of the secret combination to be generated.
+	 * It can be modified via the dataConfig.properties file. 
 	 * 
 	 * @see Game#setProperties()
 	 * @see ChallengerPlusMinus#initGame()
@@ -84,7 +85,7 @@ public abstract class Game implements IGame{
 	 * 
 	 * By default, if an argument -dev is passed when starting the program, the boolean will return the value true. 
 	 * 
-	 * Returns also true, if in dataProperties file the value of devMode is set to true;   
+	 * Returns also true, if in dataProperties file the value of devMode is set to true.   
 	 *  
 	 * @see PlusMinus#displaySecretNum()
 	 * @see Mastermind#displauSecretColorCombi
@@ -96,17 +97,21 @@ public abstract class Game implements IGame{
 	protected boolean dev = Main.isDev();
 	
 	/**
-	 * Number of tries made by user/computer. takes +1 each turn. 
+	 * Number of tries made by the user, computer. takes +1 each turn.
 	 * 
-	 *  
+	 * @see ChallengerPlusMinus#initGame()
+	 * @see DefenderPlusMinus#initGame()
+	 * @see DuelPlusMinus#initGame()
+	 * @see ChallengerMastermind#initGame()
+	 * @see DefenderMastermind#initGame()
+	 * @see DuelMastermind#initGame()
 	 */
 	protected int tries;
 	
 	/**
-	 * Creates a logger to generate log of the class.	
+	 * Creates a logger to generate logs of the class.	
 	 */
 	private static final Logger log = Logger.getLogger(Game.class);
-	
 	
 	/**
 	 * Returns true if the properties are set.
@@ -135,7 +140,6 @@ public abstract class Game implements IGame{
 	 * @see Fish#display()
 	 * @see Dino#display()
 	 * @see EndOfGameDisplay
-	 * 
 	 */
 	// Pattern Strategy design test ---------------------------------------------
 	protected void displayEndGamePic() {

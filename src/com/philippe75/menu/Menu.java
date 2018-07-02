@@ -5,7 +5,6 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.philippe75.extra.TextEnhencer;
-import com.philippe75.game.Game;
 import com.philippe75.game.Main;
 
 /**

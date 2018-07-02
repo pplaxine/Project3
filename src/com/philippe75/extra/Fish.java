@@ -1,7 +1,7 @@
 package com.philippe75.extra;
 
 /**
- * <b>This class displays picture in String format</b>
+ * <b>This class displays picture in String format.</b>
  * 
  * @author PPlaxine
  * @version 1.0
@@ -9,7 +9,7 @@ package com.philippe75.extra;
 public class Fish implements EndOfGameDisplay {
 
 	/**
-	 * Displays an happy fish.
+	 * Displays an happy fish picture.
 	 */
 	public void display() {
 		

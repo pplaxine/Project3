@@ -11,6 +11,16 @@ import com.philippe75.extra.TextEnhencer;
 import com.philippe75.game.Game;
 import com.philippe75.generators.SecretNumGenerator;
 
+/**
+ * <b>This abstract class contains all method common to all PlusMinus game modes.</b> 
+ * 
+ *<p>Challenger mode.</p>
+ *<p>Defender mode.</p> 
+ *<p>Duel mode.</p> 
+ * 
+ * @author PPlaxine
+ * @version 1.0
+ */
 public abstract class PlusMinus extends Game{
 
 	
@@ -23,6 +33,7 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * @see SecretNumGenerator
 	 * @see ChallengerPlusMinus#startTheGame()
+	 * @see DuelPlusMinus#startTheGame()
 	 */
 	protected SecretNumGenerator sNG, sNG2;
 	
@@ -42,8 +53,9 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * Also used to verify if the users answer complies with the entry requirements  
 	 * 
+	 * @see PlusMinus#generateUserHint()
 	 * @see ChallengerPlusMinus#initGame()
-	 * @see ChallengerPlusMinus#tabUserAnswer
+	 * @see DuelPlusMinus#initGame()
 	 */
 	protected String userAnswer ="";
 	
@@ -54,9 +66,9 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * The List is then used for comparison with secret combination list. 
 	 *  
+	 * @see PlusMinus#generateUserHint()
 	 * @see ChallengerPlusMinus#initGame()
-	 * @see ChallengerPlusMinus#generateHint(List, List)
-	 * @see SecretNumGenerator#getTabNumber() 
+	 * @see DuelPlusMinus#initGame()
 	 */
 	protected List<Integer> tabUserAnswer; 
 
@@ -72,11 +84,12 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * Is also used to verify if the computer has generated the correct answer. 
 	 * 
-	 * @see DefenderPlusMinus#requestUserSecretNum()
-	 * @see DefenderPlusMinus#generateComputerFirstTry()
-	 * @see DefenderPlusMinus#createHint(List, List)
+	 * @see PlusMinus#requestUserSecretNum()
+	 * @see PlusMinus#generateComputerFirstTry()
+	 * @see PlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#generateComputerAnswer()
 	 * @see DefenderPlusMinus#initGame()
-	 * @see DefenderPlusMinus#generateAnswerWithHint()
+	 * @see DuelPlusMinus#initGame()
 	 */
 	protected List<Integer> tabUserCode = new ArrayList<Integer>();
 	
@@ -88,27 +101,27 @@ public abstract class PlusMinus extends Game{
 	 * The List is then used for comparison with users combination.
 	 * Also transfered into a String to be displayed;    
 	 *  
+	 * @see PlusMinus#requestUserSecretNum()
+	 * @see PlusMinus#generateComputerFirstTry()
+	 * @see PlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#generateComputerAnswer()
 	 * @see DefenderPlusMinus#initGame()
-	 * @see DefenderPlusMinus#generateComputerFirstTry()
-	 * @see SecretNumGenerator#getTabNumber() 
-	 * @see DefenderPlusMinus#generateAnswerWithHint()
-	 * @see DefenderPlusMinus#createHint(List, List)
-	 * @see DefenderPlusMinus#computerAnswerStringFormat
+	 * @see DuelPlusMinus#initGame()
 	 */
 	protected List<Integer> tabComputerAnswer;
 
 	/**
 	 * Stores the computer answer in String format to be displayed. 
 	 * 
-	 * @see DefenderPlusMinus#generateComputerFirstTry()
-	 * @see DefenderPlusMinus#ArrayListIntegerToString(List)
+	 * @see PlusMinus#generateComputerFirstTry()
+	 * @see PlusMinus#ArrayListIntegerToString(List)
 	 */
 	private String computerAnswerStringFormat;
 	
 	/**
 	 * Stores for each digit the min value and max value range to get a new digit from.
 	 * 
-	 * @see DefenderPlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#generateAnswerWithHint()
 	 */
 	private Map<String, Integer> valuesMinMax; 
 	
@@ -119,8 +132,8 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * Is then reset, to do it again. 
 	 * 
-	 *@see DefenderPlusMinus#generateAnswerWithHint()
-	 *@see DefenderPlusMinus#tabComputerAnswer
+	 *@see PlusMinus#generateAnswerWithHint()
+	 *@see PlusMinus#tabComputerAnswer
 	 */
 	private List<Integer> tabComputerAnswer2 = new ArrayList<Integer>();
 	
@@ -130,8 +143,8 @@ public abstract class PlusMinus extends Game{
 	 * It is set to 0 at the beginning. To generate the new digit, it uses the min value of each digit stored in valuesMinMax. 
 	 * After processing, the new min value is replaced in valuesMinMax of the corresponding digit.      
 	 * 
-	 * @see DefenderPlusMinus#generateAnswerWithHint()
-	 * @see DefenderPlusMinus#valuesMinMax
+	 * @see PlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#valuesMinMax
 	 */
 	private int minValue;
 	
@@ -141,11 +154,16 @@ public abstract class PlusMinus extends Game{
 	 * It is set to 9 at the beginning. To generate the new digit, it uses the max value of each digit stored in valuesMinMax. 
 	 * After processing, the new max value is replaced in valuesMinMax of the corresponding digit.      
 	 * 
-	 * @see DefenderPlusMinus#generateAnswerWithHint()
-	 * @see DefenderPlusMinus#valuesMinMax
+	 * @see PlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#valuesMinMax
 	 */
 	private int maxValue;
 	
+	/**
+	 * Stores the minValue and maxValue of each digit of the combination. 
+	 * 
+	 * @see PlusMinus#generateAnswerWithHint()
+	 */
 	private Map<Integer, Map<String, Integer>> mapValuesMinMax = new HashMap<>(); 
 	
 	
@@ -164,7 +182,7 @@ public abstract class PlusMinus extends Game{
 	 * 				List of Integer to be compared to the first List of Integer. 
 	 * @return The hint in form of a chain of indications "+" or "-".
 	 */
-	protected String generateHint(List<Integer> tab1, List<Integer> tab2){
+	private String generateHint(List<Integer> tab1, List<Integer> tab2){
 		String hint =""; 	
 		for (int i = 0; i < tab1.size(); i++) {
 			String str;
@@ -186,9 +204,12 @@ public abstract class PlusMinus extends Game{
 	/**
 	 *  Request the user to make a keyboard entry.
 	 *  
-	 *  also verify if the entry is correct.
+	 *  also verify if the entry complies requirements.
 	 *  
-	 *  @see ChallengerPlusMinus#userAnswer
+	 *  @see PlusMinus#userAnswer
+	 *  @see ChallengerPlusMinus#initGame()
+	 *  @see DefenderPlusMinus#initGame()
+	 *  @see DuelPlusMinus#initGame()
 	 */
 	protected String requestUserAnswer() {
 		String userAnswer="";
@@ -206,7 +227,7 @@ public abstract class PlusMinus extends Game{
 				}
 			}
 			System.out.print(TextEnhencer.ANSI_YELLOW);
-			System.out.println("Please enter a number of " + this.sNG.getNumberSize() + (this.sNG.getNumberSize() > 1 ? " digits." : " digit."));			
+			System.out.println("Please enter a number of " + this.sNG.getNumberSize() + (this.sNG.getNumberSize() > 1 ? " digits." : " digit."));
 			userAnswer = clavier.nextLine();
 			System.out.print(TextEnhencer.ANSI_RESET);
 		} while (!userAnswer.matches("^[./[0-9]]+$") || this.sNG.getNumberSize() != userAnswer.length());
@@ -216,8 +237,9 @@ public abstract class PlusMinus extends Game{
 	/**
 	 * Display a hint for players next move.
 	 * 
-	 * @see ChallengerPlusMinus#generateHint(List, List)
-	 *  
+	 * @see PlusMinus#generateHint(List, List)
+	 * @see DefenderPlusMinus#initGame()
+	 * @see DuelPlusMinus#initGame() 
 	 */
 	protected void generateUserHint() {
 		
@@ -245,14 +267,18 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * also verify if the entry is correct. 
 	 * 
-	 * @see DefenderPlusMinus#userCode 
-	 * @see DefenderPlusMinus#tabUserCode
+	 * @see PlusMinus#userCode
+	 * @see PlusMinus#tabUserCode
+	 * @see DefenderPlusMinus#initGame()
+	 * @see DuelPlusMinus#initGame() 
 	 */
 	protected int requestUserSecretNum() {
-		
+		tabUserCode = new ArrayList<>();
 		String userCode = "";
-		System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter your secret combination of below " + TextEnhencer.ANSI_RESET); 
-		
+		System.out.println(TextEnhencer.ANSI_YELLOW + "Please enter your secret combination "
+				+ ((this.getClass().getName() =="com.philippe75.plus_minus.DuelPlusMinus")?"of " + combiLength + " digits ":"") 
+				+"below " + TextEnhencer.ANSI_RESET); 
+	
 		//Using Regex to make sure user enter the right value type (Integer).
 		do {
 			if(!userCode.equals("")) {
@@ -265,11 +291,9 @@ public abstract class PlusMinus extends Game{
 			userCode = clavier.nextLine();
 			System.out.print(TextEnhencer.ANSI_RESET);
 			System.out.println("");
-			
 		} while (!userCode.matches("^[./[0-9]]+$"));	
 		
 		// Transform userAnwser to a ArrayList 
-		
 		for (int i = 0; i < userCode.length(); i++) {
 			tabUserCode.add(Character.getNumericValue(userCode.charAt(i)));  
 		}
@@ -279,9 +303,11 @@ public abstract class PlusMinus extends Game{
 	/**
 	 * Generates computers answer 
 	 * 
-	 * @see DuelPlusMinus#tabComputerAnswer
-	 * @see DuelPlusMinus#generateComputerFirstTry()
-	 * @see DuelPlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#tabComputerAnswer
+	 * @see PlusMinus#generateComputerFirstTry()
+	 * @see PlusMinus#generateAnswerWithHint()
+	 * @see DefenderPlusMinus#initGame()
+	 * @see DuelPlusMinus#initGame()  
 	 */
 	protected void generateComputerAnswer() {
 		if(super.tries < 2) {
@@ -289,6 +315,22 @@ public abstract class PlusMinus extends Game{
 		}else {
 			tabComputerAnswer = generateAnswerWithHint();
 		}
+	}
+	
+	/**
+	 * Display a hint for computers next move. 
+	 * 
+	 * @see PlusMinus#createHint(List, List)
+	 * @see DefenderPlusMinus#initGame()
+	 * @see DuelPlusMinus#initGame() 
+	 */
+	protected void generateComputerHint() {
+		// creates the hint 
+		String hint = this.generateHint(tabUserCode, tabComputerAnswer);
+		// transforme ComputerAnswer into String via method ArrayListToString 
+		computerAnswerStringFormat = ArrayListIntegerToString(tabComputerAnswer);
+		//print computers answer and show the hint
+		System.out.printf(TextEnhencer.ANSI_CYAN + "Computer tries %s ---> %s \n" + TextEnhencer.ANSI_RESET, computerAnswerStringFormat, hint);
 	}
 	
 	/**
@@ -301,9 +343,9 @@ public abstract class PlusMinus extends Game{
 	 * @see SecretNumGenerator
 	 * @see SecretNumGenerator#getTabNumber()
 	 * @see SecretNumGenerator#getRandomNumber()
-	 * @see DefenderPlusMinus#computerAnswerStringFormat
+	 * @see PlusMinus#computerAnswerStringFormat
 	 */
-	protected List<Integer> generateComputerFirstTry() {
+	private List<Integer> generateComputerFirstTry() {
 		// Generates a secreteNumber of the same length as user's answer.  
 		this.sNG2 = new SecretNumGenerator(tabUserCode.size());
 		tabComputerAnswer = this.sNG2.getTabNumber();
@@ -329,12 +371,12 @@ public abstract class PlusMinus extends Game{
 	 * 
 	 * The List is re-transfered to Computer answer List, and then reset. 
 	 * 
-	 * @return computer new answer in form of a List. 
-	 * @see DefenderPlusMinus#valuesMinMax
-	 * @see DefenderPlusMinus#tabComputerAnswer2
-	 * @see DefenderPlusMinus#mapValuesMinMax
+	 * @return computers new answer in form of a List. 
+	 * @see PlusMinus#valuesMinMax
+	 * @see PlusMinus#tabComputerAnswer2
+	 * @see PlusMinus#mapValuesMinMax
 	 */
-	protected List<Integer> generateAnswerWithHint() {
+	private List<Integer> generateAnswerWithHint() {
 		
 		tabComputerAnswer2.clear();
 		int newValue; 
@@ -406,22 +448,7 @@ public abstract class PlusMinus extends Game{
 		
 		return tabComputerAnswer;  
 	}
-	
-	/**
-	 * Display a hint for computers next move. 
-	 * 
-	 * @see DuelPlusMinus#createHint(List, List)
-	 */
-	protected void generateComputerHint() {
-		// creates the hint 
-		String hint = this.generateHint(tabUserCode, tabComputerAnswer);
-		// transforme ComputerAnswer into String via method ArrayListToString 
-		computerAnswerStringFormat = ArrayListIntegerToString(tabComputerAnswer);
-		
-		//print computers answer and show the hint
-		System.out.printf(TextEnhencer.ANSI_CYAN + "Computer tries %s ---> %s \n" + TextEnhencer.ANSI_RESET, computerAnswerStringFormat, hint);
-	}
-	
+
 	/**
 	 * Convert an ArrayList into String
 	 * 

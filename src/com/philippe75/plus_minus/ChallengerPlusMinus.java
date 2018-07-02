@@ -1,19 +1,18 @@
 package com.philippe75.plus_minus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.philippe75.extra.Dino;
 import com.philippe75.extra.Fish;
 import com.philippe75.extra.TextEnhencer;
-import com.philippe75.game.IGame;
+import com.philippe75.game.Game;
 import com.philippe75.generators.SecretNumGenerator;
 
 
 /**
- * <b>ChallengerPlusMinus is a class that handle the PlusMinus game in Challenger IGame.</b>
+ * <b>ChallengerPlusMinus is a class that handle the PlusMinus game in challenger mode.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>A random combination is generated.</li>
@@ -33,7 +32,7 @@ import com.philippe75.generators.SecretNumGenerator;
  * </p>
  * 
  * @see SecretNumGenerator
- * @see ChallengerPlusMinus#setProperties()
+ * @see Game#setProperties()
  * 
  * @author PPlaxine
  * @version 1.0
@@ -50,10 +49,10 @@ public class ChallengerPlusMinus extends PlusMinus{
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
-	 * @see ChallengerPlusMinus#setProperties()
-	 * @see ChallengerPlusMinus#combiLength
-	 * @see ChallengerPlusMinus#errorAllowed
-	 * @see ChallengerPlusMinus#dev
+	 * @see Game#setProperties()
+	 * @see PlusMinus#combiLength
+	 * @see PlusMinus#errorAllowed
+	 * @see Game#dev
 	 */
 	public ChallengerPlusMinus() {	
 		if (this.setProperties())
@@ -108,7 +107,7 @@ public class ChallengerPlusMinus extends PlusMinus{
 	/**
 	 * Displays the secret combination if mode dev is activated
 	 *  
-	 * @see ChallengerPlusMinus#dev
+	 * @see Game#dev
 	 * @see ChallengerPlusMinus#startTheGame()
 	 */
 	protected void displaySecretNum() {
@@ -134,17 +133,8 @@ public class ChallengerPlusMinus extends PlusMinus{
 	 * 
 	 * If user find the secret combination, he wins. A drawing and a message are displayed. Otherwise, user loose. a message is displayed.     
 	 * 
-	 * @see ChallengerPlusMinus#score
-	 * @see ChallengerPlusMinus#userAnswer
-	 * @see ChallengerPlusMinus#tabUserAnswer
-	 * @see ChallengerPlusMinus#generateHint(List, List)
-	 * @param sNG.getTabNumber()
-	 * 								The secret combination contained in a List  
-	 * @param tabUserAnswer 
-	 * 								The user answer contained in a List
-	 * @see ChallengerPlusMinus#hint
-	 * @see ChallengerPlusMinus#errorAllowed
-	 * @see IGame#displayFish()
+	 * @see PlusMinus#requestUserAnswer()
+	 * @see PlusMinus#generateUserHint()
 	 */
 	public void initGame() {
 		this.tabUserAnswer = new ArrayList<Integer>();

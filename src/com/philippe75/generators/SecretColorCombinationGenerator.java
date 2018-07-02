@@ -9,7 +9,7 @@ import java.util.Random;
  * <b>SecretColorCombinationGenerator is a class that generate a random combination of colours.</b>
  * 
  * <p>
- * The random combination can be generate of any length, and from a pool from 4 to 10 colours as passed as parameters. 
+ * The random combination can be generate of any length, and from a pool of 4 up to 10 colours. Those value are passed as parameters. 
  * </p>
  * 
  * @see SecretColorCombinationGenerator#SecretColorCombinationGenerator(int, HowManyColors)
@@ -63,7 +63,7 @@ public class SecretColorCombinationGenerator {
 	private HashMap<Integer, String> tabColorCombination = new HashMap<Integer, String>();
 	
 	/**
-	 * Constructor of SecretColorCombinationGenerator
+	 * Constructor of SecretColorCombinationGenerator.
 	 * 
 	 * Starts the process of generating the secret combination.  
 	 * 
@@ -138,7 +138,7 @@ public class SecretColorCombinationGenerator {
 	}
 	
 /**
- * Getter
+ * Getter.
  * 	
  * @return the tabColorCombination containing the secret colour combination.  
  * @see SecretColorCombinationGenerator#tabColorCombination

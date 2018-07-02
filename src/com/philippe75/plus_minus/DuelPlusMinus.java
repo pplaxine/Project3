@@ -7,10 +7,11 @@ import org.apache.log4j.Logger;
 import com.philippe75.extra.Dino;
 import com.philippe75.extra.Fish;
 import com.philippe75.extra.TextEnhencer;
+import com.philippe75.game.Game;
 import com.philippe75.generators.SecretNumGenerator;
 
 /**
- * <b>DuelPlusMinus is a class that handle the PlusMinus game in Duel IGame.</b>
+ * <b>DuelPlusMinus is a class that handle the PlusMinus game in duel mode.</b>
  * <p>Steps of the game : 
  * <ul>
  * <li>user enters a secret combination for the computer to guess.</li>
@@ -33,7 +34,7 @@ import com.philippe75.generators.SecretNumGenerator;
  * </p>
  * 
  * @see SecretNumGenerator
- * @see DuelPlusMinus#setProperties()
+ * @see Game#setProperties()
  * 
  * @author PPlaxine
  * @version 1.0
@@ -50,8 +51,8 @@ public class DuelPlusMinus extends PlusMinus{
 	 * 
 	 * When the class is instantiated, load properties to be used by the game.
 	 * 
-	 * @see DuelPlusMinus#setProperties()
-	 * @see DuelPlusMinus#errorAllowed
+	 * @see Game#setProperties()
+	 * @see PlusMinus#errorAllowed
 	 */
 	public DuelPlusMinus() {
 		if(this.setProperties())
@@ -78,9 +79,7 @@ public class DuelPlusMinus extends PlusMinus{
 		log.info("Start of PlusMinus game in duel mode");
 		this.sNG = new SecretNumGenerator(super.combiLength);
 		printWelcome();	
-		do {
-			requestUserSecretNum();
-		} while (requestUserSecretNum() != super.combiLength);
+		while (requestUserSecretNum() != super.combiLength);
 		displaySecretNum();
 		initGame();
 		log.info("End of the game");
@@ -106,14 +105,14 @@ public class DuelPlusMinus extends PlusMinus{
 	/**
 	 * Displays the secret combination if mode dev is activated
 	 *  
-	 * @see DuelPlusMinus#dev
+	 * @see Game#dev
 	 * @see DuelPlusMinus#startTheGame()
 	 */
 	protected void displaySecretNum() {
 		System.out.println(TextEnhencer.ANSI_CYAN + "\nComputer has generated a secret combination for you to guess ..." + TextEnhencer.ANSI_RESET);
 		if(dev) {
 			log.info("Game is running in developer mode");
-			System.out.println(TextEnhencer.ANSI_CYAN + "*** Secret Num : " + this.sNG.getRandomNumber() + " *** " + TextEnhencer.ANSI_RESET);
+			System.out.println(TextEnhencer.ANSI_CYAN + "\t\t*** Secret Num : " + this.sNG.getRandomNumber() + " *** " + TextEnhencer.ANSI_RESET);
 		}
 	}
 
@@ -127,10 +126,10 @@ public class DuelPlusMinus extends PlusMinus{
 	 * Each turn, user and Computer try a combination.
 	 * If user finds the secret combination he wins, if computer finds first, user looses.
 	 * 
-	 * @see DuelPlusMinus#requestUserAnswer()
-	 * @see DuelPlusMinus#generateAnswerWithHint()
-	 * @see DuelPlusMinus#generateComputerAnswer()
-	 * @see DuelPlusMinus#generateComputerHint()
+	 * @see PlusMinus#requestUserAnswer()
+	 * @see PlusMinus#generateAnswerWithHint()
+	 * @see PlusMinus#generateComputerAnswer()
+	 * @see PlusMinus#generateComputerHint()
 	 */
 	public void initGame() {
 		this.tabUserAnswer = new ArrayList<Integer>();
