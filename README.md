@@ -22,8 +22,9 @@ For each game, the combination length, the number of error allowed, and the size
 ## Getting Started
 
 To compile the file. In console, got to your directory containing the Project3-Game.jar file, and type the folowing instruction : 
-	##### java -jar Project3-Game.jar
-	##### java -jar Project3-Game.jar -dev (will start the program in developer mode). 
+	
+	java -jar Project3-Game.jar
+	java -jar Project3-Game.jar -dev (will start the program in developer mode). 
 
 You can also activate / desactivate the developer mode, as well as, define the combinations length, the number of errors allowed, and the size of the pool of colours via the dataConfig.properties file within the Project3-Game.jar file.  
 
